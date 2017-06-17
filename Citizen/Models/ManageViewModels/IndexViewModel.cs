@@ -13,8 +13,10 @@ namespace Citizen.Models.ManageViewModels
 
         public bool BrowserRemembered { get; set; }
 
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Money")]
         [DataType(DataType.Currency)]
         public decimal Money { get; set; }
     }
