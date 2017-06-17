@@ -55,7 +55,8 @@ namespace Citizen.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                Name = user.Name
             };
             return View(model);
         }

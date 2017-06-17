@@ -11,5 +11,7 @@ namespace Citizen.Models.ManageViewModels
         public bool HasPassword { get; set; }
 
         public bool BrowserRemembered { get; set; }
+
+        public string Name { get; set; }
     }
 }
