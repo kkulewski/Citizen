@@ -112,8 +112,23 @@ namespace Citizen.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CountryId = model.CountryId };
+                var defaultMoney = 100.00M;
+                var defaultEnergy = 1000;
+                var defaultEnergyRestore = 500;
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Name = model.Name,
+                    CountryId = model.CountryId,
+                    Money = defaultMoney,
+                    Energy = defaultEnergy,
+                    EnergyRestore = defaultEnergyRestore
+                };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
