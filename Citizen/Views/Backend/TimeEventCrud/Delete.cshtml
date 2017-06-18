@@ -1,0 +1,41 @@
+@model Citizen.Models.TimeEvent
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TimeEvent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastTrigger)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastTrigger)
+        </dd>
+    </dl>
+    
+    <form asp-controller="TimeEventCrud" asp-action="Delete">
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-controller="TimeEventCrud" asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

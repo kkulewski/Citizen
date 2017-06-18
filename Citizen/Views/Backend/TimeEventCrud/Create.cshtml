@@ -1,0 +1,39 @@
+@model Citizen.Models.TimeEvent
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-controller="TimeEventCrud" asp-action="Create">
+    <div class="form-horizontal">
+        <h4>TimeEvent</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastTrigger" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastTrigger" class="form-control" />
+                <span asp-validation-for="LastTrigger" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-controller="TimeEventCrud" asp-action="Index">Back to List</a>
+</div>
+
