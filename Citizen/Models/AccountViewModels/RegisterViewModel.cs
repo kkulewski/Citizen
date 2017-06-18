@@ -22,6 +22,9 @@ namespace Citizen.Models.AccountViewModels
         [Display(Name = "Country ID")]
         public int CountryId { get; set; }
 
+        [Display(Name = "Country")]
+        public List<Country> CountryList { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
