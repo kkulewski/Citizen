@@ -11,7 +11,9 @@
     <h4>Country</h4>
     <hr />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="Id" />
+        <dd>
+            <input type="hidden" asp-for="Id"/>
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -31,11 +33,11 @@
             @Html.DisplayFor(model => model.CurrencyCode)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <div class="form-actions no-color">
+
+    <form asp-controller="CountryCrud" asp-action="Delete">
+        <div class="form-group">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
+            <a asp-controller="CountryCrud" asp-action="Index">Back to List</a>
         </div>
     </form>
 </div>

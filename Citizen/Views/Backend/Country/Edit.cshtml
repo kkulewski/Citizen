@@ -6,7 +6,7 @@
 
 <h2>Edit</h2>
 
-<form asp-action="Edit">
+<form asp-controller="CountryCrud" asp-action="Edit">
     <div class="form-horizontal">
         <h4>Country</h4>
         <hr />
@@ -42,6 +42,6 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="CountryCrud" asp-action="Index">Back to List</a>
 </div>
 

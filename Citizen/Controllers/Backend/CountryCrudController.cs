@@ -2,16 +2,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Citizen.Data;
 using Citizen.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Citizen.Controllers.Backend
 {
-    public class CountryController : Controller
+    [Authorize]
+    public class CountryCrudController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CountryController(ApplicationDbContext context)
+        public CountryCrudController(ApplicationDbContext context)
         {
             _context = context;    
         }
@@ -19,7 +21,7 @@ namespace Citizen.Controllers.Backend
         // GET: Country
         public async Task<IActionResult> Index()
         {
-            return View("~/Views/Backend/Country/Index.cshtml", await EntityFrameworkQueryableExtensions.ToListAsync<Country>(_context.Country));
+            return View("~/Views/Backend/Country/Index.cshtml", await _context.Country.ToListAsync());
         }
 
         // GET: Country/Details/5
@@ -30,13 +32,13 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
 
-            var country = await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Country>(_context.Country, m => m.Id == id);
+            var country = await _context.Country.SingleOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
             }
 
-            return View("~/Views/Backend/Country/Index.cshtml", country);
+            return View("~/Views/Backend/Country/Details.cshtml", country);
         }
 
         // GET: Country/Create
@@ -69,7 +71,7 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
 
-            var country = await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Country>(_context.Country, m => m.Id == id);
+            var country = await _context.Country.SingleOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
@@ -120,7 +122,7 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
 
-            var country = await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Country>(_context.Country, m => m.Id == id);
+            var country = await _context.Country.SingleOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
@@ -134,7 +136,7 @@ namespace Citizen.Controllers.Backend
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await EntityFrameworkQueryableExtensions.SingleOrDefaultAsync<Country>(_context.Country, m => m.Id == id);
+            var country = await _context.Country.SingleOrDefaultAsync(m => m.Id == id);
             _context.Country.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -142,7 +144,7 @@ namespace Citizen.Controllers.Backend
 
         private bool CountryExists(int id)
         {
-            return Queryable.Any<Country>(_context.Country, e => e.Id == id);
+            return _context.Country.Any(e => e.Id == id);
         }
     }
 }
