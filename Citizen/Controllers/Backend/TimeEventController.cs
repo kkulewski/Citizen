@@ -55,13 +55,13 @@ namespace Citizen.Controllers.Backend
                 // TODO: remove hardcoded events
                 // update Event lastTrigger date
                 timeEvent.LastTrigger = DateTime.Now;
-                // update EnergyRestore
+                // count event ticks (how many times should be fired) using date-diff
                 int ticks = (int) (dateDiffInSeconds / timeEvent.Tick);
-                int energyToAdd =+ 1 * ticks;
-                await _context.ApplicationUsers.ForEachAsync(c => c.EnergyRestore += energyToAdd);
+                // fire EnergyRestoreEvent for each User
+                await _context.ApplicationUsers.ForEachAsync(c => c.EnergyRestoreEvent(ticks));
 
                 _context.SaveChanges();
-                return Ok("EVENT FIRED");
+                return Ok(string.Format("EVENT FIRED - {0} TICKS", ticks));
             }
 
             return Ok("EVENT NOT FIRED");

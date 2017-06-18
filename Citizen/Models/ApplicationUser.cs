@@ -22,5 +22,12 @@ namespace Citizen.Models
         public int CountryId { get; set; }
 
         public Country Country { get; set; }
+
+        public void EnergyRestoreEvent(int ticks)
+        {
+            var maxEnergy = 1000;
+            var amount = 1 * ticks;
+            EnergyRestore = (EnergyRestore + amount) <= 1000 ? (EnergyRestore + amount) : maxEnergy;
+        }
     }
 }
