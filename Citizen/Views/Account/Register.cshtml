@@ -26,7 +26,7 @@
     <div class="form-group">
         <label asp-for="CountryId" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <select asp-for="CountryId" 
+            <select class="form-control" asp-for="CountryId" 
                     asp-items="@(new SelectList(@Model.CountryList, "Id", "Name"))">
             </select>
             <span asp-validation-for="CountryId" class="text-danger"></span>
