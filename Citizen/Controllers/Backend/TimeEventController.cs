@@ -30,6 +30,7 @@ namespace Citizen.Controllers.Backend
 
         // GET: api/TimeEvent/5
         [HttpGet("{id}")]
+        [Route("Fire/{id}")]
         public async Task<IActionResult> GetTimeEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -44,7 +45,7 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
             
-            var dateDiffInSeconds = (timeEvent.LastTrigger - DateTime.Now).TotalSeconds;
+            var dateDiffInSeconds = (DateTime.Now - timeEvent.LastTrigger).TotalSeconds;
 
             if (dateDiffInSeconds >= timeEvent.Tick)
             {
@@ -60,10 +61,10 @@ namespace Citizen.Controllers.Backend
                 await _context.ApplicationUsers.ForEachAsync(c => c.EnergyRestore += energyToAdd);
 
                 _context.SaveChanges();
-                return Ok(timeEvent);
+                return Ok("EVENT FIRED");
             }
 
-            return Ok(timeEvent);
+            return Ok("EVENT NOT FIRED");
         }
 
         // PUT: api/TimeEvent/5
