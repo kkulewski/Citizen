@@ -68,6 +68,7 @@ namespace Citizen.Controllers
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 Name = user.Name,
                 Energy = user.Energy,
+                EnergyRestore = user.EnergyRestore,
                 Money = user.Money,
                 Country = userCountry
             };

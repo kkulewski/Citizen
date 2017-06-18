@@ -14,6 +14,8 @@ namespace Citizen.Models
 
         public int Energy { get; set; }
 
+        public int EnergyRestore { get; set; }
+
         public decimal Money { get; set; }
 
         [ForeignKey("Country")]
