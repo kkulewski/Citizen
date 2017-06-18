@@ -12,7 +12,14 @@
     <dl class="dl-horizontal">
         <dt>Money:</dt>
         <dd>
-            @Model.Money
+            @Model.Money @Model.Country.CurrencyCode
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Travel cost:</dt>
+        <dd>
+            @Model.CountryChangeCost @Model.Country.CurrencyCode
+            @Html.HiddenFor(x => x.CountryChangeCost)
         </dd>
     </dl>
     <div class="form-group">
@@ -26,6 +33,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">Change country</button>
+            <input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index")'" />
         </div>
     </div>
 </form>

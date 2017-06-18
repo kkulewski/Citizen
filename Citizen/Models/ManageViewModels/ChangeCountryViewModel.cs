@@ -16,6 +16,13 @@ namespace Citizen.Models.ManageViewModels
         [Display(Name = "Country ID")]
         public int CountryId { get; set; }
 
+        public Country Country { get; set; }
+
+        [Required]
+        [Display(Name = "Country change cost")]
+        [DataType(DataType.Currency)]
+        public decimal CountryChangeCost { get; set; }
+
         [Display(Name = "Country")]
         public List<Country> CountryList { get; set; }
     }

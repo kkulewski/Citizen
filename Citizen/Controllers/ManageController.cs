@@ -123,11 +123,15 @@ namespace Citizen.Controllers
             var countries = from c in _dbContext.Country select c;
             var userCountry = countries.First(country => country.Id == user.CountryId);
 
+            decimal countryChangeCost = 5.00M;
+
             var model = new ChangeCountryViewModel()
             {
                 Money = user.Money,
                 CountryId = userCountry.Id,
-                CountryList = countryList
+                CountryList = countryList,
+                Country = user.Country,
+                CountryChangeCost = countryChangeCost
             };
 
             return View(model);
@@ -148,13 +152,12 @@ namespace Citizen.Controllers
             {
                 user.CountryId = model.CountryId;
 
-                const int countryChangeCost = 5;
-                if (user.Money < countryChangeCost)
+                if (user.Money < model.CountryChangeCost)
                 {
                     return RedirectToAction(nameof(Index), new {Message = ManageMessageId.ChangeCountryNotEnoughMoney});
                 }
 
-                user.Money -= countryChangeCost;
+                user.Money -= model.CountryChangeCost;
                 _dbContext.SaveChanges();
 
                 return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeCountrySuccess });
