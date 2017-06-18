@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +22,22 @@ namespace Citizen.Controllers
         private readonly string _externalCookieScheme;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _dbContext;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _dbContext = dbContext;
         }
 
         //
@@ -52,12 +56,17 @@ namespace Citizen.Controllers
             {
                 return View("Error");
             }
+
+           var countries = from c in _dbContext.Countries select c;
+           var userCountry = countries.First(country => country.Id == user.CountryId);
+
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 Name = user.Name,
-                Money = user.Money
+                Money = user.Money,
+                Country = userCountry
             };
             return View(model);
         }

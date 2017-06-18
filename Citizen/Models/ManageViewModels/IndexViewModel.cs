@@ -19,5 +19,8 @@ namespace Citizen.Models.ManageViewModels
         [Display(Name = "Money")]
         [DataType(DataType.Currency)]
         public decimal Money { get; set; }
+
+        [Display(Name = "Country")]
+        public Country Country { get; set; }
     }
 }
