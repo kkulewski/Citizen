@@ -25,6 +25,14 @@ namespace Citizen.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<ApplicationUser>()
+                .HasAlternateKey(c => c.Name)
+                .HasName("AlternateKey_CitizenName");
+
+            builder.Entity<Country>()
+                .HasAlternateKey(c => c.Name)
+                .HasName("AlternateKey_CountryName");
+
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
