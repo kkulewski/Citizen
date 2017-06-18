@@ -48,6 +48,7 @@ namespace Citizen.Controllers
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.ChangeCountrySuccess ? "Your country has been changed."
+                : message == ManageMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
@@ -146,7 +147,14 @@ namespace Citizen.Controllers
             if (user != null)
             {
                 user.CountryId = model.CountryId;
-                user.Money += 5;
+
+                const int countryChangeCost = 5;
+                if (user.Money < countryChangeCost)
+                {
+                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.ChangeCountryNotEnoughMoney});
+                }
+
+                user.Money -= countryChangeCost;
                 _dbContext.SaveChanges();
 
                 return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeCountrySuccess });
@@ -203,6 +211,7 @@ namespace Citizen.Controllers
         {
             ChangePasswordSuccess,
             ChangeCountrySuccess,
+            ChangeCountryNotEnoughMoney,
             SetPasswordSuccess,
             Error
         }
