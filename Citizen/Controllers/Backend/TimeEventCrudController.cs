@@ -56,7 +56,7 @@ namespace Citizen.Controllers.Backend
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,LastTrigger")] TimeEvent timeEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,Tick,LastTrigger")] TimeEvent timeEvent)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace Citizen.Controllers.Backend
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LastTrigger")] TimeEvent timeEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Tick,LastTrigger")] TimeEvent timeEvent)
         {
             if (id != timeEvent.Id)
             {

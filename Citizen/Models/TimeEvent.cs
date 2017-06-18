@@ -14,6 +14,9 @@ namespace Citizen.Models
         [StringLength(200, MinimumLength = 1)]
         public string Name { get; set; }
 
+        [Range(minimum: 1, maximum: 3600)]
+        public int Tick { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime LastTrigger { get; set; }
     }
