@@ -43,6 +43,25 @@ namespace Citizen.Controllers.Backend
             {
                 return NotFound();
             }
+            
+            var dateDiffInSeconds = (timeEvent.LastTrigger - DateTime.Now).TotalSeconds;
+
+            if (dateDiffInSeconds >= timeEvent.Tick)
+            {
+                // do action associated with this event
+
+
+                // TODO: remove hardcoded events
+                // update Event lastTrigger date
+                timeEvent.LastTrigger = DateTime.Now;
+                // update EnergyRestore
+                int ticks = (int) (dateDiffInSeconds / timeEvent.Tick);
+                int energyToAdd =+ 1 * ticks;
+                await _context.ApplicationUsers.ForEachAsync(c => c.EnergyRestore += energyToAdd);
+
+                _context.SaveChanges();
+                return Ok(timeEvent);
+            }
 
             return Ok(timeEvent);
         }
