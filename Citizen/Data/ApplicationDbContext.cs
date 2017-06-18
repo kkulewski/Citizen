@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,7 +11,9 @@ namespace Citizen.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        [NotMapped]
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        [NotMapped]
         public DbSet<Country> Country { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
