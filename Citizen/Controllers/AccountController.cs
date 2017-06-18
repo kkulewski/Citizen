@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,19 +24,22 @@ namespace Citizen.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly ApplicationDbContext _dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _dbContext = dbContext;
         }
 
         //
@@ -91,8 +95,11 @@ namespace Citizen.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            var registerViewModel = new RegisterViewModel();
+            registerViewModel.CountryList = new List<Country>();
+            registerViewModel.CountryList = _dbContext.Country.ToList();
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(registerViewModel);
         }
 
         //
