@@ -67,6 +67,7 @@ namespace Citizen.Controllers
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 Name = user.Name,
+                Energy = user.Energy,
                 Money = user.Money,
                 Country = userCountry
             };

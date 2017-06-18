@@ -16,6 +16,10 @@ namespace Citizen.Models.ManageViewModels
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Energy")]
+        [Range(0, 1000)]
+        public int Energy { get; set; }
+
         [Display(Name = "Money")]
         [DataType(DataType.Currency)]
         public decimal Money { get; set; }
