@@ -21,7 +21,7 @@ namespace Citizen.Controllers.Backend
         // GET: Country
         public async Task<IActionResult> Index()
         {
-            return View("~/Views/Backend/Country/Index.cshtml", await _context.Country.ToListAsync());
+            return View("~/Views/Backend/CountryCrud/Index.cshtml", await _context.Country.ToListAsync());
         }
 
         // GET: Country/Details/5
@@ -38,13 +38,13 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
 
-            return View("~/Views/Backend/Country/Details.cshtml", country);
+            return View("~/Views/Backend/CountryCrud/Details.cshtml", country);
         }
 
         // GET: Country/Create
         public IActionResult Create()
         {
-            return View("~/Views/Backend/Country/Create.cshtml");
+            return View("~/Views/Backend/CountryCrud/Create.cshtml");
         }
 
         // POST: Country/Create
@@ -60,7 +60,7 @@ namespace Citizen.Controllers.Backend
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View("~/Views/Backend/Country/Create.cshtml", country);
+            return View("~/Views/Backend/CountryCrud/Create.cshtml", country);
         }
 
         // GET: Country/Edit/5
@@ -76,7 +76,7 @@ namespace Citizen.Controllers.Backend
             {
                 return NotFound();
             }
-            return View("~/Views/Backend/Country/Edit.cshtml", country);
+            return View("~/Views/Backend/CountryCrud/Edit.cshtml", country);
         }
 
         // POST: Country/Edit/5
@@ -111,7 +111,7 @@ namespace Citizen.Controllers.Backend
                 }
                 return RedirectToAction("Index");
             }
-            return View("~/Views/Backend/Country/Edit.cshtml", country);
+            return View("~/Views/Backend/CountryCrud/Edit.cshtml", country);
         }
 
         // GET: Country/Delete/5
@@ -128,7 +128,7 @@ namespace Citizen.Controllers.Backend
                 return NotFound();
             }
 
-            return View("~/Views/Backend/Country/Delete.cshtml", country);
+            return View("~/Views/Backend/CountryCrud/Delete.cshtml", country);
         }
 
         // POST: Country/Delete/5
