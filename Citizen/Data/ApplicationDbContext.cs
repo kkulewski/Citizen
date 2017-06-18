@@ -10,8 +10,8 @@ namespace Citizen.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<ApplicationUser> ApplicationUsers;
-        public DbSet<Country> Countries;
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Country> Country { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

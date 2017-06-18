@@ -57,7 +57,7 @@ namespace Citizen.Controllers
                 return View("Error");
             }
 
-           var countries = from c in _dbContext.Countries select c;
+           var countries = from c in _dbContext.Country select c;
            var userCountry = countries.First(country => country.Id == user.CountryId);
 
             var model = new IndexViewModel
