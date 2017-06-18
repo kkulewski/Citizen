@@ -16,5 +16,7 @@ namespace Citizen.Models
 
         [ForeignKey("Country")]
         public int CountryId { get; set; }
+
+        public Country Country { get; set; }
     }
 }
