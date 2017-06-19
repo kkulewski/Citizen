@@ -59,8 +59,8 @@ namespace Citizen.Controllers.Backend
                 int ticks = (int) (dateDiffInSeconds / timeEvent.Tick);
                 // fire EnergyRestoreEvent for each User
                 await _context.ApplicationUsers.ForEachAsync(c => c.EnergyRestoreEvent(ticks));
+                await _context.SaveChangesAsync();
 
-                _context.SaveChanges();
                 return Ok(string.Format("EVENT FIRED - {0} TICKS", ticks));
             }
 
