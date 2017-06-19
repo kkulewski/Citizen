@@ -60,9 +60,5 @@ namespace Citizen.Controllers.Backend
             return Ok("EVENT NOT FIRED");
         }
 
-        private bool TimeEventExists(int id)
-        {
-            return _context.TimeEvents.Any(e => e.Id == id);
-        }
     }
 }
