@@ -67,21 +67,6 @@ namespace Citizen.Controllers.Backend
             return Ok("EVENT NOT FIRED");
         }
 
-        // POST: api/TimeEvent
-        [HttpPost]
-        public async Task<IActionResult> PostTimeEvent([FromBody] TimeEvent timeEvent)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.TimeEvents.Add(timeEvent);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTimeEvent", new { id = timeEvent.Id }, timeEvent);
-        }
-
         private bool TimeEventExists(int id)
         {
             return _context.TimeEvents.Any(e => e.Id == id);
