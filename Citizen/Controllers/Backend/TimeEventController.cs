@@ -67,41 +67,6 @@ namespace Citizen.Controllers.Backend
             return Ok("EVENT NOT FIRED");
         }
 
-        // PUT: api/TimeEvent/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTimeEvent([FromRoute] int id, [FromBody] TimeEvent timeEvent)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != timeEvent.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(timeEvent).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TimeEventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/TimeEvent
         [HttpPost]
         public async Task<IActionResult> PostTimeEvent([FromBody] TimeEvent timeEvent)
