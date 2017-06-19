@@ -21,13 +21,6 @@ namespace Citizen.Controllers.Backend
             _context = context;
         }
 
-        // GET: api/TimeEvent
-        [HttpGet]
-        public IEnumerable<TimeEvent> GetTimeEvents()
-        {
-            return _context.TimeEvents;
-        }
-
         // GET: api/TimeEvent/5
         [HttpGet("{id}")]
         [Route("Fire/{id}")]
