@@ -82,27 +82,6 @@ namespace Citizen.Controllers.Backend
             return CreatedAtAction("GetTimeEvent", new { id = timeEvent.Id }, timeEvent);
         }
 
-        // DELETE: api/TimeEvent/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTimeEvent([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var timeEvent = await _context.TimeEvents.SingleOrDefaultAsync(m => m.Id == id);
-            if (timeEvent == null)
-            {
-                return NotFound();
-            }
-
-            _context.TimeEvents.Remove(timeEvent);
-            await _context.SaveChangesAsync();
-
-            return Ok(timeEvent);
-        }
-
         private bool TimeEventExists(int id)
         {
             return _context.TimeEvents.Any(e => e.Id == id);
