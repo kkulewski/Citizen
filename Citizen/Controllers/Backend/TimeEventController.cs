@@ -23,7 +23,6 @@ namespace Citizen.Controllers.Backend
 
         // GET: api/TimeEvent/5
         [HttpGet("{id}")]
-        [Route("Fire/{id}")]
         public async Task<IActionResult> GetTimeEvent([FromRoute] int id)
         {
             if (!ModelState.IsValid)
