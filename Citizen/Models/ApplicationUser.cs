@@ -37,7 +37,7 @@ namespace Citizen.Models
             EnergyRestore -= item.EnergyRecoverAmount;
         }
 
-        public bool CanRestoreEnergyAmount(int amount)
+        private bool CanRestoreEnergyAmount(int amount)
         {
             if (amount > EnergyRestore)
                 return false;
