@@ -38,10 +38,15 @@ namespace Citizen.Models
 
         public bool CanRestoreEnergyAmount(int amount)
         {
-            if (amount <= EnergyRestore)
-                return true;
+            var maxEnergy = 1000;
 
-            return false;
+            if (amount > EnergyRestore)
+                return false;
+
+            if (amount + Energy > maxEnergy)
+                return false;
+
+            return true;
         }
     }
 }
