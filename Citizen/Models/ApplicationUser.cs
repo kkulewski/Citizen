@@ -27,7 +27,8 @@ namespace Citizen.Models
 
         public void EnergyRestoreEvent(int ticks)
         {
-            var amount = 1 * ticks;
+            var tickRestoreAmount = 1;
+            var amount = tickRestoreAmount * ticks;
             EnergyRestore = Math.Min(EnergyRestore + amount, MaxEnergy);
         }
 
