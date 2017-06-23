@@ -27,7 +27,7 @@ namespace Citizen.Models
         {
             var maxEnergy = 1000;
             var amount = 1 * ticks;
-            EnergyRestore = (EnergyRestore + amount) <= 1000 ? (EnergyRestore + amount) : maxEnergy;
+            EnergyRestore = Math.Min(EnergyRestore + amount, maxEnergy);
         }
 
         public void Consume(ConsumableItem item)
