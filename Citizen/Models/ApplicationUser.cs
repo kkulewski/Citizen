@@ -31,10 +31,13 @@ namespace Citizen.Models
             EnergyRestore = Math.Min(EnergyRestore + amount, MaxEnergy);
         }
 
-        public void Consume(ConsumableItem item)
+        public bool Consume(ConsumableItem item)
         {
-            Energy += item.EnergyRecoverAmount;
-            EnergyRestore -= item.EnergyRecoverAmount;
+            if(!RestoreEnergy(item.EnergyRecoverAmount))
+                return false;
+
+            item.Amount -= 1;
+            return true;
         }
 
         public bool RestoreEnergy(int amount)
