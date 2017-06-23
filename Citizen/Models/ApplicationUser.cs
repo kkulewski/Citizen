@@ -34,8 +34,10 @@ namespace Citizen.Models
 
         public bool Consume(ConsumableItem item)
         {
-            if(!RestoreEnergy(item.EnergyRecoverAmount))
+            if (!RestoreEnergy(item.EnergyRecoverAmount))
+            {
                 return false;
+            }
 
             item.Amount -= 1;
             return true;
@@ -44,7 +46,9 @@ namespace Citizen.Models
         public bool RestoreEnergy(int amount)
         {
             if (!CanRestoreEnergyAmount(amount))
+            {
                 return false;
+            }
 
             Energy += amount;
             EnergyRestore -= amount;
@@ -54,10 +58,14 @@ namespace Citizen.Models
         private bool CanRestoreEnergyAmount(int amount)
         {
             if (amount > EnergyRestore)
+            {
                 return false;
+            }
 
             if (amount + Energy > MaxEnergy)
+            {
                 return false;
+            }
 
             return true;
         }
