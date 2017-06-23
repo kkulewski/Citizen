@@ -23,11 +23,12 @@ namespace Citizen.Models
 
         public Country Country { get; set; }
 
+        private const int MaxEnergy = 1000;
+
         public void EnergyRestoreEvent(int ticks)
         {
-            var maxEnergy = 1000;
             var amount = 1 * ticks;
-            EnergyRestore = Math.Min(EnergyRestore + amount, maxEnergy);
+            EnergyRestore = Math.Min(EnergyRestore + amount, MaxEnergy);
         }
 
         public void Consume(ConsumableItem item)
@@ -38,12 +39,10 @@ namespace Citizen.Models
 
         public bool CanRestoreEnergyAmount(int amount)
         {
-            var maxEnergy = 1000;
-
             if (amount > EnergyRestore)
                 return false;
 
-            if (amount + Energy > maxEnergy)
+            if (amount + Energy > MaxEnergy)
                 return false;
 
             return true;
