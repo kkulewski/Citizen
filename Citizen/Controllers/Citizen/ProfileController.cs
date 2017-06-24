@@ -40,6 +40,8 @@ namespace Citizen.Controllers.Citizen
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangeCountrySuccess ? "Your country has been changed."
                 : message == ManageMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
+                : message == ManageMessageId.EatFoodSuccess ? "Food eaten."
+                : message == ManageMessageId.EatFoodFailure ? "No food available."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
 
@@ -50,7 +52,9 @@ namespace Citizen.Controllers.Citizen
             }
 
             var countries = from c in _dbContext.Country select c;
+            var foodItems = from c in _dbContext.FoodItem select c;
             var userCountry = countries.First(country => country.Id == user.CountryId);
+            var userFoodItem = foodItems.First(foodItem => foodItem.ApplicationUserId == user.Id);
 
             var model = new IndexViewModel
             {
@@ -58,7 +62,8 @@ namespace Citizen.Controllers.Citizen
                 Energy = user.Energy,
                 EnergyRestore = user.EnergyRestore,
                 Money = user.Money,
-                Country = userCountry
+                Country = userCountry,
+                FoodItem = userFoodItem
             };
             return View("~/Views/Citizen/Profile/Index.cshtml", model);
         }
@@ -78,6 +83,51 @@ namespace Citizen.Controllers.Citizen
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddFoodItemTest()
+        {
+            var user = await GetCurrentUserAsync();
+            
+            var foodItems = from c in _dbContext.FoodItem select c;
+            var userFoodItem = foodItems.FirstOrDefault(foodItem => foodItem.ApplicationUserId == user.Id);
+            user.FoodItem = userFoodItem;
+            
+            if(user.FoodItem == null)
+            {
+                var foodItem = new FoodItem();
+                foodItem.Name = "Food";
+                foodItem.Amount = 5;
+                foodItem.EnergyRecoverAmount = 10;
+
+                user.FoodItem = foodItem;
+            }
+            else
+            {
+                user.FoodItem.Amount += 5;
+            }
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EatFood()
+        {
+            var user = await GetCurrentUserAsync();
+            var foodItems = from c in _dbContext.FoodItem select c;
+            var userFoodItem = foodItems.FirstOrDefault(foodItem => foodItem.ApplicationUserId == user.Id);
+            user.FoodItem = userFoodItem;
+
+            if (user.FoodItem.Amount > 0)
+            {
+                user.Consume(user.FoodItem);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatFoodSuccess });
+            }
+
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatFoodFailure });
         }
 
         [HttpGet]
@@ -162,6 +212,8 @@ namespace Citizen.Controllers.Citizen
         {
             ChangeCountrySuccess,
             ChangeCountryNotEnoughMoney,
+            EatFoodSuccess,
+            EatFoodFailure,
             Error
         }
 
