@@ -24,7 +24,7 @@ namespace Citizen.Models
 
         public Country Country { get; set; }
         
-        public FoodItem FoodItem { get; set; }
+        public virtual FoodItem FoodItem { get; set; }
 
         private const int MaxEnergy = 1000;
 
