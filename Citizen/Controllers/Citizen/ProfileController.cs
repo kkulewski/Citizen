@@ -30,6 +30,11 @@ namespace Citizen.Controllers.Citizen
             _logger = loggerFactory.CreateLogger<ProfileController>();
             _dbContext = dbContext;
         }
+        
+        public PartialViewResult GetMenu()
+        {
+            return PartialView("~/Views/Citizen/Profile/_MenuPartial");
+        }
 
         //
         // GET: /Manage/Index
