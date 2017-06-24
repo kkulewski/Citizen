@@ -1,0 +1,39 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Manage your account";
+}
+
+<h2>@ViewData["Title"].</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h4>Your profile</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Name:</dt>
+        <dd>
+            @Model.Name
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Energy:</dt>
+        <dd>
+            [ @Model.Energy / 1000 ] (@Model.EnergyRestore can be restored)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Money:</dt>
+        <dd>
+            @Model.Money @Model.Country.CurrencyCode
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Country:</dt>
+        <dd>
+            @Model.Country.Name
+        </dd>
+        <dd>
+            <a asp-controller="Profile" asp-action="ChangeCountry" class="btn-bracketed">Change</a>
+        </dd>
+    </dl>
+</div>
