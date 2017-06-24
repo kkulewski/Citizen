@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.ManageViewModels;
 using Citizen.Services;
+using Citizen.Models.Items;
 
 namespace Citizen.Controllers.Citizen
 {
