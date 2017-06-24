@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Citizen.Models.Items;
 
 namespace Citizen.Models.ManageViewModels
 {
@@ -30,5 +31,8 @@ namespace Citizen.Models.ManageViewModels
 
         [Display(Name = "Country")]
         public Country Country { get; set; }
+
+        [Display(Name = "Food")]
+        public FoodItem FoodItem { get; set; }
     }
 }
