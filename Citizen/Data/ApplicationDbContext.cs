@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Citizen.Models;
+using Citizen.Models.Items;
 
 namespace Citizen.Data
 {
@@ -17,6 +18,8 @@ namespace Citizen.Data
         public DbSet<Country> Country { get; set; }
         [NotMapped]
         public DbSet<TimeEvent> TimeEvents { get; set; }
+        [NotMapped]
+        public DbSet<FoodItem> FoodItem { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -38,6 +41,8 @@ namespace Citizen.Data
             builder.Entity<TimeEvent>()
                 .HasAlternateKey(c => c.Name)
                 .HasName("AlternateKey_TimeEventName");
+
+            builder.Entity<FoodItem>();
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
