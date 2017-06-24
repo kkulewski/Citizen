@@ -7,8 +7,8 @@ namespace Citizen.Models.Items
 {
     public abstract class Item
     {
-        public string Name;
+        public string Name { get; set; }
 
-        public int Amount;
+        public int Amount { get; set; }
     }
 }

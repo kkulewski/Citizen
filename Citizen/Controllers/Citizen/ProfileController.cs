@@ -68,7 +68,7 @@ namespace Citizen.Controllers.Citizen
         {
             var user = await GetCurrentUserAsync();
 
-            var food = new ConsumableItem();
+            var food = new FoodItem();
             food.Amount = 5;
             food.EnergyRecoverAmount = 300;
             food.Name = "Food";

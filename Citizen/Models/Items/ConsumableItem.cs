@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Citizen.Models.Items
 {
-    public class ConsumableItem : Item
+    public abstract class ConsumableItem : Item
     {
-        public int EnergyRecoverAmount;
+        public int EnergyRecoverAmount { get; set; }
     }
 }

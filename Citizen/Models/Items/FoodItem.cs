@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Citizen.Models.Items
 {
-    public class FoodItem
+    public class FoodItem : ConsumableItem
     {
         [Key]
         [ForeignKey("ApplicationUser")]
