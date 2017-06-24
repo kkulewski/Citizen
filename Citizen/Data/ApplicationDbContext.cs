@@ -34,6 +34,10 @@ namespace Citizen.Data
                 .HasAlternateKey(c => c.Name)
                 .HasName("AlternateKey_CitizenName");
 
+            builder.Entity<ApplicationUser>()
+                .HasOne(f => f.FoodItem)
+                .WithOne(a => a.ApplicationUser);
+
             builder.Entity<Country>()
                 .HasAlternateKey(c => c.Name)
                 .HasName("AlternateKey_CountryName");
