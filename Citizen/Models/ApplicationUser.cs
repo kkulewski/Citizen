@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Citizen.Models.Items;
 
 namespace Citizen.Models
 {
@@ -22,6 +23,10 @@ namespace Citizen.Models
         public int CountryId { get; set; }
 
         public Country Country { get; set; }
+
+        public int FoodItemId { get; set; }
+        
+        public FoodItem FoodItem { get; set; }
 
         private const int MaxEnergy = 1000;
 
