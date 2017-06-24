@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Citizen.Models
+namespace Citizen.Models.Items
 {
     public class ConsumableItem : Item
     {
