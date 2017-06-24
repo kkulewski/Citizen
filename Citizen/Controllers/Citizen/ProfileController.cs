@@ -15,20 +15,19 @@ using Citizen.Services;
 namespace Citizen.Controllers.Citizen
 {
     [Authorize]
-    public class CitizenController : Controller
+    public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _dbContext;
 
-        public CitizenController(
+        public ProfileController(
           UserManager<ApplicationUser> userManager,
           ILoggerFactory loggerFactory,
           ApplicationDbContext dbContext)
         {
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<CitizenController>();
+            _logger = loggerFactory.CreateLogger<ProfileController>();
             _dbContext = dbContext;
         }
 
@@ -60,7 +59,7 @@ namespace Citizen.Controllers.Citizen
                 Money = user.Money,
                 Country = userCountry
             };
-            return View(model);
+            return View("~/Views/Citizen/Profile/Index.cshtml", model);
         }
 
         [HttpGet]
@@ -117,7 +116,7 @@ namespace Citizen.Controllers.Citizen
                 CountryChangeCost = countryChangeCost
             };
 
-            return View(model);
+            return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
         }
 
         //
@@ -160,10 +159,8 @@ namespace Citizen.Controllers.Citizen
 
         public enum ManageMessageId
         {
-            ChangePasswordSuccess,
             ChangeCountrySuccess,
             ChangeCountryNotEnoughMoney,
-            SetPasswordSuccess,
             Error
         }
 
