@@ -47,8 +47,6 @@ namespace Citizen.Controllers
         {
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.ChangeCountrySuccess ? "Your country has been changed."
-                : message == ManageMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
@@ -110,65 +108,6 @@ namespace Citizen.Controllers
         }
 
         //
-        // GET: /Manage/ChangeCountry
-        [HttpGet]
-        public async Task<IActionResult> ChangeCountry()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-            {
-                return View("Error");
-            }
-            
-            var countryList = _dbContext.Country.ToList();
-
-            var countries = from c in _dbContext.Country select c;
-            var userCountry = countries.First(country => country.Id == user.CountryId);
-
-            decimal countryChangeCost = 5.00M;
-
-            var model = new ChangeCountryViewModel()
-            {
-                Money = user.Money,
-                CountryId = userCountry.Id,
-                CountryList = countryList,
-                Country = user.Country,
-                CountryChangeCost = countryChangeCost
-            };
-
-            return View(model);
-        }
-
-        //
-        // POST: /Manage/ChangeCountry
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeCountry(ChangeCountryViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                user.CountryId = model.CountryId;
-
-                if (user.Money < model.CountryChangeCost)
-                {
-                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.ChangeCountryNotEnoughMoney});
-                }
-
-                user.Money -= model.CountryChangeCost;
-                _dbContext.SaveChanges();
-
-                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeCountrySuccess });
-            }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        }
-
-
-        //
         // GET: /Manage/SetPassword
         [HttpGet]
         public IActionResult SetPassword()
@@ -215,8 +154,6 @@ namespace Citizen.Controllers
         public enum ManageMessageId
         {
             ChangePasswordSuccess,
-            ChangeCountrySuccess,
-            ChangeCountryNotEnoughMoney,
             SetPasswordSuccess,
             Error
         }
