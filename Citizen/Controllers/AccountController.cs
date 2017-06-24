@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.AccountViewModels;
 using Citizen.Services;
+using Citizen.Models.Items;
 
 namespace Citizen.Controllers
 {
@@ -137,6 +138,14 @@ namespace Citizen.Controllers
                     //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    var foodItem = new FoodItem();
+                    foodItem.ApplicationUserId = user.Id;
+                    foodItem.Amount = 0;
+                    foodItem.Name = "Food";
+                    foodItem.EnergyRecoverAmount = 10;
+                    await _dbContext.SaveChangesAsync();
+
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
