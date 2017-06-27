@@ -127,7 +127,7 @@ namespace Citizen.Controllers.Citizen
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
             }
             var user = await GetCurrentUserAsync();
             if (user != null)
