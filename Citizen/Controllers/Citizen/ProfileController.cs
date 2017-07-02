@@ -147,6 +147,31 @@ namespace Citizen.Controllers.Citizen
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
+        //
+        // GET: /Profile/Storage
+        [HttpGet]
+        public async Task<IActionResult> Storage()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
+            var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
+
+            var model = new UserStorageViewModel
+            {
+                Name = user.Name,
+                Money = user.Money,
+                Country = userCountry,
+                Food = userStorage.FoodAmount,
+                Grain = userStorage.GrainAmount
+            };
+            return View("~/Views/Citizen/Profile/UserStorage.cshtml", model);
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
