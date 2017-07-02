@@ -21,7 +21,6 @@ namespace Citizen.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly ApplicationDbContext _dbContext;
@@ -37,7 +36,6 @@ namespace Citizen.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _dbContext = dbContext;
         }
