@@ -23,6 +23,8 @@ namespace Citizen.Models
 
         public Country Country { get; set; }
 
+        public UserStorage UserStorage { get; set; }
+
         private const int MaxEnergy = 1000;
 
         public void EnergyRestoreEvent(int ticks)
