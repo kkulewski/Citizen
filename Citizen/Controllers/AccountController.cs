@@ -93,9 +93,7 @@ namespace Citizen.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
-            var registerViewModel = new RegisterViewModel();
-            registerViewModel.CountryList = new List<Country>();
-            registerViewModel.CountryList = _dbContext.Country.ToList();
+            var registerViewModel = new RegisterViewModel { CountryList = _dbContext.Country.ToList() };
             ViewData["ReturnUrl"] = returnUrl;
             return View(registerViewModel);
         }
