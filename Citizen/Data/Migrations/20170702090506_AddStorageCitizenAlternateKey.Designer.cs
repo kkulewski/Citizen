@@ -8,9 +8,10 @@ using Citizen.Data;
 namespace Citizen.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170702090506_AddStorageCitizenAlternateKey")]
+    partial class AddStorageCitizenAlternateKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -264,8 +265,8 @@ namespace Citizen.Data.Migrations
             modelBuilder.Entity("Citizen.Models.UserStorage", b =>
                 {
                     b.HasOne("Citizen.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("UserStorage")
-                        .HasForeignKey("Citizen.Models.UserStorage", "ApplicationUserId")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
