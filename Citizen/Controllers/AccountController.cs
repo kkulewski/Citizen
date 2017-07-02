@@ -139,6 +139,16 @@ namespace Citizen.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
+
+                    var userStorage = new UserStorage();
+                    userStorage.ApplicationUserId = user.Id;
+                    userStorage.FoodAmount = 0;
+                    userStorage.GrainAmount = 0;
+
+                    user.UserStorage = userStorage;
+
+                    await _dbContext.SaveChangesAsync();
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
