@@ -136,10 +136,12 @@ namespace Citizen.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
 
-                    var userStorage = new UserStorage();
-                    userStorage.ApplicationUserId = user.Id;
-                    userStorage.FoodAmount = 0;
-                    userStorage.GrainAmount = 0;
+                    var userStorage = new UserStorage
+                    {
+                        ApplicationUserId = user.Id,
+                        FoodAmount = 0,
+                        GrainAmount = 0
+                    };
 
                     user.UserStorage = userStorage;
 
