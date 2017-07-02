@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Citizen.Models;
-using Citizen.Models.ManageViewModels;
+using Citizen.Models.CitizenViewModels;
 using Citizen.Services;
 
 namespace Citizen.Controllers.Citizen
@@ -51,7 +51,7 @@ namespace Citizen.Controllers.Citizen
             var countries = from c in _dbContext.Country select c;
             var userCountry = countries.First(country => country.Id == user.CountryId);
 
-            var model = new IndexViewModel
+            var model = new ProfileViewModel
             {
                 Name = user.Name,
                 Energy = user.Energy,
