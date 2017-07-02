@@ -41,7 +41,9 @@ namespace Citizen.Data
                 .HasAlternateKey(c => c.Name)
                 .HasName("AlternateKey_TimeEventName");
 
-            builder.Entity<UserStorage>();
+            builder.Entity<UserStorage>()
+                .HasAlternateKey(c => c.ApplicationUserId)
+                .HasName("AlternateKey_StorageCitizenId");
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
