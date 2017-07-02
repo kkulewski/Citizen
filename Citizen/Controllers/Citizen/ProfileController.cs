@@ -47,9 +47,8 @@ namespace Citizen.Controllers.Citizen
             {
                 return View("Error");
             }
-
-            var countries = from c in _dbContext.Country select c;
-            var userCountry = countries.First(country => country.Id == user.CountryId);
+            
+            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
 
             var model = new ProfileViewModel
             {
@@ -101,9 +100,7 @@ namespace Citizen.Controllers.Citizen
             }
 
             var countryList = _dbContext.Country.ToList();
-
-            var countries = from c in _dbContext.Country select c;
-            var userCountry = countries.First(country => country.Id == user.CountryId);
+            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
 
             decimal countryChangeCost = 5.00M;
 
