@@ -13,7 +13,7 @@ namespace Citizen.Models.CitizenViewModels
         public decimal Money { get; set; }
 
         [Required]
-        [Display(Name = "Country ID")]
+        [Display(Name = "Country")]
         public int CountryId { get; set; }
 
         public Country Country { get; set; }
