@@ -1,0 +1,30 @@
+﻿@model Citizen.Models.CitizenViewModels.UserStorageViewModel
+@{
+    ViewData["Title"] = "Manage your storage";
+}
+
+<h2>@ViewData["Title"].</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h4>Your storage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Food:</dt>
+        <dd>
+            @Model.Food
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Grain:</dt>
+        <dd>
+            @Model.Grain
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Money:</dt>
+        <dd>
+            @Model.Money @Model.Country.CurrencyCode
+        </dd>
+    </dl>
+</div>
