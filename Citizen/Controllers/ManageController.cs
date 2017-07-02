@@ -57,15 +57,13 @@ namespace Citizen.Controllers
                 return View("Error");
             }
 
-           var countries = from c in _dbContext.Country select c;
-           var userCountry = countries.First(country => country.Id == user.CountryId);
-
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
                 Name = user.Name
             };
+
             return View(model);
         }
 
