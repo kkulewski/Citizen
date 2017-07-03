@@ -18,6 +18,12 @@ namespace Citizen.Models.CitizenViewModels
         [Display(Name = "Country")]
         public Country Country { get; set; }
 
+        [Display(Name = "Capacity")]
+        public int Capacity { get; set; }
+
+        [Display(Name = "Capacity used")]
+        public int CapacityUsed { get; set; }
+
         [Display(Name = "Food")]
         public int Food { get; set; }
 

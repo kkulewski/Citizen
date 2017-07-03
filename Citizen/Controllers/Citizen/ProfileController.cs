@@ -163,6 +163,8 @@ namespace Citizen.Controllers.Citizen
                 Name = user.Name,
                 Money = user.Money,
                 Country = userCountry,
+                Capacity = userStorage.Capacity,
+                CapacityUsed =  userStorage.CapacityUsed,
                 Food = userStorage.FoodAmount,
                 Grain = userStorage.GrainAmount
             };

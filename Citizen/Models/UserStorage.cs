@@ -17,6 +17,10 @@ namespace Citizen.Models
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
 
+        public int Capacity { get; set; }
+
+        public int CapacityUsed => GrainAmount + FoodAmount;
+
         public int GrainAmount { get; set; }
 
         public int FoodAmount { get; set; }
