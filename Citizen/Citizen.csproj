@@ -11,6 +11,11 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-Citizen-38bfbd91-cc15-4ffa-8e03-52d7e8ba92b1</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\images\Food.png" />
+    <Content Include="wwwroot\images\Grain.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />

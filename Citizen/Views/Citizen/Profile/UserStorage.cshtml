@@ -1,30 +1,42 @@
 ﻿@model Citizen.Models.CitizenViewModels.UserStorageViewModel
 @{
-    ViewData["Title"] = "Manage your storage";
+    ViewData["Title"] = "Your storage";
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
-    <h4>Your storage</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Food:</dt>
-        <dd>
-            @Model.Food
-        </dd>
-    </dl>
-    <dl class="dl-horizontal">
-        <dt>Grain:</dt>
-        <dd>
-            @Model.Grain
-        </dd>
-    </dl>
     <dl class="dl-horizontal">
         <dt>Money:</dt>
         <dd>
             @Model.Money @Model.Country.CurrencyCode
         </dd>
     </dl>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="well well-sm">
+                <h4>Food</h4>
+                <hr/>
+                <img src="@Url.Content("~/images/Food.png")" height="64" width="64" alt="food"/>
+                <hr/>
+                <div class="well well-sm">
+                    @Model.Food
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="well well-sm">
+                <h4>Grain</h4>
+                <hr/>
+                <img src="@Url.Content("~/images/Grain.png")" height="64" width="64" alt="grain"/>
+                <hr/>
+                <div class="well well-sm">
+                    @Model.Grain
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
