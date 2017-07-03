@@ -1,6 +1,7 @@
 ﻿@model Citizen.Models.CitizenViewModels.UserStorageViewModel
 @{
     ViewData["Title"] = "Your storage";
+    var capacityUsePercent = (int)(((double)@Model.CapacityUsed / (double)@Model.Capacity) * 100);
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -14,6 +15,11 @@
             @Model.Money @Model.Country.CurrencyCode
         </dd>
     </dl>
+    <hr />
+    <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" style="width:@capacityUsePercent%"></div>
+        <div class="text-center">@Model.CapacityUsed / @Model.Capacity</div>
+    </div>
     <hr />
     <div class="row">
         <div class="col-sm-2">
