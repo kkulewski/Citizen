@@ -1,12 +1,11 @@
 @model Citizen.Models.CitizenViewModels.ChangeCountryViewModel
 @{
-    ViewData["Title"] = "Change Country";
+    ViewData["Title"] = "Change country";
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 
 <form asp-controller="Profile" asp-action="ChangeCountry" method="post" class="form-horizontal">
-    <h4>Change Country Form</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <dl class="dl-horizontal">
@@ -33,7 +32,7 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">Change country</button>
-            <input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index")'" />
+            <input type="button" class="btn btn-default" value="Cancel" onclick="location.href='@Url.Action("Index", "Profile")'" />
         </div>
     </div>
 </form>
