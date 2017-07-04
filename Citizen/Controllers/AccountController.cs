@@ -114,6 +114,7 @@ namespace Citizen.Controllers
                     Email = model.Email,
                     Name = model.Name,
                     CountryId = model.CountryId,
+                    Experience = GameSettings.DefaultExperience,
                     Money = GameSettings.DefaultMoney,
                     Energy = GameSettings.EnergyMax,
                     EnergyRestore = GameSettings.EnergyMax
