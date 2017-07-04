@@ -7,6 +7,6 @@ namespace Citizen.Models
 {
     public class ConsumableItem : Item
     {
-        public int EnergyRecoverAmount;
+        public int EnergyRestoreAmount;
     }
 }

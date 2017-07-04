@@ -84,14 +84,14 @@ namespace Citizen.Controllers.Citizen
                 return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatNoFoodAvailable });
             }
 
-            if (user.Energy == GameSettings.MaxEnergy)
+            if (user.Energy == GameSettings.EnergyMax)
             {
                 return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatEnergyMax });
             }
 
             var food = new ConsumableItem
             {
-                EnergyRecoverAmount = GameSettings.FoodEnergyRecover,
+                EnergyRestoreAmount = GameSettings.FoodEnergyRestore,
                 Amount = userStorage.FoodAmount
             };
 
