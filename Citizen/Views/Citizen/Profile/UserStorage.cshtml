@@ -2,6 +2,16 @@
 @{
     ViewData["Title"] = "Your storage";
     var capacityUsePercent = (int)(((double)@Model.CapacityUsed / (double)@Model.Capacity) * 100);
+
+    var usageBarColor = "progress-bar-success";
+    if (capacityUsePercent > 60)
+    {
+        usageBarColor = "progress-bar-warning";
+    }
+    if (capacityUsePercent > 80)
+    {
+        usageBarColor = "progress-bar-danger";
+    }
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -16,9 +26,12 @@
         </dd>
     </dl>
     <hr />
-    <div class="progress">
-        <div class="progress-bar progress-bar-success" role="progressbar" style="width:@capacityUsePercent%"></div>
-        <div class="text-center">@Model.CapacityUsed / @Model.Capacity</div>
+    <div style="width: 100%; margin: auto">
+        <div class="progress">
+            <div class="progress-bar @usageBarColor" role="progressbar" style="width: @capacityUsePercent%">
+                <span>@Model.CapacityUsed / @Model.Capacity</span>
+            </div>
+        </div>
     </div>
     <hr />
     <div class="row">
