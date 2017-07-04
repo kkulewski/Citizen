@@ -1,18 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Citizen.Models
+@using Microsoft.AspNetCore.Http
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
+    //TODO: find a way to store it somewhere else
+    var user = UserManager.Users.First(c => c.Id == UserManager.GetUserId(User));
+
     <ul class="nav navbar-nav navbar-form">
         <li>
             <div class="form-group panel panel panel-danger text-center" style="padding-right: 10px">
                 <img src="@Url.Content("~/images/Energy.png")" height="32" width="32" alt="energy"/>
-                1000
+                @user.Energy
                 <img src="@Url.Content("~/images/Money.png")" height="32" width="32" alt="money"/>
-                5000 PLN
+                @user.Money
             </div>
         </li>
     </ul>

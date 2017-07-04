@@ -41,6 +41,7 @@ namespace Citizen.Controllers.Citizen
                 : message == StatusMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
                 : message == StatusMessageId.EatNoFoodAvailable ? "No food available."
                 : message == StatusMessageId.EatEnergyMax ? "Energy max."
+                : message == StatusMessageId.EatNoEnergyRestoreAvailable ? "No energy restore available."
                 : message == StatusMessageId.EatSuccess ? "Food eaten."
                 : message == StatusMessageId.Error ? "An error has occurred."
                 : "";
@@ -84,6 +85,11 @@ namespace Citizen.Controllers.Citizen
             if (userStorage.FoodAmount == 0)
             {
                 return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoFoodAvailable });
+            }
+
+            if (user.EnergyRestore == 0)
+            {
+                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoEnergyRestoreAvailable });
             }
 
             if (user.Energy == GameSettings.EnergyMax)
@@ -203,6 +209,7 @@ namespace Citizen.Controllers.Citizen
             ChangeCountryNotEnoughMoney,
             EatNoFoodAvailable,
             EatEnergyMax,
+            EatNoEnergyRestoreAvailable,
             EatSuccess,
             Error
         }
