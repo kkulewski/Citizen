@@ -161,6 +161,7 @@ namespace Citizen.Controllers.Citizen
             var model = new UserStorageViewModel
             {
                 Name = user.Name,
+                Energy = user.Energy,
                 Money = user.Money,
                 Country = userCountry,
                 Capacity = userStorage.Capacity,
