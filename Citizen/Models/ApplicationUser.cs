@@ -12,6 +12,8 @@ namespace Citizen.Models
     {
         public string Name { get; set; }
 
+        public int Experience { get; set; }
+
         public int Energy { get; set; }
 
         public int EnergyRestore { get; set; }

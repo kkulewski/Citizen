@@ -12,6 +12,9 @@ namespace Citizen.Models.CitizenViewModels
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name="Experience")]
+        public int Experience { get; set; }
+
         [Display(Name = "Energy")]
         public int Energy { get; set; }
 
