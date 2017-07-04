@@ -39,6 +39,8 @@ namespace Citizen.Controllers.Citizen
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangeCountrySuccess ? "Your country has been changed."
                 : message == ManageMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
+                : message == ManageMessageId.EatNoFoodAvailable ? "Food eaten."
+                : message == ManageMessageId.EatNoFoodAvailable ? "No food available."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
 
@@ -71,7 +73,7 @@ namespace Citizen.Controllers.Citizen
             food.EnergyRecoverAmount = 300;
             food.Name = "Food";
 
-            user.Consume(food);
+            user.Eat(food);
 
             await _dbContext.SaveChangesAsync();
 
@@ -79,13 +81,43 @@ namespace Citizen.Controllers.Citizen
         }
 
         [HttpGet]
-        public async Task<IActionResult> SubstractEnergyTest()
+        public async Task<IActionResult> SubstractEnergyTest(int amount)
         {
             var user = await GetCurrentUserAsync();
-            user.Energy -= 200;
+            user.Energy -= 20;
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Eat()
+        {
+            var user = await GetCurrentUserAsync();
+            var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
+
+            if (userStorage.FoodAmount == 0)
+            {
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatNoFoodAvailable });
+            }
+
+            if (user.Energy == GameSettings.MaxEnergy)
+            {
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatEnergyMax });
+            }
+
+            var food = new ConsumableItem
+            {
+                EnergyRecoverAmount = GameSettings.FoodEnergyRecover,
+                Amount = userStorage.FoodAmount
+            };
+
+            while (user.Eat(food)) { }
+
+            userStorage.FoodAmount = food.Amount;
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatSuccess });
         }
 
         //
@@ -186,6 +218,9 @@ namespace Citizen.Controllers.Citizen
         {
             ChangeCountrySuccess,
             ChangeCountryNotEnoughMoney,
+            EatNoFoodAvailable,
+            EatEnergyMax,
+            EatSuccess,
             Error
         }
 
