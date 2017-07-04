@@ -8,5 +8,7 @@ namespace Citizen.Models
         public static int MaxEnergy = 100;
 
         public static int FoodEnergyRecover = 10;
+
+        public static int EnergyRestoreEventTickAmount = 1;
     }
 }

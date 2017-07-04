@@ -25,13 +25,10 @@ namespace Citizen.Models
 
         public UserStorage UserStorage { get; set; }
 
-        private const int MaxEnergy = 1000;
-
         public void EnergyRestoreEvent(int ticks)
         {
-            var tickRestoreAmount = 1;
-            var amount = tickRestoreAmount * ticks;
-            EnergyRestore = Math.Min(EnergyRestore + amount, MaxEnergy);
+            var amount = GameSettings.EnergyRestoreEventTickAmount * ticks;
+            EnergyRestore = Math.Min(EnergyRestore + amount, GameSettings.MaxEnergy);
         }
 
         public bool Consume(ConsumableItem item)
@@ -64,7 +61,7 @@ namespace Citizen.Models
                 return false;
             }
 
-            if (amount + Energy > MaxEnergy)
+            if (amount + Energy > GameSettings.MaxEnergy)
             {
                 return false;
             }
