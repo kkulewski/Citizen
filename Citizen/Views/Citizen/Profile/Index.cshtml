@@ -1,6 +1,9 @@
 ﻿@model Citizen.Models.CitizenViewModels.ProfileViewModel
 @{
     ViewData["Title"] = "Your profile";
+
+    var energyPercent = (int) ((double) Model.Energy / Model.EnergyMax * 100);
+    var restorePercent = Math.Min(Model.EnergyMax - Model.Energy, Model.EnergyRestore);
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -17,10 +20,16 @@
     <dl class="dl-horizontal">
         <dt>Energy:</dt>
         <dd>
-            [ @Model.Energy / @Model.EnergyMax ] (@Model.EnergyRestore can be restored)
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" >
+                <div class="progress" style="margin: auto">
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width: @energyPercent%">@energyPercent</div>
+                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width: @restorePercent%">@restorePercent</div>
+                </div>
+            </div>
+            <a asp-controller="Profile" asp-action="Eat" class="label label-primary">Eat food</a>
         </dd>
         <dd>
-            <a asp-controller="Profile" asp-action="Eat" class="btn-bracketed">Eat</a>
+
         </dd>
     </dl>
     <dl class="dl-horizontal">
@@ -32,10 +41,10 @@
     <dl class="dl-horizontal">
         <dt>Country:</dt>
         <dd>
-            @Model.Country.Name
+            @Model.Country.Name 
         </dd>
         <dd>
-            <a asp-controller="Profile" asp-action="ChangeCountry" class="btn-bracketed">Change</a>
+            <a asp-controller="Profile" asp-action="ChangeCountry" class="label label-primary">Change</a>
         </dd>
     </dl>
 </div>
