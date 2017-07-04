@@ -17,7 +17,10 @@
     <dl class="dl-horizontal">
         <dt>Energy:</dt>
         <dd>
-            [ @Model.Energy / 1000 ] (@Model.EnergyRestore can be restored)
+            [ @Model.Energy / @Model.EnergyMax ] (@Model.EnergyRestore can be restored)
+        </dd>
+        <dd>
+            <a asp-controller="Profile" asp-action="Eat" class="btn-bracketed">Eat</a>
         </dd>
     </dl>
     <dl class="dl-horizontal">

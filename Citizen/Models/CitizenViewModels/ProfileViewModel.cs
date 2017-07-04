@@ -15,6 +15,9 @@ namespace Citizen.Models.CitizenViewModels
         [Display(Name = "Energy")]
         public int Energy { get; set; }
 
+        [Display(Name = "Energy max")]
+        public int EnergyMax { get; set; }
+
         [Display(Name = "Energy to restore")]
         public int EnergyRestore { get; set; }
 
