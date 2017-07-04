@@ -17,6 +17,7 @@
     <Content Include="wwwroot\images\Citizen.png" />
     <Content Include="wwwroot\images\Country.png" />
     <Content Include="wwwroot\images\Energy.png" />
+    <Content Include="wwwroot\images\Experience.png" />
     <Content Include="wwwroot\images\Food.png" />
     <Content Include="wwwroot\images\Grain.png" />
     <Content Include="wwwroot\images\Money.png" />
