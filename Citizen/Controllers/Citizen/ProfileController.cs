@@ -57,6 +57,7 @@ namespace Citizen.Controllers.Citizen
             {
                 Name = user.Name,
                 Energy = user.Energy,
+                EnergyMax = GameSettings.EnergyMax,
                 EnergyRestore = user.EnergyRestore,
                 Money = user.Money,
                 Country = userCountry
