@@ -37,8 +37,10 @@ namespace Citizen.Models
                 return false;
 
             var energyRestored = Math.Min(item.EnergyRecoverAmount, EnergyRestore);
+            var energyRestoreConsumed = Math.Min(GameSettings.MaxEnergy - Energy, item.EnergyRecoverAmount);
+
             Energy = Math.Min(Energy + energyRestored, GameSettings.MaxEnergy);
-            EnergyRestore -= energyRestored;
+            EnergyRestore = Math.Max(EnergyRestore - energyRestoreConsumed, 0);
             item.Amount -= 1;
 
             return true;
