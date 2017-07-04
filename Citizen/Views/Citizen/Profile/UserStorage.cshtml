@@ -19,12 +19,18 @@
 
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>Money:</dt>
-        <dd>
-            @Model.Money @Model.Country.CurrencyCode
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="well well-sm col-lg-6 col-lg-offset-3 text-center">
+            <div class="col-sm-6">
+                <img src="@Url.Content("~/images/Energy.png")" height="48" width="48" alt="energy"/>
+                @Model.Energy
+            </div>
+            <div class="col-sm-6">
+                <img src="@Url.Content("~/images/Money.png")" height="48" width="48" alt="money"/>
+                @Model.Money @Model.Country.CurrencyCode
+            </div>
+        </div>
+    </div>
     <hr />
     <div style="width: 100%; margin: auto">
         <div class="progress">
