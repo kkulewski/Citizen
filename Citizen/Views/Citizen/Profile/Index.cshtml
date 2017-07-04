@@ -12,15 +12,15 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Name:</dt>
+        <dt><img src="@Url.Content("~/images/Citizen.png")" height="32" width="32" alt="citizen" /></dt>
         <dd>
             @Model.Name
         </dd>
     </dl>
     <dl class="dl-horizontal">
-        <dt>Energy:</dt>
+        <dt><img src="@Url.Content("~/images/Energy.png")" height="32" width="32" alt="energy" /></dt>
         <dd>
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" >
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" style="margin-left: -2%">
                 <div class="progress" style="margin: auto">
                     <div class="progress-bar progress-bar-success" role="progressbar" style="width: @energyPercent%">@energyPercent</div>
                     <div class="progress-bar progress-bar-warning" role="progressbar" style="width: @restorePercent%">@restorePercent</div>
@@ -33,13 +33,13 @@
         </dd>
     </dl>
     <dl class="dl-horizontal">
-        <dt>Money:</dt>
+        <dt><img src="@Url.Content("~/images/Money.png")" height="32" width="32" alt="money" /></dt>
         <dd>
             @Model.Money @Model.Country.CurrencyCode
         </dd>
     </dl>
     <dl class="dl-horizontal">
-        <dt>Country:</dt>
+        <dt><img src="@Url.Content("~/images/Country.png")" height="32" width="32" alt="country" /></dt>
         <dd>
             @Model.Country.Name 
         </dd>
