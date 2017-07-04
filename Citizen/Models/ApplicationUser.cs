@@ -31,40 +31,29 @@ namespace Citizen.Models
             EnergyRestore = Math.Min(EnergyRestore + amount, GameSettings.MaxEnergy);
         }
 
-        public bool Consume(ConsumableItem item)
+        public bool Eat(ConsumableItem item)
         {
-            if (!RestoreEnergy(item.EnergyRecoverAmount))
-            {
+            if (!CanEat(item))
                 return false;
-            }
 
+            var energyRestored = Math.Min(item.EnergyRecoverAmount, EnergyRestore);
+            Energy = Math.Min(Energy + energyRestored, GameSettings.MaxEnergy);
+            EnergyRestore -= energyRestored;
             item.Amount -= 1;
+
             return true;
         }
 
-        public bool RestoreEnergy(int amount)
+        private bool CanEat(ConsumableItem item)
         {
-            if (!CanRestoreEnergyAmount(amount))
-            {
+            if (item.Amount <= 0)
                 return false;
-            }
 
-            Energy += amount;
-            EnergyRestore -= amount;
-            return true;
-        }
-
-        private bool CanRestoreEnergyAmount(int amount)
-        {
-            if (amount > EnergyRestore)
-            {
+            if (Energy == GameSettings.MaxEnergy)
                 return false;
-            }
 
-            if (amount + Energy > GameSettings.MaxEnergy)
-            {
+            if (EnergyRestore <= 0)
                 return false;
-            }
 
             return true;
         }
