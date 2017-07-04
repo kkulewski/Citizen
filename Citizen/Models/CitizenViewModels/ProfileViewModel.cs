@@ -13,11 +13,9 @@ namespace Citizen.Models.CitizenViewModels
         public string Name { get; set; }
 
         [Display(Name = "Energy")]
-        [Range(0, 1000)]
         public int Energy { get; set; }
 
         [Display(Name = "Energy to restore")]
-        [Range(0, 1000)]
         public int EnergyRestore { get; set; }
 
         [Display(Name = "Money")]
