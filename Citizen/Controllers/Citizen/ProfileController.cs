@@ -64,23 +64,6 @@ namespace Citizen.Controllers.Citizen
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConsumeTest()
-        {
-            var user = await GetCurrentUserAsync();
-
-            var food = new ConsumableItem();
-            food.Amount = 5;
-            food.EnergyRecoverAmount = 300;
-            food.Name = "Food";
-
-            user.Eat(food);
-
-            await _dbContext.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> SubstractEnergyTest(int amount)
         {
             var user = await GetCurrentUserAsync();
