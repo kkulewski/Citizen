@@ -34,14 +34,15 @@ namespace Citizen.Controllers.Citizen
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(StatusMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangeCountrySuccess ? "Your country has been changed."
-                : message == ManageMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
-                : message == ManageMessageId.EatNoFoodAvailable ? "Food eaten."
-                : message == ManageMessageId.EatNoFoodAvailable ? "No food available."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                message == StatusMessageId.ChangeCountrySuccess ? "Your country has been changed."
+                : message == StatusMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
+                : message == StatusMessageId.EatNoFoodAvailable ? "No food available."
+                : message == StatusMessageId.EatEnergyMax ? "Energy max."
+                : message == StatusMessageId.EatSuccess ? "Food eaten."
+                : message == StatusMessageId.Error ? "An error has occurred."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -70,7 +71,7 @@ namespace Citizen.Controllers.Citizen
             user.Energy -= 20;
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
         }
 
         [HttpGet]
@@ -81,12 +82,12 @@ namespace Citizen.Controllers.Citizen
 
             if (userStorage.FoodAmount == 0)
             {
-                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatNoFoodAvailable });
+                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoFoodAvailable });
             }
 
             if (user.Energy == GameSettings.EnergyMax)
             {
-                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatEnergyMax });
+                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatEnergyMax });
             }
 
             var food = new ConsumableItem
@@ -100,7 +101,7 @@ namespace Citizen.Controllers.Citizen
             userStorage.FoodAmount = food.Amount;
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.EatSuccess });
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatSuccess });
         }
 
         //
@@ -146,15 +147,15 @@ namespace Citizen.Controllers.Citizen
 
                 if (user.Money < model.CountryChangeCost)
                 {
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeCountryNotEnoughMoney });
+                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangeCountryNotEnoughMoney });
                 }
 
                 user.Money -= model.CountryChangeCost;
                 _dbContext.SaveChanges();
 
-                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeCountrySuccess });
+                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangeCountrySuccess });
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
         }
 
         //
@@ -195,7 +196,7 @@ namespace Citizen.Controllers.Citizen
             }
         }
 
-        public enum ManageMessageId
+        public enum StatusMessageId
         {
             ChangeCountrySuccess,
             ChangeCountryNotEnoughMoney,
