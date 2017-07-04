@@ -37,12 +37,12 @@ namespace Citizen.Controllers
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(StatusMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                message == StatusMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == StatusMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == StatusMessageId.Error ? "An error has occurred."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -87,12 +87,12 @@ namespace Citizen.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
         }
 
         //
@@ -121,12 +121,12 @@ namespace Citizen.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
+                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.SetPasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
         }
 
         #region Helpers
@@ -139,7 +139,7 @@ namespace Citizen.Controllers
             }
         }
 
-        public enum ManageMessageId
+        public enum StatusMessageId
         {
             ChangePasswordSuccess,
             SetPasswordSuccess,
