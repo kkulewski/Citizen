@@ -10,5 +10,7 @@ namespace Citizen.Models
         public static int FoodEnergyRecover = 10;
 
         public static int EnergyRestoreEventTickAmount = 1;
+
+        public static decimal CountryChangeCost = 5.00M;
     }
 }

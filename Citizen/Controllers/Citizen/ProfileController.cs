@@ -117,16 +117,14 @@ namespace Citizen.Controllers.Citizen
             var countryList = _dbContext.Country.ToList();
             var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
 
-            decimal countryChangeCost = 5.00M;
-
             var model = new ChangeCountryViewModel()
             {
                 Money = user.Money,
                 CountryId = userCountry.Id,
                 CountryList = countryList,
                 Country = user.Country,
-                CountryChangeCost = countryChangeCost
-            };
+                CountryChangeCost = GameSettings.CountryChangeCost
+        };
 
             return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
         }
