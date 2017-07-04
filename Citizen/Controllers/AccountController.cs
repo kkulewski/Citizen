@@ -139,9 +139,9 @@ namespace Citizen.Controllers
                     var userStorage = new UserStorage
                     {
                         ApplicationUserId = user.Id,
-                        Capacity = 1000,
-                        FoodAmount = 0,
-                        GrainAmount = 0
+                        Capacity = GameSettings.DefaultStorageCapacity,
+                        FoodAmount = GameSettings.DefaultFoodAmount,
+                        GrainAmount = GameSettings.DefaultGrainAmount
                     };
 
                     user.UserStorage = userStorage;
