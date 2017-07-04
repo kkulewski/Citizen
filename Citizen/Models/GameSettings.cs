@@ -13,6 +13,8 @@ namespace Citizen.Models
 
         public static decimal CountryChangeCost = 5.00M;
 
+        public static decimal DefaultMoney = 100.00M;
+
         public static int DefaultStorageCapacity = 1000;
 
         public static int DefaultFoodAmount = 5;

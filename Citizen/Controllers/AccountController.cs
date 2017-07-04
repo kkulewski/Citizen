@@ -108,19 +108,15 @@ namespace Citizen.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var defaultMoney = 100.00M;
-                var defaultEnergy = 1000;
-                var defaultEnergyRestore = 500;
-
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
                     Email = model.Email,
                     Name = model.Name,
                     CountryId = model.CountryId,
-                    Money = defaultMoney,
-                    Energy = defaultEnergy,
-                    EnergyRestore = defaultEnergyRestore
+                    Money = GameSettings.DefaultMoney,
+                    Energy = GameSettings.EnergyMax,
+                    EnergyRestore = GameSettings.EnergyMax
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
