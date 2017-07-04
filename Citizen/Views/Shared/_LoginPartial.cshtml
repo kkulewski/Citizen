@@ -6,6 +6,16 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    <ul class="nav navbar-nav navbar-form">
+        <li>
+            <div class="form-group panel panel panel-danger text-center" style="padding-right: 10px">
+                <img src="@Url.Content("~/images/Energy.png")" height="32" width="32" alt="energy"/>
+                1000
+                <img src="@Url.Content("~/images/Money.png")" height="32" width="32" alt="money"/>
+                5000 PLN
+            </div>
+        </li>
+    </ul>
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
