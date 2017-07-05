@@ -27,10 +27,13 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace
-        public async Task<IActionResult> Offers(ItemType? itemType)
+        public async Task<IActionResult> Offers(ItemType id)
         {
-            //var applicationDbContext = _context.MarketplaceOffers.Include(m => m.ApplicationUser && m.ItemType == itemType);
-            var offers = _context.MarketplaceOffers.Where(offer => offer.ItemType == itemType);
+            var offers = _context.MarketplaceOffers
+                .Where(offer => offer.ItemType == id)
+                .OrderBy(offer => offer.Price)
+                .Include(m => m.ApplicationUser);
+
             return View("~/Views/Marketplace/Index.cshtml", await offers.ToListAsync());
         }
 
