@@ -144,6 +144,30 @@ namespace Citizen.Controllers.Marketplace
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Marketplace/EditOffer/5
+        public async Task<IActionResult> EditOffer(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == id);
+            if (marketplaceOffer == null)
+            {
+                return NotFound();
+            }
+
+            var editMarketplaceOfferViewModel = new EditMarketplaceOfferViewModel()
+            {
+                ItemType = marketplaceOffer.ItemType,
+                Amount = marketplaceOffer.Amount,
+                Price = marketplaceOffer.Price
+            };
+
+            return View(editMarketplaceOfferViewModel);
+        }
+
         // GET: Marketplace/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
