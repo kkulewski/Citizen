@@ -149,6 +149,7 @@ namespace Citizen.Controllers.Marketplace
 
             var userItems = _context.Items.Where(it => it.ApplicationUserId == user.Id);
             var userItem = userItems.First(i => i.ItemType == model.ItemType);
+            var userMarketPlaceholder = userItems.First(i => i.ItemType == ItemType.MarketPlaceholder);
 
             // amount invalid
             if (model.Amount <= 0)
@@ -171,6 +172,7 @@ namespace Citizen.Controllers.Marketplace
             // remove specified amount from user, add to market offer
             // TODO: add storage placeholder to avoid item overstorage in market
             userItem.Amount -= model.Amount;
+            userMarketPlaceholder.Amount += model.Amount;
 
             var offer = new MarketplaceOffer
             {
