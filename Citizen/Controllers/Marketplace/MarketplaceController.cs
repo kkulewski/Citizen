@@ -7,34 +7,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Citizen.Data;
 using Citizen.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Citizen.Controllers.Marketplace
 {
     public class MarketplaceController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MarketplaceController(ApplicationDbContext context)
+        public MarketplaceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;    
+            _context = context;
+            _userManager = userManager;
         }
 
         // GET: Marketplace
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MarketplaceOffers.Include(m => m.ApplicationUser);
-            return View(await applicationDbContext.ToListAsync());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var offers = _context.MarketplaceOffers
+                .Where(offer => offer.ApplicationUser.Id == user.Id)
+                .OrderBy(offer => offer.Price)
+                .Include(m => m.ApplicationUser);
+            
+            return View("~/Views/Marketplace/Index.cshtml", await offers.ToListAsync());
         }
 
         // GET: Marketplace
         public async Task<IActionResult> Offers(ItemType id)
         {
+            var user = _userManager.GetUserAsync(HttpContext.User);
+            ViewData["ApplicationUser"] = user;
+
             var offers = _context.MarketplaceOffers
                 .Where(offer => offer.ItemType == id)
                 .OrderBy(offer => offer.Price)
                 .Include(m => m.ApplicationUser);
 
-            return View("~/Views/Marketplace/Index.cshtml", await offers.ToListAsync());
+            return View("~/Views/Marketplace/Offers.cshtml", await offers.ToListAsync());
         }
 
         // GET: Marketplace/Details/5
