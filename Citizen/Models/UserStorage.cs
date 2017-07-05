@@ -19,10 +19,12 @@ namespace Citizen.Models
 
         public int Capacity { get; set; }
 
-        public int CapacityUsed => GrainAmount + FoodAmount;
+        public int CapacityUsed()
+        {
+            var food = ApplicationUser.Items.First(c => c.ItemType == ItemType.Food).Amount;
+            var grain = ApplicationUser.Items.First(c => c.ItemType == ItemType.Grain).Amount;
 
-        public int GrainAmount { get; set; }
-
-        public int FoodAmount { get; set; }
+            return food + grain;
+        }
     }
 }

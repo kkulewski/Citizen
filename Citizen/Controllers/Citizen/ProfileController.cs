@@ -80,7 +80,6 @@ namespace Citizen.Controllers.Citizen
         public async Task<IActionResult> Eat()
         {
             var user = await GetCurrentUserAsync();
-            var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
 
             var foodItem = user.Items.First(c => c.ItemType == ItemType.Food);
 
@@ -188,9 +187,9 @@ namespace Citizen.Controllers.Citizen
                 Money = user.Money,
                 Country = userCountry,
                 Capacity = userStorage.Capacity,
-                CapacityUsed =  userStorage.CapacityUsed,
-                Food = userStorage.FoodAmount,
-                Grain = userStorage.GrainAmount
+                CapacityUsed =  userStorage.CapacityUsed(),
+                Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
+                Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
             };
             return View("~/Views/Citizen/Profile/UserStorage.cshtml", model);
         }
