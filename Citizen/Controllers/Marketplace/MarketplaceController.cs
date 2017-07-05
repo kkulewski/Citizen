@@ -58,58 +58,6 @@ namespace Citizen.Controllers.Marketplace
             return View("~/Views/Marketplace/Offers.cshtml", await offers.ToListAsync());
         }
 
-        // GET: Marketplace/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var marketplaceOffer = await _context.MarketplaceOffers
-                .Include(m => m.ApplicationUser)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (marketplaceOffer == null)
-            {
-                return NotFound();
-            }
-
-            return View(marketplaceOffer);
-        }
-
-        // GET: Marketplace/Create
-        public IActionResult Create()
-        {
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Name");
-
-            IEnumerable<ItemType> itemTypes = new List<ItemType>()
-            {
-                ItemType.Food,
-                ItemType.Grain
-            };
-
-            ViewData["ItemType"] = new SelectList(itemTypes);
-
-            return View();
-        }
-
-        // POST: Marketplace/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ApplicationUserId,ItemType,Amount,Price")] MarketplaceOffer marketplaceOffer)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(marketplaceOffer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", marketplaceOffer.ApplicationUserId);
-            return View(marketplaceOffer);
-        }
-
         // GET: Marketplace/AddOffer
         public IActionResult AddOffer(StatusMessageId? message = null)
         {
@@ -243,59 +191,6 @@ namespace Citizen.Controllers.Marketplace
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EditOfferSuccess });
-        }
-
-        // GET: Marketplace/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == id);
-            if (marketplaceOffer == null)
-            {
-                return NotFound();
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", marketplaceOffer.ApplicationUserId);
-            return View(marketplaceOffer);
-        }
-
-        // POST: Marketplace/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ApplicationUserId,ItemType,Amount,Price")] MarketplaceOffer marketplaceOffer)
-        {
-            if (id != marketplaceOffer.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(marketplaceOffer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MarketplaceOfferExists(marketplaceOffer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
-            }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", marketplaceOffer.ApplicationUserId);
-            return View(marketplaceOffer);
         }
 
         // GET: Marketplace/Delete/5
