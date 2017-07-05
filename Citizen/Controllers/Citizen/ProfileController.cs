@@ -82,7 +82,9 @@ namespace Citizen.Controllers.Citizen
             var user = await GetCurrentUserAsync();
             var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
 
-            if (userStorage.FoodAmount == 0)
+            var foodItem = user.Items.First(c => c.ItemType == ItemType.Food);
+
+            if (foodItem.Amount == 0)
             {
                 return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoFoodAvailable });
             }
@@ -100,12 +102,12 @@ namespace Citizen.Controllers.Citizen
             var food = new ConsumableItem
             {
                 EnergyRestoreAmount = GameSettings.FoodEnergyRestore,
-                Amount = userStorage.FoodAmount
+                Amount = foodItem.Amount
             };
 
             while (user.Eat(food)) { }
 
-            userStorage.FoodAmount = food.Amount;
+            foodItem.Amount = food.Amount;
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatSuccess });
