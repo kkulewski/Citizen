@@ -26,8 +26,14 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(StatusMessageId? message = null)
         {
+            ViewData["StatusMessage"] =
+                  message == StatusMessageId.AddOfferSuccess ? "Offer added succesfully."
+                : message == StatusMessageId.EditOfferSuccess ? "Offer updated succesfully."
+                : "";
+
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             var offers = _context.MarketplaceOffers
@@ -105,8 +111,15 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/AddOffer
-        public IActionResult AddOffer()
+        public IActionResult AddOffer(StatusMessageId? message = null)
         {
+            ViewData["StatusMessage"] =
+                  message == StatusMessageId.AddOfferAmountInvalid ? "Error - invalid amount."
+                : message == StatusMessageId.AddOfferPriceInvalid ? "Error - invalid price."
+                : message == StatusMessageId.AddOfferAmountNotAvailable ? "Error - amount not available."
+                : message == StatusMessageId.Error ? "Error."
+                : "";
+
             IEnumerable<ItemType> itemTypes = new List<ItemType>()
             {
                 ItemType.Food,
@@ -129,10 +142,36 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return View("~/Views/Marketplace/AddOffer.cshtml", model);
+                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.Error });
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var userItems = _context.Items.Where(it => it.ApplicationUserId == user.Id);
+            var userItem = userItems.First(i => i.ItemType == model.ItemType);
+
+            // amount invalid
+            if (model.Amount <= 0)
+            {
+                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferAmountInvalid });
+            }
+
+            // amount not available
+            if (model.Amount > userItem.Amount)
+            {
+                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferAmountNotAvailable });
+            }
+
+            // price is invalid
+            if (model.Price <= 0.00M)
+            {
+                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferPriceInvalid });
+            }
+
+            // remove specified amount from user, add to market offer
+            // TODO: add storage placeholder to avoid item overstorage in market
+            userItem.Amount -= model.Amount;
+
             var offer = new MarketplaceOffer
             {
                 ApplicationUserId = user.Id,
@@ -143,12 +182,16 @@ namespace Citizen.Controllers.Marketplace
             user.MarketplaceOffers.Add(offer);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.AddOfferSuccess });
         }
 
         // GET: Marketplace/EditOffer/5
-        public async Task<IActionResult> EditOffer(int? id)
+        public async Task<IActionResult> EditOffer(int? id, StatusMessageId? message = null)
         {
+            ViewData["StatusMessage"] =
+                message == StatusMessageId.AddOfferSuccess ? "Offer added succesfully."
+                    : "";
+
             if (id == null)
             {
                 return NotFound();
@@ -179,10 +222,13 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return View("~/Views/Marketplace/EditOffer.cshtml", model);
+                return RedirectToAction(nameof(EditOffer), new { Message = StatusMessageId.Error });
             }
 
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (model.Price <= 0.00M)
+            {
+                return RedirectToAction(nameof(EditOffer), new { Message = StatusMessageId.EditOfferPriceInvalid });
+            }
 
             var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == model.Id);
             if (marketplaceOffer == null)
@@ -194,7 +240,7 @@ namespace Citizen.Controllers.Marketplace
             marketplaceOffer.Price = newPrice;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EditOfferSuccess });
         }
 
         // GET: Marketplace/Edit/5
@@ -283,6 +329,17 @@ namespace Citizen.Controllers.Marketplace
         private bool MarketplaceOfferExists(int id)
         {
             return _context.MarketplaceOffers.Any(e => e.Id == id);
+        }
+        
+        public enum StatusMessageId
+        {
+            AddOfferSuccess,
+            AddOfferPriceInvalid,
+            AddOfferAmountInvalid,
+            AddOfferAmountNotAvailable,
+            EditOfferSuccess,
+            EditOfferPriceInvalid,
+            Error
         }
     }
 }
