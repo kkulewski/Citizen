@@ -119,6 +119,31 @@ namespace Citizen.Controllers.Marketplace
             return View(addMarketplaceOfferViewModel);
         }
 
+        //
+        // POST: /Marketplace/AddOffer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOffer(AddMarketplaceOfferViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/Marketplace/AddOffer.cshtml", model);
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var offer = new MarketplaceOffer
+            {
+                ApplicationUserId = user.Id,
+                ItemType = model.ItemType,
+                Amount = model.Amount,
+                Price = model.Price
+            };
+            user.MarketplaceOffers.Add(offer);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Marketplace/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
