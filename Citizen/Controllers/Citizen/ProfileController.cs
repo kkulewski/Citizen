@@ -80,8 +80,8 @@ namespace Citizen.Controllers.Citizen
         public async Task<IActionResult> Eat()
         {
             var user = await GetCurrentUserAsync();
-
-            var foodItem = user.Items.First(c => c.ItemType == ItemType.Food);
+            var userItems = _dbContext.Items.Where(u => u.ApplicationUserId == user.Id);
+            var foodItem = userItems.First(c => c.ItemType == ItemType.Food);
 
             if (foodItem.Amount == 0)
             {
