@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -108,6 +109,7 @@ namespace Citizen.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -133,12 +135,31 @@ namespace Citizen.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
 
+                    var userItems = new Collection<Item>
+                    {
+                        new Item
+                        {
+                            ApplicationUser = user,
+                            ApplicationUserId = user.Id,
+                            ItemType = ItemType.Food,
+                            Amount = GameSettings.DefaultFoodAmount
+                        },
+
+                        new Item
+                        {
+                            ApplicationUser = user,
+                            ApplicationUserId = user.Id,
+                            ItemType = ItemType.Grain,
+                            Amount = GameSettings.DefaultGrainAmount
+                        }
+                    };
+
+                    user.Items = userItems;
+
                     var userStorage = new UserStorage
                     {
                         ApplicationUserId = user.Id,
-                        Capacity = GameSettings.DefaultStorageCapacity,
-                        FoodAmount = GameSettings.DefaultFoodAmount,
-                        GrainAmount = GameSettings.DefaultGrainAmount
+                        Capacity = GameSettings.DefaultStorageCapacity
                     };
 
                     user.UserStorage = userStorage;
