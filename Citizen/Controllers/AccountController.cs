@@ -141,6 +141,14 @@ namespace Citizen.Controllers
                         {
                             ApplicationUser = user,
                             ApplicationUserId = user.Id,
+                            ItemType = ItemType.MarketPlaceholder,
+                            Amount = GameSettings.DefaultMarketPlaceholderAmount
+                        },
+
+                        new Item
+                        {
+                            ApplicationUser = user,
+                            ApplicationUserId = user.Id,
                             ItemType = ItemType.Food,
                             Amount = GameSettings.DefaultFoodAmount
                         },

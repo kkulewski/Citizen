@@ -182,7 +182,7 @@ namespace Citizen.Controllers.Citizen
             var userItems = _dbContext.Items.Where(it => it.ApplicationUserId == user.Id);
 
             int capacityUsed = 0;
-            foreach (Item item in userItems)
+            foreach (var item in userItems)
             {
                 capacityUsed += item.Amount;
             }
@@ -195,6 +195,7 @@ namespace Citizen.Controllers.Citizen
                 Country = userCountry,
                 Capacity = userStorage.Capacity,
                 CapacityUsed =  capacityUsed,
+                MarketPlaceholder = userItems.First(c => c.ItemType == ItemType.MarketPlaceholder).Amount,
                 Food = userItems.First(c => c.ItemType == ItemType.Food).Amount,
                 Grain = userItems.First(c => c.ItemType == ItemType.Grain).Amount
             };

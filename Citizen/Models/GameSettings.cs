@@ -22,5 +22,7 @@ namespace Citizen.Models
         public static int DefaultFoodAmount = 5;
 
         public static int DefaultGrainAmount = 0;
+
+        public static int DefaultMarketPlaceholderAmount = 0;
     }
 }

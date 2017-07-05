@@ -27,6 +27,9 @@ namespace Citizen.Models.CitizenViewModels
         [Display(Name = "Capacity used")]
         public int CapacityUsed { get; set; }
 
+        [Display(Name = "Market placeholder")]
+        public int MarketPlaceholder { get; set; }
+
         [Display(Name = "Food")]
         public int Food { get; set; }
 
