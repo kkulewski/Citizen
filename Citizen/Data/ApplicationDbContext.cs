@@ -21,6 +21,8 @@ namespace Citizen.Data
         public DbSet<UserStorage> UserStorage { get; set; }
         [NotMapped]
         public DbSet<MarketplaceOffer> MarketplaceOffers { get; set; }
+        [NotMapped]
+        public DbSet<Item> Items { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
