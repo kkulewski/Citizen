@@ -5,11 +5,13 @@
 }
 
 <h2>Delete</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
 
 <h3>Are you sure you want to delete this offer?</h3>
 <div>
     <hr />
     <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.ItemType)

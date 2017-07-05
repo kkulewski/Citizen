@@ -31,6 +31,7 @@ namespace Citizen.Controllers.Marketplace
             ViewData["StatusMessage"] =
                   message == StatusMessageId.AddOfferSuccess ? "Offer added succesfully."
                 : message == StatusMessageId.EditOfferSuccess ? "Offer updated succesfully."
+                : message == StatusMessageId.DeleteOfferSuccess ? "Offer deleted succesfully."
                 : "";
 
 
@@ -139,7 +140,8 @@ namespace Citizen.Controllers.Marketplace
         public async Task<IActionResult> EditOffer(int? id, StatusMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == StatusMessageId.AddOfferSuccess ? "Offer added succesfully."
+                      message == StatusMessageId.EditOfferPriceInvalid ? "Error - price invalid."
+                    : message == StatusMessageId.Error ? "Error."
                     : "";
 
             if (id == null)
@@ -221,19 +223,25 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // POST: Marketplace/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(DeleteMarketplaceOfferViewModel model)
         {
-            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == id);
-            _context.MarketplaceOffers.Remove(marketplaceOffer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
-        private bool MarketplaceOfferExists(int id)
-        {
-            return _context.MarketplaceOffers.Any(e => e.Id == id);
+            var userItems = _context.Items.Where(it => it.ApplicationUserId == user.Id);
+            var userItem = userItems.First(i => i.ItemType == model.ItemType);
+            var userMarketPlaceholder = userItems.First(i => i.ItemType == ItemType.MarketPlaceholder);
+
+            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == model.Id);
+
+            userItem.Amount += marketplaceOffer.Amount;
+            userMarketPlaceholder.Amount -= marketplaceOffer.Amount;
+
+            _context.MarketplaceOffers.Remove(marketplaceOffer);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.DeleteOfferSuccess });
         }
         
         public enum StatusMessageId
@@ -244,6 +252,7 @@ namespace Citizen.Controllers.Marketplace
             AddOfferAmountNotAvailable,
             EditOfferSuccess,
             EditOfferPriceInvalid,
+            DeleteOfferSuccess,
             Error
         }
     }
