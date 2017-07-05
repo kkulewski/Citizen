@@ -10,6 +10,11 @@ namespace Citizen.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+            this.MarketplaceOffers = new HashSet<MarketplaceOffer>();
+        }
+
         public string Name { get; set; }
 
         public int Experience { get; set; }
@@ -26,6 +31,8 @@ namespace Citizen.Models
         public Country Country { get; set; }
 
         public UserStorage UserStorage { get; set; }
+
+        public virtual ICollection<MarketplaceOffer> MarketplaceOffers { get; set; }
 
         public void EnergyRestoreEvent(int ticks)
         {
