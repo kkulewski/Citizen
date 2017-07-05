@@ -20,7 +20,7 @@
         <div class="form-group">
             <label asp-for="ItemType" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="ItemType" class="form-control"></select>
+                <select asp-for="ItemType" class="form-control" asp-items="ViewBag.ItemType"></select>
                 <span asp-validation-for="ItemType" class="text-danger"></span>
             </div>
         </div>

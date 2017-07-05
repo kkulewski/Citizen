@@ -26,6 +26,14 @@ namespace Citizen.Controllers.Marketplace
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: Marketplace
+        public async Task<IActionResult> Offers(ItemType? itemType)
+        {
+            //var applicationDbContext = _context.MarketplaceOffers.Include(m => m.ApplicationUser && m.ItemType == itemType);
+            var offers = _context.MarketplaceOffers.Where(offer => offer.ItemType == itemType);
+            return View("~/Views/Marketplace/Index.cshtml", await offers.ToListAsync());
+        }
+
         // GET: Marketplace/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,7 +56,16 @@ namespace Citizen.Controllers.Marketplace
         // GET: Marketplace/Create
         public IActionResult Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Name");
+
+            IEnumerable<ItemType> itemTypes = new List<ItemType>()
+            {
+                ItemType.Food,
+                ItemType.Grain
+            };
+
+            ViewData["ItemType"] = new SelectList(itemTypes);
+
             return View();
         }
 
