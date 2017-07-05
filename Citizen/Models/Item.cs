@@ -13,7 +13,7 @@ namespace Citizen.Models
         public int Id { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        public int ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 
