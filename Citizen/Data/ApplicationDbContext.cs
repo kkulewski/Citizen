@@ -19,6 +19,8 @@ namespace Citizen.Data
         public DbSet<TimeEvent> TimeEvents { get; set; }
         [NotMapped]
         public DbSet<UserStorage> UserStorage { get; set; }
+        [NotMapped]
+        public DbSet<MarketplaceOffer> MarketplaceOffers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
