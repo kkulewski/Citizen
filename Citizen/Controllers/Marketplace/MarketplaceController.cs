@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Citizen.Data;
 using Citizen.Models;
+using Citizen.Models.MarketplaceViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace Citizen.Controllers.Marketplace
@@ -99,6 +100,23 @@ namespace Citizen.Controllers.Marketplace
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", marketplaceOffer.ApplicationUserId);
             return View(marketplaceOffer);
+        }
+
+        // GET: Marketplace/AddOffer
+        public IActionResult AddOffer()
+        {
+            IEnumerable<ItemType> itemTypes = new List<ItemType>()
+            {
+                ItemType.Food,
+                ItemType.Grain
+            };
+
+            var addMarketplaceOfferViewModel = new AddMarketplaceOfferViewModel()
+            {
+                ItemTypes = itemTypes
+            };
+
+            return View(addMarketplaceOfferViewModel);
         }
 
         // GET: Marketplace/Edit/5

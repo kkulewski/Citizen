@@ -1,0 +1,49 @@
+@model Citizen.Models.MarketplaceViewModels.AddMarketplaceOfferViewModel
+
+@{
+    ViewData["Title"] = "Add offer";
+}
+
+<h2>Add offer</h2>
+
+<form asp-controller="Marketplace" asp-action="AddOffer" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>Add new offer.</h4>
+    <hr />
+    <div class="form-group">
+        <label asp-for="ItemType" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select class="form-control" asp-for="ItemType"
+                    asp-items="@(new SelectList(@Model.ItemTypes))"></select>
+            <span asp-validation-for="ItemType" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Amount" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Price" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Add offer</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
