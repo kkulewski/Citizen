@@ -13,6 +13,7 @@ namespace Citizen.Models
         public ApplicationUser()
         {
             this.MarketplaceOffers = new HashSet<MarketplaceOffer>();
+            this.Items = new HashSet<Item>();
         }
 
         public string Name { get; set; }
@@ -31,6 +32,8 @@ namespace Citizen.Models
         public Country Country { get; set; }
 
         public UserStorage UserStorage { get; set; }
+
+        public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<MarketplaceOffer> MarketplaceOffers { get; set; }
 
