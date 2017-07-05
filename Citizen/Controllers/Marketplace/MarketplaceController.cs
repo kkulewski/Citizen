@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Citizen.Data;
 using Citizen.Models;
 using Citizen.Models.MarketplaceViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Citizen.Controllers.Marketplace
 {
+    [Authorize]
     public class MarketplaceController : Controller
     {
         private readonly ApplicationDbContext _context;
