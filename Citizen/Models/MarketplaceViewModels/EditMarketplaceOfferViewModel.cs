@@ -9,6 +9,8 @@ namespace Citizen.Models.MarketplaceViewModels
 {
     public class EditMarketplaceOfferViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         public ItemType ItemType { get; set; }
 

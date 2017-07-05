@@ -162,12 +162,39 @@ namespace Citizen.Controllers.Marketplace
 
             var editMarketplaceOfferViewModel = new EditMarketplaceOfferViewModel()
             {
+                Id = marketplaceOffer.Id,
                 ItemType = marketplaceOffer.ItemType,
                 Amount = marketplaceOffer.Amount,
                 Price = marketplaceOffer.Price
             };
 
             return View(editMarketplaceOfferViewModel);
+        }
+
+        //
+        // POST: /Marketplace/EditOffer/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditOffer(EditMarketplaceOfferViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/Marketplace/EditOffer.cshtml", model);
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == model.Id);
+            if (marketplaceOffer == null)
+            {
+                return NotFound();
+            }
+
+            var newPrice = model.Price;
+            marketplaceOffer.Price = newPrice;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Marketplace/Edit/5
