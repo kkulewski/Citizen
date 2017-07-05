@@ -209,7 +209,15 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
 
-            return View(marketplaceOffer);
+            var deleteMarketplaceOfferViewModel = new DeleteMarketplaceOfferViewModel()
+            {
+                Id = marketplaceOffer.Id,
+                ItemType = marketplaceOffer.ItemType,
+                Amount = marketplaceOffer.Amount,
+                Price = marketplaceOffer.Price
+            };
+
+            return View(deleteMarketplaceOfferViewModel);
         }
 
         // POST: Marketplace/Delete/5
