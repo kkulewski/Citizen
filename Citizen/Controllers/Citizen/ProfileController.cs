@@ -179,6 +179,13 @@ namespace Citizen.Controllers.Citizen
 
             var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
             var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
+            var userItems = _dbContext.Items.Where(it => it.ApplicationUserId == user.Id);
+
+            int capacityUsed = 0;
+            foreach (Item item in userItems)
+            {
+                capacityUsed += item.Amount;
+            }
 
             var model = new UserStorageViewModel
             {
@@ -187,9 +194,9 @@ namespace Citizen.Controllers.Citizen
                 Money = user.Money,
                 Country = userCountry,
                 Capacity = userStorage.Capacity,
-                CapacityUsed =  userStorage.CapacityUsed(),
-                Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
-                Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
+                CapacityUsed =  capacityUsed,
+                Food = userItems.First(c => c.ItemType == ItemType.Food).Amount,
+                Grain = userItems.First(c => c.ItemType == ItemType.Grain).Amount
             };
             return View("~/Views/Citizen/Profile/UserStorage.cshtml", model);
         }
