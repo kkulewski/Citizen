@@ -8,5 +8,7 @@ namespace Citizen.DAL
     public interface IRepository
     {
         IApplicationUserRepo ApplicationUserRepo();
+
+        Task<int> SaveChangesAsync();
     }
 }

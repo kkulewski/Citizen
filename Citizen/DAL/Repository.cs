@@ -20,5 +20,10 @@ namespace Citizen.DAL
         }
 
         public IApplicationUserRepo ApplicationUserRepo() => _applicationUserRepo;
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }
