@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Citizen.DAL
 {
-    public interface IApplicationUserRepo
+    public interface IApplicationUserService
     {
         IQueryable<ApplicationUser> GetApplicationUsers();
 

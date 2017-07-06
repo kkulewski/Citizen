@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Citizen.DAL
 {
-    public class ApplicationUserRepo : IApplicationUserRepo
+    public class ApplicationUserService : IApplicationUserService
     {
         private ApplicationDbContext _dbContext;
 
-        public ApplicationUserRepo(ApplicationDbContext dbContext)
+        public ApplicationUserService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

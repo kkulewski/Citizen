@@ -9,17 +9,16 @@ namespace Citizen.DAL
     public class Repository : IRepository
     {
         private ApplicationDbContext _dbContext;
-        private IApplicationUserRepo _applicationUserRepo;
+        private IApplicationUserService _applicationUserService;
 
         public Repository(
-            ApplicationDbContext dbContext,
-            IApplicationUserRepo applicationUserRepo)
+            ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _applicationUserRepo = applicationUserRepo;
+            _applicationUserService = new ApplicationUserService(dbContext);
         }
 
-        public IApplicationUserRepo ApplicationUserRepo() => _applicationUserRepo;
+        public IApplicationUserService ApplicationUserService() => _applicationUserService;
 
         public async Task<int> SaveChangesAsync()
         {

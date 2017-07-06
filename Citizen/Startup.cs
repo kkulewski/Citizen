@@ -55,7 +55,6 @@ namespace Citizen
             services.AddTransient<IEmailSender, AuthMessageSender>();
 
             // Repository DI
-            services.AddTransient<IApplicationUserRepo, ApplicationUserRepo>();
             services.AddTransient<IRepository, Repository>();
         }
 
