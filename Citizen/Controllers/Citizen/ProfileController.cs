@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.CitizenViewModels;
 using Citizen.Services;
+using Citizen.DAL;
 
 namespace Citizen.Controllers.Citizen
 {
@@ -20,15 +21,18 @@ namespace Citizen.Controllers.Citizen
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IRepository _repo;
 
         public ProfileController(
           UserManager<ApplicationUser> userManager,
           ILoggerFactory loggerFactory,
-          ApplicationDbContext dbContext)
+          ApplicationDbContext dbContext,
+          IRepository repository)
         {
             _userManager = userManager;
             _logger = loggerFactory.CreateLogger<ProfileController>();
             _dbContext = dbContext;
+            _repo = repository;
         }
 
         //
