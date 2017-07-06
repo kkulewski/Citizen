@@ -8,7 +8,7 @@ namespace Citizen.DAL
 {
     public interface IApplicationUserRepo
     {
-        IEnumerable<ApplicationUser> GetApplicationUsers();
+        IQueryable<ApplicationUser> GetApplicationUsers();
 
         ApplicationUser GetApplicationUserById(string id);
     }

@@ -18,7 +18,7 @@ namespace Citizen.DAL
             _dbContext = dbContext;
         }
 
-        public IEnumerable<ApplicationUser> GetApplicationUsers()
+        public IQueryable<ApplicationUser> GetApplicationUsers()
         {
             return _dbContext.ApplicationUsers
                 .Include(p => p.Items)
