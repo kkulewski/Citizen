@@ -175,18 +175,16 @@ namespace Citizen.Controllers.Citizen
         [HttpGet]
         public async Task<IActionResult> Storage()
         {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
+            var identityUser = await GetCurrentUserAsync();
+            if (identityUser == null)
             {
                 return View("Error");
             }
 
-            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
-            var userStorage = _dbContext.UserStorage.First(storage => storage.ApplicationUserId == user.Id);
-            var userItems = _dbContext.Items.Where(it => it.ApplicationUserId == user.Id);
+            var user = _repo.ApplicationUserRepo().GetApplicationUserById(identityUser.Id);
 
             int capacityUsed = 0;
-            foreach (var item in userItems)
+            foreach (var item in user.Items)
             {
                 capacityUsed += item.Amount;
             }
@@ -196,12 +194,12 @@ namespace Citizen.Controllers.Citizen
                 Name = user.Name,
                 Energy = user.Energy,
                 Money = user.Money,
-                Country = userCountry,
-                Capacity = userStorage.Capacity,
+                Country = user.Country,
+                Capacity = user.UserStorage.Capacity,
                 CapacityUsed =  capacityUsed,
-                MarketPlaceholder = userItems.First(c => c.ItemType == ItemType.MarketPlaceholder).Amount,
-                Food = userItems.First(c => c.ItemType == ItemType.Food).Amount,
-                Grain = userItems.First(c => c.ItemType == ItemType.Grain).Amount
+                MarketPlaceholder = user.Items.First(c => c.ItemType == ItemType.MarketPlaceholder).Amount,
+                Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
+                Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
             };
             return View("~/Views/Citizen/Profile/UserStorage.cshtml", model);
         }
