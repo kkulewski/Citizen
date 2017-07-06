@@ -56,6 +56,7 @@ namespace Citizen
 
             // Repository DI
             services.AddTransient<IApplicationUserRepo, ApplicationUserRepo>();
+            services.AddTransient<IRepository, Repository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
