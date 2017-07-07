@@ -64,16 +64,6 @@ namespace Citizen.Controllers.Citizen
         }
 
         [HttpGet]
-        public async Task<IActionResult> SubstractEnergyTest(int amount)
-        {
-            var user = await GetCurrentUserAsync();
-            user.Energy -= 20;
-            await _repo.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Eat()
         {
             var user = await GetCurrentUserAsync();
