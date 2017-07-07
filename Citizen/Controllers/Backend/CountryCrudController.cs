@@ -64,8 +64,10 @@ namespace Citizen.Controllers.Backend
         }
 
         // GET: Country/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string message = null)
         {
+            ViewData["StatusMessage"] = message;
+
             if (id == null)
             {
                 return NotFound();
@@ -84,7 +86,7 @@ namespace Citizen.Controllers.Backend
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Capital,CurrencyCode")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Capital,CurrencyCode,RowVersion")] Country country)
         {
             if (id != country.Id)
             {
@@ -106,7 +108,7 @@ namespace Citizen.Controllers.Backend
                     }
                     else
                     {
-                        throw;
+                        return RedirectToAction(nameof(Edit), new { Message = "This row has been modified by someone else. Please try again." } );
                     }
                 }
                 return RedirectToAction("Index");
