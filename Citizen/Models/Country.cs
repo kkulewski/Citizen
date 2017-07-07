@@ -22,5 +22,8 @@ namespace Citizen.Models
         public string CurrencyCode { get; set; }
 
         public virtual ICollection<ApplicationUser> Citizens { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
