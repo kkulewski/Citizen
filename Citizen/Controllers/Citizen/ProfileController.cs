@@ -99,17 +99,16 @@ namespace Citizen.Controllers.Citizen
                 return View("Error");
             }
 
-            var countryList = _dbContext.Country.ToList();
-            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
+            var countryList = _repo.CountryService.GetCountries().ToList();
 
             var model = new ChangeCountryViewModel()
             {
                 Money = user.Money,
-                CountryId = userCountry.Id,
+                CountryId = user.Country.Id,
                 CountryList = countryList,
                 Country = user.Country,
                 CountryChangeCost = GameSettings.CountryChangeCost
-        };
+            };
 
             return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
         }
