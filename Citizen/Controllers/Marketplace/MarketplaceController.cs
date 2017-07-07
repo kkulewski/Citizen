@@ -10,6 +10,7 @@ using Citizen.Models;
 using Citizen.Models.MarketplaceViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Citizen.DAL;
 
 namespace Citizen.Controllers.Marketplace
 {
@@ -18,11 +19,13 @@ namespace Citizen.Controllers.Marketplace
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IRepository _repo;
 
-        public MarketplaceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public MarketplaceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IRepository repository)
         {
             _context = context;
             _userManager = userManager;
+            _repo = repository;
         }
 
         // GET: Marketplace
