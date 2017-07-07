@@ -67,14 +67,17 @@ namespace Citizen.Controllers.Citizen
         public async Task<IActionResult> Eat()
         {
             var user = await GetCurrentUserAsync();
-            var result = user.Eat();
-
-            if (!result.Success)
+            if (user == null)
             {
-                return RedirectToAction(nameof(Index), new { result.Message });
+                return View("Error");
             }
 
-            await _repo.SaveChangesAsync();
+            var result = user.Eat();
+            if (result.Success)
+            {
+                await _repo.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index), new { result.Message });
         }
 
