@@ -258,5 +258,11 @@ namespace Citizen.Controllers.Marketplace
             DeleteOfferSuccess,
             Error
         }
+
+        private async Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
+        }
     }
 }
