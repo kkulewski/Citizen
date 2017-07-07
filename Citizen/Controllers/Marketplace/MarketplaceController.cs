@@ -21,6 +21,8 @@ namespace Citizen.Controllers.Marketplace
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository _repo;
 
+        private const string _modelInvalidMessage = "Error - model invalid.";
+
         public MarketplaceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IRepository repository)
         {
             _context = context;
@@ -76,49 +78,18 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.Error });
+                return RedirectToAction(nameof(AddOffer), _modelInvalidMessage);
             }
 
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            var userItems = _context.Items.Where(it => it.ApplicationUserId == user.Id);
-            var userItem = userItems.First(i => i.ItemType == model.ItemType);
-            var userMarketPlaceholder = userItems.First(i => i.ItemType == ItemType.MarketPlaceholder);
-
-            // amount invalid
-            if (model.Amount <= 0)
+            var user = await GetCurrentUserAsync();
+            var result = user.AddMarketplaceOffer(model.ItemType, model.Amount, model.Price);
+            if(result.Success)
             {
-                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferAmountInvalid });
+                await _repo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { result.Message });
             }
-
-            // amount not available
-            if (model.Amount > userItem.Amount)
-            {
-                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferAmountNotAvailable });
-            }
-
-            // price is invalid
-            if (model.Price <= 0.00M)
-            {
-                return RedirectToAction(nameof(AddOffer), new { Message = StatusMessageId.AddOfferPriceInvalid });
-            }
-
-            // remove specified amount from user, add to market offer
-            // TODO: add storage placeholder to avoid item overstorage in market
-            userItem.Amount -= model.Amount;
-            userMarketPlaceholder.Amount += model.Amount;
-
-            var offer = new MarketplaceOffer
-            {
-                ApplicationUserId = user.Id,
-                ItemType = model.ItemType,
-                Amount = model.Amount,
-                Price = model.Price
-            };
-            user.MarketplaceOffers.Add(offer);
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.AddOfferSuccess });
+            
+            return RedirectToAction(nameof(AddOffer), new { result.Message });
         }
 
         // GET: Marketplace/EditOffer/5
