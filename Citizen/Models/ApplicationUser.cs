@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Citizen.Models
@@ -82,6 +81,35 @@ namespace Citizen.Models
         public int GetItemsAmount()
         {
             return Items.Select(c => c.Amount).Sum();
+        }
+
+        public ActionStatus AddMarketplaceOffer(ItemType itemType, int amount, decimal price)
+        {
+            var soldItem = Items.First(i => i.ItemType == itemType);
+            var marketPlaceholder = Items.First(i => i.ItemType == ItemType.MarketPlaceholder);
+            
+            if (price <= 0.00M)
+                return new ActionStatus(false, "Invalid price.");
+
+            if (amount <= 0)
+                return new ActionStatus(false, "Invalid amount.");
+
+            if (amount > soldItem.Amount)
+                return new ActionStatus(false, "Amount is not available.");
+
+            soldItem.Amount -= amount;
+            marketPlaceholder.Amount += amount;
+            
+            var offer = new MarketplaceOffer
+            {
+                ApplicationUserId = Id,
+                ItemType = itemType,
+                Amount = amount,
+                Price = price
+            };
+
+            MarketplaceOffers.Add(offer);
+            return new ActionStatus(true, "Offer added succesfully.");
         }
     }
 }
