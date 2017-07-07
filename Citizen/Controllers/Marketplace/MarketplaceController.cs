@@ -93,33 +93,33 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/EditOffer/5
-        public async Task<IActionResult> EditOffer(int? id, StatusMessageId? message = null)
+        public async Task<IActionResult> EditOffer(int? id, string message)
         {
-            ViewData["StatusMessage"] =
-                      message == StatusMessageId.EditOfferPriceInvalid ? "Error - price invalid."
-                    : message == StatusMessageId.Error ? "Error."
-                    : "";
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
 
             if (id == null)
             {
                 return NotFound();
             }
-
-            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == id);
-            if (marketplaceOffer == null)
+            
+            var offer = _repo.MarketplaceService.GetOfferById(id.Value);
+            if (offer == null)
             {
                 return NotFound();
             }
 
-            var editMarketplaceOfferViewModel = new EditMarketplaceOfferViewModel()
+            var viewModel = new EditMarketplaceOfferViewModel()
             {
-                Id = marketplaceOffer.Id,
-                ItemType = marketplaceOffer.ItemType,
-                Amount = marketplaceOffer.Amount,
-                Price = marketplaceOffer.Price
+                Id = offer.Id,
+                ItemType = offer.ItemType,
+                Amount = offer.Amount,
+                Price = offer.Price
             };
 
-            return View(editMarketplaceOfferViewModel);
+            return View(viewModel);
         }
 
         //
