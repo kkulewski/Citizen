@@ -181,7 +181,7 @@ namespace Citizen.Controllers.Citizen
                 return View("Error");
             }
 
-            var user = _repo.ApplicationUserService().GetApplicationUserById(identityUser.Id);
+            var user = _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
 
             int capacityUsed = 0;
             foreach (var item in user.Items)

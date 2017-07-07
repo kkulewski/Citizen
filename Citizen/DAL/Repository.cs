@@ -18,7 +18,7 @@ namespace Citizen.DAL
             _applicationUserService = new ApplicationUserService(dbContext);
         }
 
-        public IApplicationUserService ApplicationUserService() => _applicationUserService;
+        public IApplicationUserService ApplicationUserService => _applicationUserService;
 
         public async Task<int> SaveChangesAsync()
         {
