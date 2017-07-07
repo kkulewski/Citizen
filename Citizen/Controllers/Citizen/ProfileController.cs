@@ -50,8 +50,6 @@ namespace Citizen.Controllers.Citizen
             {
                 return View("Error");
             }
-            
-            var userCountry = _dbContext.Country.First(country => country.Id == user.CountryId);
 
             var model = new ProfileViewModel
             {
@@ -60,7 +58,7 @@ namespace Citizen.Controllers.Citizen
                 EnergyMax = GameSettings.EnergyMax,
                 EnergyRestore = user.EnergyRestore,
                 Money = user.Money,
-                Country = userCountry
+                Country = user.Country
             };
             return View("~/Views/Citizen/Profile/Index.cshtml", model);
         }
