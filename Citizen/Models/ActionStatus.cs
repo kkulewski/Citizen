@@ -2,8 +2,8 @@
 {
     public struct ActionStatus
     {
-        bool Success;
+        public bool Success;
 
-        string Message;
+        public string Message;
     }
 }
