@@ -38,17 +38,12 @@ namespace Citizen.Controllers.Citizen
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(StatusMessageId? message = null)
+        public async Task<IActionResult> Index(string message)
         {
-            ViewData["StatusMessage"] =
-                message == StatusMessageId.ChangeCountrySuccess ? "Your country has been changed."
-                : message == StatusMessageId.ChangeCountryNotEnoughMoney ? "Country change not possible - not enough money."
-                : message == StatusMessageId.EatNoFoodAvailable ? "No food available."
-                : message == StatusMessageId.EatEnergyMax ? "Energy max."
-                : message == StatusMessageId.EatNoEnergyRestoreAvailable ? "No energy restore available."
-                : message == StatusMessageId.EatSuccess ? "Food eaten."
-                : message == StatusMessageId.Error ? "An error has occurred."
-                : "";
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
 
             var user = await GetCurrentUserAsync();
             if (user == null)
@@ -75,7 +70,7 @@ namespace Citizen.Controllers.Citizen
         {
             var user = await GetCurrentUserAsync();
             user.Energy -= 20;
-            await _dbContext.SaveChangesAsync();
+            await _repo.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
         }
@@ -84,36 +79,15 @@ namespace Citizen.Controllers.Citizen
         public async Task<IActionResult> Eat()
         {
             var user = await GetCurrentUserAsync();
-            var userItems = _dbContext.Items.Where(u => u.ApplicationUserId == user.Id);
-            var foodItem = userItems.First(c => c.ItemType == ItemType.Food);
+            var result = user.Eat();
 
-            if (foodItem.Amount == 0)
+            if (!result.Success)
             {
-                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoFoodAvailable });
+                return RedirectToAction(nameof(Index), new { result.Message });
             }
 
-            if (user.EnergyRestore == 0)
-            {
-                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatNoEnergyRestoreAvailable });
-            }
-
-            if (user.Energy == GameSettings.EnergyMax)
-            {
-                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatEnergyMax });
-            }
-
-            var food = new ConsumableItem
-            {
-                EnergyRestoreAmount = GameSettings.FoodEnergyRestore,
-                Amount = foodItem.Amount
-            };
-
-            while (user.Eat(food)) { }
-
-            foodItem.Amount = food.Amount;
-            await _dbContext.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EatSuccess });
+            await _repo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { result.Message });
         }
 
         //

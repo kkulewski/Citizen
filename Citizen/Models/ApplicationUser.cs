@@ -43,33 +43,28 @@ namespace Citizen.Models
             EnergyRestore = Math.Min(EnergyRestore + amount, GameSettings.EnergyMax);
         }
 
-        public bool Eat(ConsumableItem item)
+        public ActionStatus Eat()
         {
-            if (!CanEat(item))
-                return false;
+            var item = Items.FirstOrDefault(i => i.ItemType == ItemType.Food);
 
-            var energyRestored = Math.Min(item.EnergyRestoreAmount, EnergyRestore);
-            var energyRestoreConsumed = Math.Min(GameSettings.EnergyMax - Energy, item.EnergyRestoreAmount);
+            if (item.Amount <= 0)
+                return new ActionStatus(false, "No food available.");
+
+            if (Energy == GameSettings.EnergyMax)
+                return new ActionStatus(false, "Energy max.");
+
+            if (EnergyRestore <= 0)
+                return new ActionStatus(false, "No energy restore available.");
+
+
+            var energyRestored = Math.Min(GameSettings.FoodEnergyRestore, EnergyRestore);
+            var energyRestoreConsumed = Math.Min(GameSettings.FoodEnergyRestore, GameSettings.EnergyMax - Energy);
 
             Energy = Math.Min(Energy + energyRestored, GameSettings.EnergyMax);
             EnergyRestore = Math.Max(EnergyRestore - energyRestoreConsumed, 0);
             item.Amount -= 1;
 
-            return true;
-        }
-
-        private bool CanEat(ConsumableItem item)
-        {
-            if (item.Amount <= 0)
-                return false;
-
-            if (Energy == GameSettings.EnergyMax)
-                return false;
-
-            if (EnergyRestore <= 0)
-                return false;
-
-            return true;
+            return new ActionStatus(true, "Food has been eaten.");
         }
     }
 }
