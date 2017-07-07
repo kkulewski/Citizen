@@ -8,6 +8,8 @@ namespace Citizen.DAL
     public interface IRepository
     {
         IApplicationUserService ApplicationUserService { get; }
+        
+        ICountryService CountryService { get; }
 
         Task<int> SaveChangesAsync();
     }
