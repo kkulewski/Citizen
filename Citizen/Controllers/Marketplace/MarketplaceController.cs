@@ -29,23 +29,16 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace
-        public async Task<IActionResult> Index(StatusMessageId? message = null)
+        public async Task<IActionResult> Index(string message)
         {
-            ViewData["StatusMessage"] =
-                  message == StatusMessageId.AddOfferSuccess ? "Offer added succesfully."
-                : message == StatusMessageId.EditOfferSuccess ? "Offer updated succesfully."
-                : message == StatusMessageId.DeleteOfferSuccess ? "Offer deleted succesfully."
-                : "";
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
 
-
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            var offers = _context.MarketplaceOffers
-                .Where(offer => offer.ApplicationUser.Id == user.Id)
-                .OrderBy(offer => offer.Price)
-                .Include(m => m.ApplicationUser);
+            var user = await GetCurrentUserAsync();
             
-            return View("~/Views/Marketplace/Index.cshtml", await offers.ToListAsync());
+            return View("~/Views/Marketplace/Index.cshtml", user.MarketplaceOffers);
         }
 
         // GET: Marketplace
