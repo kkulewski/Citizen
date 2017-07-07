@@ -51,27 +51,21 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/AddOffer
-        public IActionResult AddOffer(StatusMessageId? message = null)
+        public IActionResult AddOffer(string message)
         {
-            ViewData["StatusMessage"] =
-                  message == StatusMessageId.AddOfferAmountInvalid ? "Error - invalid amount."
-                : message == StatusMessageId.AddOfferPriceInvalid ? "Error - invalid price."
-                : message == StatusMessageId.AddOfferAmountNotAvailable ? "Error - amount not available."
-                : message == StatusMessageId.Error ? "Error."
-                : "";
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
 
-            IEnumerable<ItemType> itemTypes = new List<ItemType>()
+            var itemTypes = new List<ItemType>()
             {
                 ItemType.Food,
                 ItemType.Grain
             };
 
-            var addMarketplaceOfferViewModel = new AddMarketplaceOfferViewModel()
-            {
-                ItemTypes = itemTypes
-            };
-
-            return View(addMarketplaceOfferViewModel);
+            var viewModel = new AddMarketplaceOfferViewModel() { ItemTypes = itemTypes };
+            return View(viewModel);
         }
 
         //
