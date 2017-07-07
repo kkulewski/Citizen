@@ -225,9 +225,10 @@ namespace Citizen.Controllers.Citizen
             Error
         }
 
-        private Task<ApplicationUser> GetCurrentUserAsync()
+        private async Task<ApplicationUser> GetCurrentUserAsync()
         {
-            return _userManager.GetUserAsync(HttpContext.User);
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
         }
 
         #endregion
