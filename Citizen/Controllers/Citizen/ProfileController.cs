@@ -168,17 +168,6 @@ namespace Citizen.Controllers.Citizen
             }
         }
 
-        public enum StatusMessageId
-        {
-            ChangeCountrySuccess,
-            ChangeCountryNotEnoughMoney,
-            EatNoFoodAvailable,
-            EatEnergyMax,
-            EatNoEnergyRestoreAvailable,
-            EatSuccess,
-            Error
-        }
-
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
