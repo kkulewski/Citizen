@@ -10,6 +10,8 @@ namespace Citizen.DAL
         IApplicationUserService ApplicationUserService { get; }
         
         ICountryService CountryService { get; }
+        
+        IMarketplaceService MarketplaceService { get; }
 
         Task<int> SaveChangesAsync();
     }
