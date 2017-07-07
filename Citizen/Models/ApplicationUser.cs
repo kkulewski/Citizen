@@ -78,5 +78,10 @@ namespace Citizen.Models
 
             return new ActionStatus(true, "Country has been changed.");
         }
+
+        public int GetItemsAmount()
+        {
+            return Items.Select(c => c.Amount).Sum();
+        }
     }
 }

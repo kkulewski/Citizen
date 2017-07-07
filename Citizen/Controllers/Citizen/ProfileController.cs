@@ -136,18 +136,10 @@ namespace Citizen.Controllers.Citizen
         [HttpGet]
         public async Task<IActionResult> Storage()
         {
-            var identityUser = await GetCurrentUserAsync();
-            if (identityUser == null)
+            var user = await GetCurrentUserAsync();
+            if (user == null)
             {
                 return View("Error");
-            }
-
-            var user = _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
-
-            int capacityUsed = 0;
-            foreach (var item in user.Items)
-            {
-                capacityUsed += item.Amount;
             }
 
             var model = new UserStorageViewModel
@@ -157,7 +149,7 @@ namespace Citizen.Controllers.Citizen
                 Money = user.Money,
                 Country = user.Country,
                 Capacity = user.UserStorage.Capacity,
-                CapacityUsed =  capacityUsed,
+                CapacityUsed =  user.GetItemsAmount(),
                 MarketPlaceholder = user.Items.First(c => c.ItemType == ItemType.MarketPlaceholder).Amount,
                 Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
                 Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
