@@ -89,13 +89,11 @@ namespace Citizen.Controllers.Citizen
                 return View("Error");
             }
 
-            var countryList = _repo.CountryService.GetCountries().ToList();
-
             var model = new ChangeCountryViewModel()
             {
                 Money = user.Money,
                 CountryId = user.Country.Id,
-                CountryList = countryList,
+                CountryList = _repo.CountryService.GetCountries().ToList(),
                 Country = user.Country,
                 CountryChangeCost = GameSettings.CountryChangeCost
             };
