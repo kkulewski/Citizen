@@ -21,8 +21,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Marketplace<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a asp-area="" asp-controller="Marketplace" asp-action="Index">Index</a></li>
-                    <li><a asp-area="" asp-controller="Marketplace" asp-action="Offers" asp-route-id="@ItemType.Food">Food</a></li>
-                    <li><a asp-area="" asp-controller="Marketplace" asp-action="Offers" asp-route-id="@ItemType.Grain">Grain</a></li>
+                    <li><a asp-area="" asp-controller="Marketplace" asp-action="Offers" asp-route-itemType="@ItemType.Food">Food</a></li>
+                    <li><a asp-area="" asp-controller="Marketplace" asp-action="Offers" asp-route-itemType="@ItemType.Grain">Grain</a></li>
                 </ul>
             </li>
         }
