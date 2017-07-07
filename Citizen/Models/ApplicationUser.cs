@@ -66,5 +66,17 @@ namespace Citizen.Models
 
             return new ActionStatus(true, "Food has been eaten.");
         }
+
+        public ActionStatus ChangeCountry(Country newCountry)
+        {
+            if (Money < GameSettings.CountryChangeCost)
+                return new ActionStatus(false, "No enough money.");
+
+            Country = newCountry;
+            CountryId = newCountry.Id;
+            Money -= GameSettings.CountryChangeCost;
+
+            return new ActionStatus(true, "Country has been changed.");
+        }
     }
 }

@@ -123,22 +123,22 @@ namespace Citizen.Controllers.Citizen
             {
                 return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
             }
+
             var user = await GetCurrentUserAsync();
-            if (user != null)
+            if (user == null)
             {
-                user.CountryId = model.CountryId;
-
-                if (user.Money < model.CountryChangeCost)
-                {
-                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangeCountryNotEnoughMoney });
-                }
-
-                user.Money -= model.CountryChangeCost;
-                _dbContext.SaveChanges();
-
-                return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangeCountrySuccess });
+                return View("Error");
             }
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
+
+            var newCountry = _repo.CountryService.GetCountryById(model.CountryId);
+
+            var result = user.ChangeCountry(newCountry);
+            if(result.Success)
+            {
+                await _repo.SaveChangesAsync();
+            }
+            
+            return RedirectToAction(nameof(Index), new { result.Message });
         }
 
         //
