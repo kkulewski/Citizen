@@ -142,5 +142,41 @@ namespace Citizen.Models
 
             return new ActionStatus(true, "Offer removed succesfully.");
         }
+
+        public ActionStatus BuyMarketplaceOffer(MarketplaceOffer offer, int amount)
+        {
+            if (offer == null)
+                return new ActionStatus(false, "Offer cannot be found.");
+
+            if (amount <= 0)
+                return new ActionStatus(false, "Invalid amount.");
+            
+            if (amount > offer.Amount)
+                return new ActionStatus(false, "Amount not available.");
+
+            var transactionCost = amount * offer.Price;
+
+            if(Money < transactionCost)
+                return new ActionStatus(false, "No enough money.");
+            
+            if (GetItemsAmount() + amount > UserStorage.Capacity)
+                return new ActionStatus(false, "No enough space in storage.");
+
+            var seller = offer.ApplicationUser;
+
+            var sellerOfferItem = seller.Items.FirstOrDefault(i => i.ItemType == offer.ItemType);
+            var sellerPlaceholerItem = seller.Items.FirstOrDefault(i => i.ItemType == ItemType.MarketPlaceholder);
+
+            var buyerOfferItem = Items.FirstOrDefault(i => i.ItemType == offer.ItemType);
+
+            sellerPlaceholerItem.Amount -= amount;
+            offer.Amount -= amount;
+            buyerOfferItem.Amount += amount;
+
+            seller.Money += transactionCost;
+            Money -= transactionCost;
+
+            return new ActionStatus(true, "Items bought successfylly.");
+        }
     }
 }
