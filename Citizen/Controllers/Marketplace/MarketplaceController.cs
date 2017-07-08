@@ -17,15 +17,13 @@ namespace Citizen.Controllers.Marketplace
     [Authorize]
     public class MarketplaceController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRepository _repo;
 
         private const string _modelInvalidMessage = "Error - model invalid.";
 
-        public MarketplaceController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IRepository repository)
+        public MarketplaceController(UserManager<ApplicationUser> userManager, IRepository repository)
         {
-            _context = context;
             _userManager = userManager;
             _repo = repository;
         }
