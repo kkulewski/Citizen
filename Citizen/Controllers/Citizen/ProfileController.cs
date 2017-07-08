@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.CitizenViewModels;
-using Citizen.Services;
 using Citizen.DAL;
 
 namespace Citizen.Controllers.Citizen
@@ -19,19 +13,13 @@ namespace Citizen.Controllers.Citizen
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
         private readonly IRepository _repo;
 
         public ProfileController(
           UserManager<ApplicationUser> userManager,
-          ILoggerFactory loggerFactory,
-          ApplicationDbContext dbContext,
           IRepository repository)
         {
             _userManager = userManager;
-            _logger = loggerFactory.CreateLogger<ProfileController>();
-            _dbContext = dbContext;
             _repo = repository;
         }
 
