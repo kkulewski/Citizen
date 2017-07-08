@@ -3,7 +3,6 @@ using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Citizen.Models;
 using Citizen.Models.ManageViewModels;
 using Microsoft.EntityFrameworkCore;

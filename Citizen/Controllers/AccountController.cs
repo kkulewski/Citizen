@@ -1,16 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.AccountViewModels;
-using Citizen.Services;
-using Citizen.DAL;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
