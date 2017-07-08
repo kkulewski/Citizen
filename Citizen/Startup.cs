@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Citizen.Data;
 using Citizen.Models;
 using Citizen.Services;
-using Citizen.DAL;
 
 namespace Citizen
 {
@@ -53,9 +52,6 @@ namespace Citizen
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-
-            // Repository DI
-            services.AddTransient<IRepository, Repository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
