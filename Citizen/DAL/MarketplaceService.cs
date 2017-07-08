@@ -2,6 +2,7 @@
 using Citizen.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Citizen.DAL
 {
@@ -25,9 +26,9 @@ namespace Citizen.DAL
             return GetOffers().Where(m => m.ItemType == itemType);
         }
 
-        public MarketplaceOffer GetOfferById(int id)
+        public async Task<MarketplaceOffer> GetOfferById(int id)
         {
-            return GetOffers().First(m => m.Id == id);
+            return await GetOffers().FirstOrDefaultAsync(m => m.Id == id);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Citizen.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Citizen.DAL
 {
@@ -9,6 +10,6 @@ namespace Citizen.DAL
 
         IQueryable<MarketplaceOffer> GetOffers(ItemType itemType);
 
-        MarketplaceOffer GetOfferById(int id);
+        Task<MarketplaceOffer> GetOfferById(int id);
     }
 }

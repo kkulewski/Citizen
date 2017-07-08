@@ -93,7 +93,7 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/EditOffer/5
-        public IActionResult EditOffer(int? id, string message)
+        public async Task<IActionResult> EditOffer(int? id, string message)
         {
             if (message != null)
             {
@@ -105,7 +105,7 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
             
-            var offer = _repo.MarketplaceService.GetOfferById(id.Value);
+            var offer = await _repo.MarketplaceService.GetOfferById(id.Value);
             if (offer == null)
             {
                 return NotFound();
@@ -152,9 +152,7 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
 
-            var marketplaceOffer = await _context.MarketplaceOffers
-                .Include(m => m.ApplicationUser)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var marketplaceOffer = await _repo.MarketplaceService.GetOfferById(id.Value);
             if (marketplaceOffer == null)
             {
                 return NotFound();
