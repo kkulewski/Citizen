@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Citizen.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.ManageViewModels;
-using Citizen.Services;
-using Citizen.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace Citizen.Controllers
 {
@@ -21,21 +16,20 @@ namespace Citizen.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
-        private readonly IRepository _repo;
+        private readonly ApplicationDbContext _dbContext;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           ILoggerFactory loggerFactory,
-          IRepository repository)
+          ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = loggerFactory.CreateLogger<ManageController>();
-            _repo = repository;
+            _dbContext = dbContext;
         }
-
-        //
+        
         // GET: /Manage/Index
         [HttpGet]
         public async Task<IActionResult> Index(string message)
@@ -60,16 +54,14 @@ namespace Citizen.Controllers
 
             return View(model);
         }
-
-        //
+        
         // GET: /Manage/ChangePassword
         [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
-
-        //
+        
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -108,7 +100,12 @@ namespace Citizen.Controllers
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
+            return await _dbContext.ApplicationUsers
+                .Include(p => p.Items)
+                .Include(p => p.MarketplaceOffers)
+                .Include(p => p.Country)
+                .Include(p => p.UserStorage)
+                .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
         }
 
         #endregion
