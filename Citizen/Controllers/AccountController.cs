@@ -11,6 +11,8 @@ using Citizen.Models;
 using Citizen.Models.AccountViewModels;
 using Citizen.Services;
 using Citizen.DAL;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Citizen.Controllers
 {
@@ -19,22 +21,22 @@ namespace Citizen.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _dbContext;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
-        private readonly IRepository _repo;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext dbContext,
             IOptions<IdentityCookieOptions> identityCookieOptions,
-            ILoggerFactory loggerFactory,
-            IRepository repository)
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _dbContext = dbContext;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _logger = loggerFactory.CreateLogger<AccountController>();
-            _repo = repository;
         }
 
         //
@@ -88,9 +90,9 @@ namespace Citizen.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public async Task<IActionResult> Register(string returnUrl = null)
         {
-            var registerViewModel = new RegisterViewModel { CountryList = _repo.CountryService.GetCountries().ToList() };
+            var registerViewModel = new RegisterViewModel { CountryList = await GetCountryListAsync() };
             ViewData["ReturnUrl"] = returnUrl;
             return View(registerViewModel);
         }
@@ -157,7 +159,7 @@ namespace Citizen.Controllers
                     user.Items = userItems;
                     user.UserStorage = userStorage;
 
-                    await _repo.SaveChangesAsync();
+                    await SaveChangesAsync();
                     return RedirectToLocal(returnUrl);
                 }
 
@@ -206,6 +208,24 @@ namespace Citizen.Controllers
             else
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+        
+        private async Task<List<Country>> GetCountryListAsync()
+        {
+            return await _dbContext.Country.ToListAsync();
+        }
+
+        private async Task<ActionStatus> SaveChangesAsync()
+        {
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+                return new ActionStatus(true, GameSettings.DataConcurrencyOk);
+            }
+            catch
+            {
+                return new ActionStatus(false, GameSettings.DataConcurrencyError);
             }
         }
 
