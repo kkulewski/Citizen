@@ -38,7 +38,7 @@ namespace Citizen.Controllers.Marketplace
 
             var user = await GetCurrentUserAsync();
             
-            return View("~/Views/Marketplace/Index.cshtml", user.MarketplaceOffers);
+            return View(user.MarketplaceOffers);
         }
 
         // GET: Marketplace
@@ -47,11 +47,11 @@ namespace Citizen.Controllers.Marketplace
             var user = await GetCurrentUserAsync();
             ViewData["ApplicationUser"] = user;
 
-            return View("~/Views/Marketplace/Offers.cshtml", _repo.MarketplaceService.GetOffers(itemType));
+            return View(_repo.MarketplaceService.GetOffers(itemType));
         }
 
-        // GET: Marketplace/AddOffer
-        public IActionResult AddOffer(string message)
+        // GET: Marketplace/Add
+        public IActionResult Add(string message)
         {
             if (message != null)
             {
@@ -67,16 +67,15 @@ namespace Citizen.Controllers.Marketplace
             var viewModel = new AddMarketplaceOfferViewModel() { ItemTypes = itemTypes };
             return View(viewModel);
         }
-
-        //
-        // POST: /Marketplace/AddOffer
+        
+        // POST: /Marketplace/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOffer(AddMarketplaceOfferViewModel model)
+        public async Task<IActionResult> Add(AddMarketplaceOfferViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(AddOffer), _modelInvalidMessage);
+                return RedirectToAction(nameof(Add), _modelInvalidMessage);
             }
 
             var user = await GetCurrentUserAsync();
@@ -87,11 +86,11 @@ namespace Citizen.Controllers.Marketplace
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
             
-            return RedirectToAction(nameof(AddOffer), new { result.Message });
+            return RedirectToAction(nameof(Add), new { result.Message });
         }
 
-        // GET: Marketplace/EditOffer/5
-        public async Task<IActionResult> EditOffer(int? id, string message)
+        // GET: Marketplace/Edit/5
+        public async Task<IActionResult> Edit(int? id, string message)
         {
             if (message != null)
             {
@@ -119,16 +118,15 @@ namespace Citizen.Controllers.Marketplace
 
             return View(viewModel);
         }
-
-        //
-        // POST: /Marketplace/EditOffer/5
+        
+        // POST: /Marketplace/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditOffer(EditMarketplaceOfferViewModel model)
+        public async Task<IActionResult> Edit(EditMarketplaceOfferViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(EditOffer), _modelInvalidMessage);
+                return RedirectToAction(nameof(Edit), _modelInvalidMessage);
             }
             
             var user = await GetCurrentUserAsync();
@@ -139,7 +137,7 @@ namespace Citizen.Controllers.Marketplace
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
 
-            return RedirectToAction(nameof(EditOffer), new { result.Message });
+            return RedirectToAction(nameof(Edit), new { result.Message });
         }
 
         // GET: Marketplace/Delete/5
