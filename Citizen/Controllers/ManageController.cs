@@ -15,18 +15,15 @@ namespace Citizen.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger _logger;
         private readonly ApplicationDbContext _dbContext;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
-          ILoggerFactory loggerFactory,
           ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = loggerFactory.CreateLogger<ManageController>();
             _dbContext = dbContext;
         }
         
@@ -78,7 +75,6 @@ namespace Citizen.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User changed their password successfully.");
                     return RedirectToAction(nameof(Index), new { Message = "Password changed succesfully." });
                 }
                 AddErrors(result);
