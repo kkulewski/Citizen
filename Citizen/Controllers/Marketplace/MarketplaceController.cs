@@ -152,21 +152,21 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
 
-            var marketplaceOffer = await _repo.MarketplaceService.GetOfferById(id.Value);
-            if (marketplaceOffer == null)
+            var offer = await _repo.MarketplaceService.GetOfferById(id.Value);
+            if (offer == null)
             {
                 return NotFound();
             }
 
-            var deleteMarketplaceOfferViewModel = new DeleteMarketplaceOfferViewModel()
+            var viewModel = new DeleteMarketplaceOfferViewModel()
             {
-                Id = marketplaceOffer.Id,
-                ItemType = marketplaceOffer.ItemType,
-                Amount = marketplaceOffer.Amount,
-                Price = marketplaceOffer.Price
+                Id = offer.Id,
+                ItemType = offer.ItemType,
+                Amount = offer.Amount,
+                Price = offer.Price
             };
 
-            return View(deleteMarketplaceOfferViewModel);
+            return View(viewModel);
         }
 
         // POST: Marketplace/Delete/5
