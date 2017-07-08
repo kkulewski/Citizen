@@ -125,5 +125,22 @@ namespace Citizen.Models
 
             return new ActionStatus(true, "Offer updated succesfully.");
         }
+
+        public ActionStatus DeleteMarketplaceOffer(int offerId)
+        {
+            var offer = MarketplaceOffers.FirstOrDefault(m => m.Id == offerId);
+            if (offer == null)
+                return new ActionStatus(false, "Offer cannot be found.");
+            
+            var soldItem = Items.First(i => i.ItemType == offer.ItemType);
+            var marketPlaceholder = Items.First(i => i.ItemType == ItemType.MarketPlaceholder);
+
+            soldItem.Amount += offer.Amount;
+            marketPlaceholder.Amount -= offer.Amount;
+
+            MarketplaceOffers.Remove(offer);
+
+            return new ActionStatus(true, "Offer removed succesfully.");
+        }
     }
 }

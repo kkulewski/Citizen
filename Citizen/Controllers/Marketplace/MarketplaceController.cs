@@ -174,21 +174,14 @@ namespace Citizen.Controllers.Marketplace
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(DeleteMarketplaceOfferViewModel model)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await GetCurrentUserAsync();
+            var result = user.DeleteMarketplaceOffer(model.Id);
+            if(result.Success)
+            {
+                await _repo.SaveChangesAsync();
+            }
 
-            var userItems = _context.Items.Where(it => it.ApplicationUserId == user.Id);
-            var userItem = userItems.First(i => i.ItemType == model.ItemType);
-            var userMarketPlaceholder = userItems.First(i => i.ItemType == ItemType.MarketPlaceholder);
-
-            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == model.Id);
-
-            userItem.Amount += marketplaceOffer.Amount;
-            userMarketPlaceholder.Amount -= marketplaceOffer.Amount;
-
-            _context.MarketplaceOffers.Remove(marketplaceOffer);
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.DeleteOfferSuccess });
+            return RedirectToAction(nameof(Index), new { result.Message });
         }
         
         public enum StatusMessageId
