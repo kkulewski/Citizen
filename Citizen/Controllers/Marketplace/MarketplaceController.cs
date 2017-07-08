@@ -183,18 +183,6 @@ namespace Citizen.Controllers.Marketplace
 
             return RedirectToAction(nameof(Index), new { result.Message });
         }
-        
-        public enum StatusMessageId
-        {
-            AddOfferSuccess,
-            AddOfferPriceInvalid,
-            AddOfferAmountInvalid,
-            AddOfferAmountNotAvailable,
-            EditOfferSuccess,
-            EditOfferPriceInvalid,
-            DeleteOfferSuccess,
-            Error
-        }
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
