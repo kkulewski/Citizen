@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Citizen.Models;
 using Citizen.Models.CitizenViewModels;
 using Citizen.DAL;
+using Citizen.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Citizen.Controllers.Citizen
 {
@@ -13,14 +16,14 @@ namespace Citizen.Controllers.Citizen
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IRepository _repo;
+        private readonly ApplicationDbContext _dbContext;
 
         public ProfileController(
           UserManager<ApplicationUser> userManager,
-          IRepository repository)
+          ApplicationDbContext dbContext)
         {
             _userManager = userManager;
-            _repo = repository;
+            _dbContext = dbContext;
         }
 
         //
@@ -48,7 +51,7 @@ namespace Citizen.Controllers.Citizen
                 Money = user.Money,
                 Country = user.Country
             };
-            return View("~/Views/Citizen/Profile/Index.cshtml", model);
+            return View(model);
         }
 
         [HttpGet]
@@ -63,7 +66,7 @@ namespace Citizen.Controllers.Citizen
             var result = user.Eat();
             if (result.Success)
             {
-                await _repo.SaveChangesAsync();
+                await SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -84,12 +87,12 @@ namespace Citizen.Controllers.Citizen
             {
                 Money = user.Money,
                 CountryId = user.Country.Id,
-                CountryList = _repo.CountryService.GetCountries().ToList(),
+                CountryList = await GetCountryListAsync(),
                 Country = user.Country,
                 CountryChangeCost = GameSettings.CountryChangeCost
             };
 
-            return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
+            return View(model);
         }
 
         //
@@ -100,7 +103,7 @@ namespace Citizen.Controllers.Citizen
         {
             if (!ModelState.IsValid)
             {
-                return View("~/Views/Citizen/Profile/ChangeCountry.cshtml", model);
+                return View(model);
             }
 
             var user = await GetCurrentUserAsync();
@@ -109,12 +112,11 @@ namespace Citizen.Controllers.Citizen
                 return View("Error");
             }
 
-            var newCountry = _repo.CountryService.GetCountryById(model.CountryId);
-
+            var newCountry = await GetCountryByIdAsync(model.CountryId);
             var result = user.ChangeCountry(newCountry);
             if(result.Success)
             {
-                await _repo.SaveChangesAsync();
+                await SaveChangesAsync();
             }
             
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -143,7 +145,7 @@ namespace Citizen.Controllers.Citizen
                 Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
                 Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
             };
-            return View("~/Views/Citizen/Profile/UserStorage.cshtml", model);
+            return View(model);
         }
 
         #region Helpers
@@ -159,7 +161,35 @@ namespace Citizen.Controllers.Citizen
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
+            return await _dbContext.ApplicationUsers
+                .Include(p => p.Items)
+                .Include(p => p.MarketplaceOffers)
+                .Include(p => p.Country)
+                .Include(p => p.UserStorage)
+                .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
+        }
+
+        private async Task<Country> GetCountryByIdAsync(int id)
+        {
+            return await _dbContext.Country.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        private async Task<List<Country>> GetCountryListAsync()
+        {
+            return await _dbContext.Country.ToListAsync();
+        }
+
+        private async Task<ActionStatus> SaveChangesAsync()
+        {
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+                return new ActionStatus(true, "Changes saved.");
+            }
+            catch
+            {
+                return new ActionStatus(false, "Data has been modified by someone else. Try again.");
+            }
         }
 
         #endregion
