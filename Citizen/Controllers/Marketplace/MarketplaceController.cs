@@ -93,7 +93,7 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/EditOffer/5
-        public async Task<IActionResult> EditOffer(int? id, string message)
+        public IActionResult EditOffer(int? id, string message)
         {
             if (message != null)
             {
@@ -130,25 +130,18 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(EditOffer), new { Message = StatusMessageId.Error });
+                return RedirectToAction(nameof(EditOffer), _modelInvalidMessage);
             }
-
-            if (model.Price <= 0.00M)
+            
+            var user = await GetCurrentUserAsync();
+            var result = user.EditMarketplaceOffer(model.Id, model.Price);
+            if(result.Success)
             {
-                return RedirectToAction(nameof(EditOffer), new { Message = StatusMessageId.EditOfferPriceInvalid });
+                await _repo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { result.Message });
             }
 
-            var marketplaceOffer = await _context.MarketplaceOffers.SingleOrDefaultAsync(m => m.Id == model.Id);
-            if (marketplaceOffer == null)
-            {
-                return NotFound();
-            }
-
-            var newPrice = model.Price;
-            marketplaceOffer.Price = newPrice;
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.EditOfferSuccess });
+            return RedirectToAction(nameof(EditOffer), new { result.Message });
         }
 
         // GET: Marketplace/Delete/5

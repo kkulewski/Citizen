@@ -54,8 +54,7 @@ namespace Citizen.Models
 
             if (EnergyRestore <= 0)
                 return new ActionStatus(false, "No energy restore available.");
-
-
+            
             var energyRestored = Math.Min(GameSettings.FoodEnergyRestore, EnergyRestore);
             var energyRestoreConsumed = Math.Min(GameSettings.FoodEnergyRestore, GameSettings.EnergyMax - Energy);
 
@@ -109,7 +108,22 @@ namespace Citizen.Models
             };
 
             MarketplaceOffers.Add(offer);
+
             return new ActionStatus(true, "Offer added succesfully.");
+        }
+
+        public ActionStatus EditMarketplaceOffer(int offerId, decimal newPrice)
+        {
+            if (newPrice <= 0.00M)
+                return new ActionStatus(false, "Invalid price.");
+
+            var offer = MarketplaceOffers.FirstOrDefault(m => m.Id == offerId);
+            if (offer == null)
+                return new ActionStatus(false, "Offer cannot be found.");
+
+            offer.Price = newPrice;
+
+            return new ActionStatus(true, "Offer updated succesfully.");
         }
     }
 }
