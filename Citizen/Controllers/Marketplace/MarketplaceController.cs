@@ -173,6 +173,22 @@ namespace Citizen.Controllers.Marketplace
             return RedirectToAction(nameof(Index), new { result.Message });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Buy(int id, int buyAmount)
+        {
+            var user = await GetCurrentUserAsync();
+            var offer = await GetOfferWithSellerByIdAsync(id);
+
+            var result = user.BuyMarketplaceOffer(offer, buyAmount);
+            if(result.Success)
+            {
+                DeleteOfferIfAmountIsZero(offer);
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index), new { result.Message });
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
@@ -198,6 +214,23 @@ namespace Citizen.Controllers.Marketplace
             return _dbContext.MarketplaceOffers
                 .Include(m => m.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public Task<MarketplaceOffer> GetOfferWithSellerByIdAsync(int id)
+        {
+            return _dbContext.MarketplaceOffers
+                .Include(m => m.ApplicationUser)
+                .Include(m => m.ApplicationUser.Items)
+                .Include(m => m.ApplicationUser.UserStorage)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public void DeleteOfferIfAmountIsZero(MarketplaceOffer offer)
+        {
+            if (offer.Amount == 0)
+            {
+                _dbContext.MarketplaceOffers.Remove(offer);
+            }
         }
 
         private async Task<ActionStatus> SaveChangesAsync()
