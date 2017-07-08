@@ -1,16 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Citizen.Data;
 using Citizen.Models;
 using Citizen.Models.MarketplaceViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Citizen.DAL;
 
 namespace Citizen.Controllers.Marketplace
 {
@@ -18,14 +15,12 @@ namespace Citizen.Controllers.Marketplace
     public class MarketplaceController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IRepository _repo;
+        private readonly ApplicationDbContext _dbContext;
 
-        private const string _modelInvalidMessage = "Error - model invalid.";
-
-        public MarketplaceController(UserManager<ApplicationUser> userManager, IRepository repository)
+        public MarketplaceController(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
-            _repo = repository;
+            _dbContext = dbContext;
         }
 
         // GET: Marketplace
@@ -37,7 +32,6 @@ namespace Citizen.Controllers.Marketplace
             }
 
             var user = await GetCurrentUserAsync();
-            
             return View(user.MarketplaceOffers);
         }
 
@@ -46,8 +40,7 @@ namespace Citizen.Controllers.Marketplace
         {
             var user = await GetCurrentUserAsync();
             ViewData["ApplicationUser"] = user;
-
-            return View(_repo.MarketplaceService.GetOffers(itemType));
+            return View(GetOffersByItemType(itemType));
         }
 
         // GET: Marketplace/Add
@@ -82,7 +75,7 @@ namespace Citizen.Controllers.Marketplace
             var result = user.AddMarketplaceOffer(model.ItemType, model.Amount, model.Price);
             if(result.Success)
             {
-                await _repo.SaveChangesAsync();
+                await SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
             
@@ -102,7 +95,7 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
             
-            var offer = await _repo.MarketplaceService.GetOfferById(id.Value);
+            var offer = await GetOfferByIdAsync(id.Value);
             if (offer == null)
             {
                 return NotFound();
@@ -133,7 +126,7 @@ namespace Citizen.Controllers.Marketplace
             var result = user.EditMarketplaceOffer(model.Id, model.Price);
             if(result.Success)
             {
-                await _repo.SaveChangesAsync();
+                await SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
 
@@ -148,7 +141,7 @@ namespace Citizen.Controllers.Marketplace
                 return NotFound();
             }
 
-            var offer = await _repo.MarketplaceService.GetOfferById(id.Value);
+            var offer = await GetOfferByIdAsync(id.Value);
             if (offer == null)
             {
                 return NotFound();
@@ -174,16 +167,52 @@ namespace Citizen.Controllers.Marketplace
             var result = user.DeleteMarketplaceOffer(model.Id);
             if(result.Success)
             {
-                await _repo.SaveChangesAsync();
+                await SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index), new { result.Message });
         }
 
+        #region Helpers
+
         private async Task<ApplicationUser> GetCurrentUserAsync()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
+            return await _dbContext.ApplicationUsers
+                .Include(p => p.Items)
+                .Include(p => p.MarketplaceOffers)
+                .Include(p => p.Country)
+                .Include(p => p.UserStorage)
+                .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
         }
+        
+        public IQueryable<MarketplaceOffer> GetOffersByItemType(ItemType itemType)
+        {
+            return _dbContext.MarketplaceOffers
+                .Include(m => m.ApplicationUser)
+                .Where(m => m.ItemType == itemType);
+        }
+        
+        public Task<MarketplaceOffer> GetOfferByIdAsync(int id)
+        {
+            return _dbContext.MarketplaceOffers
+                .Include(m => m.ApplicationUser)
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        private async Task<ActionStatus> SaveChangesAsync()
+        {
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+                return new ActionStatus(true, GameSettings.DataConcurrencyOk);
+            }
+            catch
+            {
+                return new ActionStatus(false, GameSettings.DataConcurrencyError);
+            }
+        }
+
+        #endregion
     }
 }
