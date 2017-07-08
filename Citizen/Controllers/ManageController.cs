@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.ManageViewModels;
 using Citizen.Services;
+using Citizen.DAL;
 
 namespace Citizen.Controllers
 {
@@ -20,30 +21,29 @@ namespace Citizen.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IRepository _repo;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           ILoggerFactory loggerFactory,
-          ApplicationDbContext dbContext)
+          IRepository repository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = loggerFactory.CreateLogger<ManageController>();
-            _dbContext = dbContext;
+            _repo = repository;
         }
 
         //
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<IActionResult> Index(StatusMessageId? message = null)
+        public async Task<IActionResult> Index(string message)
         {
-            ViewData["StatusMessage"] =
-                message == StatusMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == StatusMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == StatusMessageId.Error ? "An error has occurred."
-                : "";
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
 
             var user = await GetCurrentUserAsync();
             if (user == null)
@@ -87,46 +87,12 @@ namespace Citizen.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.ChangePasswordSuccess });
+                    return RedirectToAction(nameof(Index), new { Message = "Password changed succesfully." });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        [HttpGet]
-        public IActionResult SetPassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(Index), new { Message = StatusMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-                return View(model);
-            }
-            return RedirectToAction(nameof(Index), new { Message = StatusMessageId.Error });
+            return RedirectToAction(nameof(Index), new { Message = "Error." });
         }
 
         #region Helpers
@@ -139,16 +105,10 @@ namespace Citizen.Controllers
             }
         }
 
-        public enum StatusMessageId
+        private async Task<ApplicationUser> GetCurrentUserAsync()
         {
-            ChangePasswordSuccess,
-            SetPasswordSuccess,
-            Error
-        }
-
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            return _repo.ApplicationUserService.GetApplicationUserById(identityUser.Id);
         }
 
         #endregion
