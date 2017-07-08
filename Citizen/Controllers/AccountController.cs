@@ -22,21 +22,18 @@ namespace Citizen.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ApplicationDbContext dbContext,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
-            ILoggerFactory loggerFactory)
+            IOptions<IdentityCookieOptions> identityCookieOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         //
@@ -67,12 +64,10 @@ namespace Citizen.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning(2, "User account locked out.");
                     return View("Lockout");
                 }
                 else
@@ -123,7 +118,6 @@ namespace Citizen.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
 
                     var userItems = new Collection<Item>
                     {
@@ -177,7 +171,6 @@ namespace Citizen.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
