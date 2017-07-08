@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Citizen.Models;
 using Citizen.Models.CitizenViewModels;
-using Citizen.DAL;
 using Citizen.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -184,11 +183,11 @@ namespace Citizen.Controllers.Citizen
             try
             {
                 await _dbContext.SaveChangesAsync();
-                return new ActionStatus(true, "Changes saved.");
+                return new ActionStatus(true, GameSettings.DataConcurrencyOk);
             }
             catch
             {
-                return new ActionStatus(false, "Data has been modified by someone else. Try again.");
+                return new ActionStatus(false, GameSettings.DataConcurrencyError);
             }
         }
 

@@ -75,7 +75,7 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Add), _modelInvalidMessage);
+                return View(model);
             }
 
             var user = await GetCurrentUserAsync();
@@ -126,7 +126,7 @@ namespace Citizen.Controllers.Marketplace
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Edit), _modelInvalidMessage);
+                return View(model);
             }
             
             var user = await GetCurrentUserAsync();

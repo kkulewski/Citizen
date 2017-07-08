@@ -24,5 +24,9 @@ namespace Citizen.Models
         public static int DefaultGrainAmount = 0;
 
         public static int DefaultMarketPlaceholderAmount = 0;
+        
+        public const string DataConcurrencyOk = "Changes saved";
+
+        public const string DataConcurrencyError = "Data has been modified by someone else. Try again.";
     }
 }
