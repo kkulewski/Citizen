@@ -191,6 +191,7 @@ namespace Citizen.Controllers.Marketplace
                 await SaveChangesAsync();
             }
 
+            return RedirectToAction(nameof(Offers), new { item = offer.ItemType, message = result.Message });
         }
 
         #region Helpers
