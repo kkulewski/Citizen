@@ -32,7 +32,7 @@ namespace Citizen.Controllers.Marketplace
             }
 
             var user = await GetCurrentUserAsync();
-            return View(user.MarketplaceOffers);
+            return View(user.MarketplaceOffers.OrderBy(i => i.Price));
         }
 
         // GET: Marketplace/Offers/Food
@@ -45,7 +45,7 @@ namespace Citizen.Controllers.Marketplace
 
             var user = await GetCurrentUserAsync();
             ViewData["ApplicationUser"] = user;
-            return View(GetOffersByItemType(itemType));
+            return View(GetOffersByItemType(item).OrderBy(i => i.Price));
         }
 
         // GET: Marketplace/Add
