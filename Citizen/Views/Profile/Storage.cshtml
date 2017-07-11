@@ -1,4 +1,4 @@
-﻿@model Citizen.Models.CitizenViewModels.UserStorageViewModel
+﻿@model UserStorageViewModel
 @{
     ViewData["Title"] = "Your storage";
     var capacityUsePercent = (int)(((double)@Model.CapacityUsed / (double)@Model.Capacity) * 100);
