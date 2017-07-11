@@ -176,7 +176,7 @@ namespace Citizen.Models
             seller.Money += transactionCost;
             Money -= transactionCost;
 
-            return new ActionStatus(true, "Items bought successfylly.");
+            return new ActionStatus(true, "Items bought successfully.");
         }
     }
 }
