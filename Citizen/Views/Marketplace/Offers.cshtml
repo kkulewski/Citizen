@@ -1,4 +1,4 @@
-@model IEnumerable<Citizen.Models.MarketplaceOffer>
+@model IEnumerable<MarketplaceOffer>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,52 +10,63 @@
 <p>
     <a asp-action="Add">Add offer</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-            @using (Html.BeginForm("Buy", "Marketplace", FormMethod.Post))
-            {
-                <div class="form-inline row">
-                    <input type="number" name="buyAmount" value="1" class="form-control" />
-                    <input type="hidden" name="id" value="@item.Id" />
-                    <input type="submit" value="Buy" class="btn btn-success" />
-                </div>
-            }
-            </td>
-        </tr>
+
+@{
+    if (Model.Count() == 0)
+    {
+        <div>No items to show.</div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ItemType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ApplicationUser.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm("Buy", "Marketplace", FormMethod.Post))
+                            {
+                                <div class="form-inline row">
+                                    <input type="number" name="buyAmount" value="1" class="form-control" />
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <input type="submit" value="Buy" class="btn btn-success" />
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
-    </tbody>
-</table>
