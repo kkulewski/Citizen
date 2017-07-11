@@ -36,7 +36,7 @@ namespace Citizen.Controllers.Marketplace
         }
 
         // GET: Marketplace/Offers/Food
-        public async Task<IActionResult> Offers(string message, ItemType item)
+        public async Task<IActionResult> Offers(string message, ItemType itemType)
         {
             if (message != null)
             {
@@ -45,7 +45,7 @@ namespace Citizen.Controllers.Marketplace
 
             var user = await GetCurrentUserAsync();
             ViewData["ApplicationUser"] = user;
-            return View(GetOffersByItemType(item).OrderBy(i => i.Price));
+            return View(GetOffersByItemType(itemType).OrderBy(i => i.Price));
         }
 
         // GET: Marketplace/Add
@@ -191,7 +191,7 @@ namespace Citizen.Controllers.Marketplace
                 await SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Offers), new { item = offer.ItemType, message = result.Message });
+            return RedirectToAction(nameof(Offers), new { itemType = offer.ItemType, message = result.Message });
         }
 
         #region Helpers
