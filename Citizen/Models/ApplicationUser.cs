@@ -32,9 +32,6 @@ namespace Citizen.Models
 
         public UserStorage UserStorage { get; set; }
 
-        [ForeignKey("Employment")]
-        public int EmploymentId { get; set; }
-
         public Employment Employment { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
