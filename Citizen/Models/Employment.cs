@@ -17,10 +17,10 @@ namespace Citizen.Models
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
 
-        public ApplicationUser Employee { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
         [ForeignKey("ApplicationUser")]
-        public int EmployeeId { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public decimal Salary { get; set; }
 
