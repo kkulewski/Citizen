@@ -183,5 +183,35 @@ namespace Citizen.Models
 
             return new ActionStatus(true, "Items bought successfully.");
         }
+
+        public ActionStatus CreateCompany(string name, ItemType product)
+        {
+            if (Money <= GameSettings.CompanyCost)
+                return new ActionStatus(false, "No enough money.");
+
+            Money -= GameSettings.CompanyCost;
+
+            var company = new Company
+            {
+                Name = name,
+                Product = product,
+                Source = GetSourceForProduct(product),
+                OwnerId = Id,
+                MaxEmployments = GameSettings.CompanyMaxWorkers
+            };
+
+            Companies.Add(company);
+
+            return new ActionStatus(true, "Company created succesfully.");
+        }
+
+        public ItemType GetSourceForProduct(ItemType product)
+        {
+            if (product == ItemType.Food)
+                return ItemType.Grain;
+
+            else
+                return ItemType.Nil;
+        }
     }
 }
