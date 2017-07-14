@@ -13,6 +13,10 @@ namespace Citizen.Models
 
         public static decimal CountryChangeCost = 5.00M;
 
+        public static decimal CompanyCost = 1000.00M;
+
+        public static int CompanyMaxWorkers = 10;
+
         public static int DefaultExperience = 0;
 
         public static decimal DefaultMoney = 100.00M;
