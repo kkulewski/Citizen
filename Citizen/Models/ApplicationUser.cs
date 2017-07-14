@@ -13,6 +13,7 @@ namespace Citizen.Models
         {
             this.MarketplaceOffers = new HashSet<MarketplaceOffer>();
             this.Items = new HashSet<Item>();
+            this.Companies = new HashSet<Company>();
         }
 
         public string Name { get; set; }
@@ -37,6 +38,8 @@ namespace Citizen.Models
         public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<MarketplaceOffer> MarketplaceOffers { get; set; }
+
+        public virtual ICollection<Company> Companies { get; set; }
 
         public void EnergyRestoreEvent(int ticks)
         {
