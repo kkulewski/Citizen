@@ -108,6 +108,22 @@ namespace Citizen.Controllers.Work
             return View(viewModel);
         }
 
+        // POST: Work/Company/5/FireWorker
+        public async Task<IActionResult> FireWorker(int companyId, int employmentId)
+        {
+            var user = await GetCurrentUserAsync();
+            var company = await GetCompanyByIdAsync(companyId);
+            var employment = await GetEmploymentByIdAsync(employmentId);
+
+            var result = user.FireWorker(company, employment);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
