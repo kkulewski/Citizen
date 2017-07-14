@@ -124,6 +124,22 @@ namespace Citizen.Controllers.Work
             return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
         }
 
+        // POST: Work/Company/5/DeleteJobOffer
+        public async Task<IActionResult> DeleteJobOffer(int companyId, int jobOfferId)
+        {
+            var user = await GetCurrentUserAsync();
+            var company = await GetCompanyByIdAsync(companyId);
+            var jobOffer = await GetJobOfferByIdAsync(jobOfferId);
+
+            var result = user.DeleteJobOffer(company, jobOffer);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
