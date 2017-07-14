@@ -32,6 +32,8 @@ namespace Citizen.Models
 
         public UserStorage UserStorage { get; set; }
 
+        public Employment Job { get; set; }
+
         public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<MarketplaceOffer> MarketplaceOffers { get; set; }
