@@ -124,6 +124,29 @@ namespace Citizen.Controllers.Work
             return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
         }
 
+        // GET: Work/Company/5/AddJobOffer
+        public async Task<IActionResult> AddJobOffer(string message, int companyId)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            var company = await GetCompanyByIdAsync(companyId);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AddJobOfferViewModel()
+            {
+                Company = company,
+                CompanyId = company.Id
+            };
+
+            return View(viewModel);
+        }
+
         // POST: Work/Company/5/DeleteJobOffer
         public async Task<IActionResult> DeleteJobOffer(int companyId, int jobOfferId)
         {
