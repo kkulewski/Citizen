@@ -154,6 +154,12 @@ namespace Citizen.Controllers.Work
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
+        public async Task<JobOffer> GetJobOfferByIdAsync(int id)
+        {
+            return await _dbContext.JobOffers
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         private async Task<ActionStatus> SaveChangesAsync()
         {
             try
