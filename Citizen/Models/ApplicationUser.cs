@@ -236,7 +236,7 @@ namespace Citizen.Models
 
             var searchJobOffer = userCompany.JobOffers.FirstOrDefault(e => e.Id == jobOffer.Id);
             if (searchJobOffer == null)
-                return new ActionStatus(false, "No such jobOffer.");
+                return new ActionStatus(false, "No such job offer.");
 
             userCompany.JobOffers.Remove(jobOffer);
             return new ActionStatus(true, "Job offer deleted succesfully.");
