@@ -98,7 +98,7 @@
                         @Html.DisplayFor(modelItem => item.Salary)
                     </td>
                     <td>
-                        <a asp-action="DeleteJobOffer" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="DeleteJobOffer" asp-route-companyId="@Model.Id" asp-route-jobOfferId="@item.Id">Delete offer</a>
                     </td>
                 </tr>
             }
