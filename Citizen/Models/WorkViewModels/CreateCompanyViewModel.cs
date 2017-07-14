@@ -13,8 +13,8 @@ namespace Citizen.Models.MarketplaceViewModels
         public string Name { get; set; }
 
         [Required]
-        public ItemType CompanyType { get; set; }
+        public ItemType Product { get; set; }
 
-        public IEnumerable<ItemType> CompanyTypes { get; set; }
+        public IEnumerable<ItemType> ProductTypes { get; set; }
     }
 }
