@@ -71,7 +71,7 @@
                         @Html.DisplayFor(modelItem => item.DaysWorker)
                     </td>
                     <td>
-                        <a asp-action="FireWorker" asp-route-id="@item.Id">Fire worker</a>
+                        <a asp-action="FireWorker" asp-route-companyId="@Model.Id" asp-route-employmentId="@item.Id">Fire worker</a>
                     </td>
                 </tr>
             }
