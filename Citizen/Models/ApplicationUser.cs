@@ -213,5 +213,19 @@ namespace Citizen.Models
             else
                 return ItemType.Nil;
         }
+
+        public ActionStatus FireWorker(Company company, Employment employment)
+        {
+            var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
+            if (userCompany == null)
+                return new ActionStatus(false, "You don't own this company.");
+
+            var searchEmployment = userCompany.Employments.FirstOrDefault(e => e.Id == employment.Id);
+            if(searchEmployment == null)
+                return new ActionStatus(false, "No such employment.");
+
+            userCompany.Employments.Remove(searchEmployment);
+            return new ActionStatus(true, "Worker fired succesfully.");
+        }
     }
 }
