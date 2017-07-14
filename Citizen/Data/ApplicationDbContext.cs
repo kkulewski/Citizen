@@ -23,6 +23,8 @@ namespace Citizen.Data
         public DbSet<MarketplaceOffer> MarketplaceOffers { get; set; }
         [NotMapped]
         public DbSet<Item> Items { get; set; }
+        [NotMapped]
+        public DbSet<Company> Companies { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
