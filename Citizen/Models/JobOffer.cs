@@ -17,9 +17,6 @@ namespace Citizen.Models
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
 
-        [ForeignKey("ApplicationUser")]
-        public string ApplicationUserId { get; set; }
-
         public decimal Salary { get; set; }
     }
 }
