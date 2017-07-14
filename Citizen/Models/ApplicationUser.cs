@@ -228,6 +228,22 @@ namespace Citizen.Models
             return new ActionStatus(true, "Worker fired succesfully.");
         }
 
+        public ActionStatus AddJobOffer(Company company, decimal salary)
+        {
+            var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
+            if (userCompany == null)
+                return new ActionStatus(false, "You don't own this company.");
+
+            var jobOffer = new JobOffer
+            {
+                CompanyId = company.Id,
+                Salary = salary
+            };
+
+            userCompany.JobOffers.Add(jobOffer);
+            return new ActionStatus(true, "Job offer added succesfully.");
+        }
+
         public ActionStatus DeleteJobOffer(Company company, JobOffer jobOffer)
         {
             var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
