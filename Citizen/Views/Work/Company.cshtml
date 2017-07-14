@@ -1,0 +1,106 @@
+@model CompanyViewModel
+
+@{
+    ViewData["Title"] = "Company details";
+}
+
+<h2>Company details</h2>
+
+<div>
+    <hr />
+    <a asp-controller="Work" asp-action="DeleteCompany" asp-route-id="@Model.Id">Delete company</a> |
+    <a asp-controller="Work" asp-action="Index">Back to List</a>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Source)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Source)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxEmployments)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxEmployments)
+        </dd>
+    </dl>
+</div>
+<hr />
+<div>
+    <h4>Workers</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Days worked
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Employments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DaysWorker)
+                    </td>
+                    <td>
+                        <a asp-action="FireWorker" asp-route-id="@item.Id">Fire worker</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+    <h4>Job offers</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Salary
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.JobOffers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        <a asp-action="DeleteJobOffer" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
