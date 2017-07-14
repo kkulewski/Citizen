@@ -8,6 +8,7 @@ using Citizen.Models;
 using Citizen.Models.MarketplaceViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Citizen.Models.WorkViewModels;
 
 namespace Citizen.Controllers.Work
 {
@@ -74,6 +75,39 @@ namespace Citizen.Controllers.Work
             return RedirectToAction(nameof(CreateCompany), new { result.Message });
         }
 
+        // GET: Work/Company/5
+        public async Task<IActionResult> Company(int? id, string message)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await GetCompanyByIdAsync(id.Value);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CompanyViewModel()
+            {
+                Id = company.Id,
+                Name = company.Name,
+                Product = company.Product,
+                Source = company.Source,
+                MaxEmployments = company.MaxEmployments,
+                Employments = company.Employments.ToList(),
+                JobOffers = company.JobOffers.ToList()
+            };
+
+            return View(viewModel);
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
@@ -85,6 +119,16 @@ namespace Citizen.Controllers.Work
                 .Include(p => p.Country)
                 .Include(p => p.UserStorage)
                 .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
+        }
+
+        public Task<Company> GetCompanyByIdAsync(int id)
+        {
+            return _dbContext.Companies
+                .Include(m => m.Owner)
+                .Include(m => m.JobOffers)
+                .Include(m => m.Employments)
+                    .ThenInclude(n => n.ApplicationUser)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         private async Task<ActionStatus> SaveChangesAsync()
