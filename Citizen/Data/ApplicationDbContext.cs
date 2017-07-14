@@ -27,6 +27,8 @@ namespace Citizen.Data
         public DbSet<Company> Companies { get; set; }
         [NotMapped]
         public DbSet<Employment> Employments { get; set; }
+        [NotMapped]
+        public DbSet<JobOffer> JobOffers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
