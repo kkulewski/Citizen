@@ -21,6 +21,10 @@ namespace Citizen.Models
         [ForeignKey("ApplicationUser")]
         public string OwnerId { get; set; }
 
+        public int MaxEmployments { get; set; }
+
         public virtual ICollection<Employment> Employments { get; set; }
+
+        public virtual ICollection<JobOffer> JobOffers { get; set; }
     }
 }
