@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Citizen.Data;
-using Citizen.Models;
 
 namespace Citizen.Data.Migrations
 {
@@ -33,8 +32,6 @@ namespace Citizen.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<int>("EmploymentId");
 
                     b.Property<int>("Energy");
 
@@ -76,9 +73,6 @@ namespace Citizen.Data.Migrations
                         .HasName("AlternateKey_CitizenName");
 
                     b.HasIndex("CountryId");
-
-                    b.HasIndex("EmploymentId")
-                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -146,11 +140,15 @@ namespace Citizen.Data.Migrations
 
                     b.Property<int>("EmployeeId");
 
+                    b.Property<string>("EmployeeId1");
+
                     b.Property<decimal>("Salary");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("EmployeeId1");
 
                     b.ToTable("Employments");
                 });
@@ -363,11 +361,6 @@ namespace Citizen.Data.Migrations
                         .WithMany("Citizens")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Citizen.Models.Employment", "Employment")
-                        .WithOne("Employee")
-                        .HasForeignKey("Citizen.Models.ApplicationUser", "EmploymentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Citizen.Models.Company", b =>
@@ -383,6 +376,10 @@ namespace Citizen.Data.Migrations
                         .WithMany("Employments")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Citizen.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId1");
                 });
 
             modelBuilder.Entity("Citizen.Models.Item", b =>
