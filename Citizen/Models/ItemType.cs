@@ -4,6 +4,7 @@
     {
         Food,
         Grain,
-        MarketPlaceholder
+        MarketPlaceholder,
+        Nil
     }
 }
