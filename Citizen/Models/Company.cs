@@ -16,7 +16,7 @@ namespace Citizen.Models
 
         public ItemType Product { get; set; }
 
-        public ItemType? Source { get; set; }
+        public ItemType Source { get; set; }
 
         public ApplicationUser Owner { get; set; }
 
