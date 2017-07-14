@@ -21,6 +21,6 @@ namespace Citizen.Models
         [ForeignKey("ApplicationUser")]
         public string OwnerId { get; set; }
 
-        public virtual ICollection<ApplicationUser> Workers { get; set; }
+        public virtual ICollection<Employment> Employments { get; set; }
     }
 }
