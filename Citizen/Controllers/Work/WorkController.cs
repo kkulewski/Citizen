@@ -53,6 +53,27 @@ namespace Citizen.Controllers.Work
             return View(viewModel);
         }
 
+        // POST: Work/CreateCompany
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCompany(CreateCompanyViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await GetCurrentUserAsync();
+            var result = user.CreateCompany(model.Name, model.Product);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { result.Message });
+            }
+
+            return RedirectToAction(nameof(CreateCompany), new { result.Message });
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
