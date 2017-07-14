@@ -35,6 +35,24 @@ namespace Citizen.Controllers.Work
             return View(user.Companies);
         }
 
+        // GET: Work/CreateCompany
+        public IActionResult CreateCompany(string message)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            var productTypes = new List<ItemType>()
+            {
+                ItemType.Food,
+                ItemType.Grain
+            };
+
+            var viewModel = new CreateCompanyViewModel() { ProductTypes = productTypes };
+            return View(viewModel);
+        }
+
         #region Helpers
 
         private async Task<ApplicationUser> GetCurrentUserAsync()
