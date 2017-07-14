@@ -227,5 +227,19 @@ namespace Citizen.Models
             userCompany.Employments.Remove(searchEmployment);
             return new ActionStatus(true, "Worker fired succesfully.");
         }
+
+        public ActionStatus DeleteJobOffer(Company company, JobOffer jobOffer)
+        {
+            var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
+            if (userCompany == null)
+                return new ActionStatus(false, "You don't own this company.");
+
+            var searchJobOffer = userCompany.JobOffers.FirstOrDefault(e => e.Id == jobOffer.Id);
+            if (searchJobOffer == null)
+                return new ActionStatus(false, "No such jobOffer.");
+
+            userCompany.JobOffers.Remove(jobOffer);
+            return new ActionStatus(true, "Job offer deleted succesfully.");
+        }
     }
 }
