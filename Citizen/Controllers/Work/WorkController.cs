@@ -100,6 +100,22 @@ namespace Citizen.Controllers.Work
             return View(viewModel);
         }
 
+        // POST: Work/DeleteCompany/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCompany(DeleteCompanyViewModel model)
+        {
+            var user = await GetCurrentUserAsync();
+            var company = await GetCompanyByIdAsync(model.Id);
+            var result = user.DeleteCompany(company);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index), new { result.Message });
+        }
+
         // GET: Work/Company/5
         public async Task<IActionResult> Company(int? id, string message)
         {
