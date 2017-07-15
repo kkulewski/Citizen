@@ -214,6 +214,13 @@ namespace Citizen.Models
                 return ItemType.Nil;
         }
 
+        public int GetWorkersAndOffersForCompany(Company company)
+        {
+            var workers = company.Employments.Count();
+            var jobOffers = company.JobOffers.Count();
+            return workers + jobOffers;
+        }
+
         public ActionStatus FireWorker(Company company, Employment employment)
         {
             var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
