@@ -237,6 +237,12 @@ namespace Citizen.Models
 
         public ActionStatus AddJobOffer(Company company, decimal salary)
         {
+            if(salary <= 0.00M)
+                return new ActionStatus(false, "Invalid salary.");
+
+            if(GetWorkersAndOffersForCompany(company) >= GameSettings.CompanyMaxWorkers)
+                return new ActionStatus(false, "You cannot add more workers or job offers.");
+
             var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
             if (userCompany == null)
                 return new ActionStatus(false, "You don't own this company.");
