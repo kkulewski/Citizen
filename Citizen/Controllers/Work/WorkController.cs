@@ -147,6 +147,29 @@ namespace Citizen.Controllers.Work
             return View(viewModel);
         }
 
+        // POST: /Work/Company/5/AddJobOffer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddJobOffer(AddJobOfferViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await GetCurrentUserAsync();
+            var company = await GetCompanyByIdAsync(model.CompanyId);
+
+            var result = user.AddJobOffer(company, model.Salary);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+                return RedirectToAction(nameof(Company), new { id = model.CompanyId, message = result.Message });
+            }
+
+            return RedirectToAction(nameof(AddJobOffer), new { companyId = model.CompanyId, message = result.Message });
+        }
+
         // POST: Work/Company/5/DeleteJobOffer
         public async Task<IActionResult> DeleteJobOffer(int companyId, int jobOfferId)
         {
