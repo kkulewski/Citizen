@@ -75,6 +75,31 @@ namespace Citizen.Controllers.Work
             return RedirectToAction(nameof(CreateCompany), new { result.Message });
         }
 
+        // GET: Work/DeleteCompany/5
+        public async Task<IActionResult> DeleteCompany(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await GetCompanyByIdAsync(id.Value);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new DeleteCompanyViewModel()
+            {
+                Id = company.Id,
+                Name = company.Name,
+                Product = company.Product,
+                Source = company.Source
+            };
+
+            return View(viewModel);
+        }
+
         // GET: Work/Company/5
         public async Task<IActionResult> Company(int? id, string message)
         {
