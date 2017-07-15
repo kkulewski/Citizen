@@ -36,6 +36,20 @@ namespace Citizen.Controllers.Work
             return View(user.Companies);
         }
 
+        // GET: Work/JobOffers
+        public async Task<IActionResult> JobOffers(string message)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            var user = await GetCurrentUserAsync();
+            var jobOffers = await GetJobOfferListAsync();
+
+            return View(jobOffers.OrderByDescending(c => c.Salary));
+        }
+
         // GET: Work/CreateCompany
         public IActionResult CreateCompany(string message)
         {
@@ -261,6 +275,14 @@ namespace Citizen.Controllers.Work
         {
             return await _dbContext.JobOffers
                 .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<List<JobOffer>> GetJobOfferListAsync()
+        {
+            return await _dbContext.JobOffers
+                .Include(e => e.Company)
+                    .ThenInclude(c => c.Owner)
+                .ToListAsync();
         }
 
         private async Task<ActionStatus> SaveChangesAsync()
