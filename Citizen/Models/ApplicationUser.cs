@@ -205,6 +205,27 @@ namespace Citizen.Models
             return new ActionStatus(true, "Company created succesfully.");
         }
 
+        public ActionStatus DeleteCompany(Company company)
+        {
+            var userCompany = Companies.FirstOrDefault(c => c.Id == company.Id);
+            if(userCompany == null)
+                return new ActionStatus(false, "You don't own this company.");
+
+            foreach (var employment in userCompany.Employments.ToList())
+            {
+                userCompany.Employments.Remove(employment);
+            }
+
+            foreach (var jobOffer in userCompany.JobOffers.ToList())
+            {
+                userCompany.JobOffers.Remove(jobOffer);
+            }
+
+            Companies.Remove(userCompany);
+            return new ActionStatus(true, "Company deleted succesfully.");
+
+        }
+
         public ItemType GetSourceForProduct(ItemType product)
         {
             if (product == ItemType.Food)
