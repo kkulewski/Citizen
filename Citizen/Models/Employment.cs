@@ -24,6 +24,6 @@ namespace Citizen.Models
 
         public decimal Salary { get; set; }
 
-        public int DaysWorker { get; set; }
+        public int DaysWorked { get; set; }
     }
 }

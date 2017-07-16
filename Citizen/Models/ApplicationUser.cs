@@ -195,7 +195,7 @@ namespace Citizen.Models
                 ApplicationUserId = Id,
                 Company = jobOffer.Company,
                 CompanyId = jobOffer.CompanyId,
-                DaysWorker = 0,
+                DaysWorked = 0,
                 Salary = jobOffer.Salary
             };
 
@@ -258,13 +258,13 @@ namespace Citizen.Models
             Money += Employment.Salary;
             companyOwner.Money -= Employment.Salary;
 
-            Employment.DaysWorker += 1;
+            Employment.DaysWorked += 1;
 
             string workSummary = string.Format(
-                "Worked succesfully. (-{0} energy, +{1} money ({2} days worked so far)", 
+                "Worked succesfully. (-{0} energy, +{1} money, {2} days worked so far)", 
                 GameSettings.WorkEnergyCost, 
                 Employment.Salary, 
-                Employment.DaysWorker);
+                Employment.DaysWorked);
 
             return new ActionStatus(true, workSummary);
         }
