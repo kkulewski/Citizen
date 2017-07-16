@@ -35,6 +35,8 @@ namespace Citizen.Models
 
         public Employment Employment { get; set; }
 
+        public DateTime LastWorked { get; set; }
+
         public virtual ICollection<Item> Items { get; set; }
 
         public virtual ICollection<MarketplaceOffer> MarketplaceOffers { get; set; }

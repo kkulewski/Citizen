@@ -107,7 +107,8 @@ namespace Citizen.Controllers
                     Experience = GameSettings.DefaultExperience,
                     Money = GameSettings.DefaultMoney,
                     Energy = GameSettings.EnergyMax,
-                    EnergyRestore = GameSettings.EnergyMax
+                    EnergyRestore = GameSettings.EnergyMax,
+                    LastWorked = GameSettings.DefaultLastWorked
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
