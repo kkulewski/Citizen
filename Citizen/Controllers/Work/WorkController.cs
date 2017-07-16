@@ -86,6 +86,7 @@ namespace Citizen.Controllers.Work
             if (result.Success)
             {
                 await SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { message = result.Message });
             }
 
             return RedirectToAction(nameof(JobOffers), new { message = result.Message });
