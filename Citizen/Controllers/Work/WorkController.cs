@@ -44,11 +44,9 @@ namespace Citizen.Controllers.Work
 
                 return View(null);
             }
-
-
+            
             return View(employment);
         }
-
 
         // GET: Work/Companies
         public async Task<IActionResult> Companies(string message)
