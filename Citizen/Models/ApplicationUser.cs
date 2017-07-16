@@ -223,6 +223,52 @@ namespace Citizen.Models
             return new ActionStatus(true, "You have successfully resigned from a job.");
         }
 
+        public ActionStatus Work()
+        {
+            if (Employment == null)
+                return new ActionStatus(false, "You do not have a job.");
+
+            if (Energy < GameSettings.WorkEnergyCost)
+                return new ActionStatus(false, "You do not have enough energy to work.");
+
+            var companyOwner = Employment.Company.Owner;
+
+            if (companyOwner.Money < Employment.Salary)
+                return new ActionStatus(false, "Employer owner does not have enough money for your salary.");
+
+            var product = Employment.Company.Product;
+            var source = Employment.Company.Source;
+            var companyOwnerProduct = Employment.Company.Owner.Items.FirstOrDefault(item => item.ItemType == product);
+            var companyOwnerSource = Employment.Company.Owner.Items.FirstOrDefault(item => item.ItemType == source);
+
+            if (source != ItemType.Nil)
+            {
+                 if (companyOwnerSource.Amount <= GameSettings.CompanyWorkSource)
+                    return new ActionStatus(false, "Employer does not have required sources in his storage.");
+            }
+
+            Energy -= GameSettings.WorkEnergyCost;
+
+            companyOwnerProduct.Amount += GameSettings.CompanyWorkProduct;
+            if (source != ItemType.Nil)
+            {
+                companyOwnerSource.Amount -= GameSettings.CompanyWorkSource;
+            }
+
+            Money += Employment.Salary;
+            companyOwner.Money -= Employment.Salary;
+
+            Employment.DaysWorker += 1;
+
+            string workSummary = string.Format(
+                "Worked succesfully. (-{0} energy, +{1} money ({2} days worked so far)", 
+                GameSettings.WorkEnergyCost, 
+                Employment.Salary, 
+                Employment.DaysWorker);
+
+            return new ActionStatus(true, workSummary);
+        }
+
         public ActionStatus CreateCompany(string name, ItemType product)
         {
             if (Money <= GameSettings.CompanyCost)
