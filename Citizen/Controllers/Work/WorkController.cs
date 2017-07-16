@@ -310,6 +310,17 @@ namespace Citizen.Controllers.Work
                 .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
         }
 
+        private async Task<ApplicationUser> GetCurrentUserWithCompanyAndOwnerAsync()
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            return await _dbContext.ApplicationUsers
+                .Include(p => p.Employment)
+                    .ThenInclude(c => c.Company)
+                        .ThenInclude(o => o.Owner)
+                            .ThenInclude(i => i.Items)
+                .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
+        }
+
         public Task<Company> GetCompanyByIdAsync(int id)
         {
             return _dbContext.Companies
@@ -324,6 +335,8 @@ namespace Citizen.Controllers.Work
         {
             return await _dbContext.Employments
                 .Include(e => e.ApplicationUser)
+                .Include(e => e.Company)
+                    .ThenInclude(c => c.Owner)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
