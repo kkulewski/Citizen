@@ -233,6 +233,17 @@ namespace Citizen.Models
             if (Energy < GameSettings.WorkEnergyCost)
                 return new ActionStatus(false, "You do not have enough energy to work.");
 
+            var workTimeDiff = DateTime.Now - LastWorked;
+            var timeLeftToNextWork = GameSettings.WorkInterval - (DateTime.Now - LastWorked);
+            var message = string.Format(
+                "You have already worked today. Please try again in {0} hours, {1} minutes and {2} seconds.", 
+                timeLeftToNextWork.Hours,
+                timeLeftToNextWork.Minutes,
+                timeLeftToNextWork.Seconds);
+
+            if (timeLeftToNextWork > TimeSpan.FromHours(0))
+                return new ActionStatus(false, message);
+
             var companyOwner = Employment.Company.Owner;
 
             if (companyOwner.Money < Employment.Salary)
@@ -248,6 +259,8 @@ namespace Citizen.Models
                  if (companyOwnerSource.Amount <= GameSettings.CompanyWorkSource)
                     return new ActionStatus(false, "Employer does not have required sources in his storage.");
             }
+
+            LastWorked = DateTime.Now;
 
             Energy -= GameSettings.WorkEnergyCost;
 
