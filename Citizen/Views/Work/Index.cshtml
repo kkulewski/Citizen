@@ -1,0 +1,54 @@
+@model Employment
+
+@{
+    ViewData["Title"] = "Your job";
+}
+
+<h2>Your job</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+@{
+    if (Model == null)
+    {
+        <div>You do not have a job.</div>
+    }
+    else
+    {
+    <div>
+        <hr />
+        <input type="hidden" asp-for="Id" />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Company.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Company.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Company.Owner.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Company.Owner.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Company.Product)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Company.Product)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Salary)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Salary)
+            </dd>
+        </dl>
+
+        <form asp-action="JobResign">
+            <div>
+                <input type="submit" value="Resign" class="btn btn-danger" />
+            </div>
+        </form>
+    </div>
+    }
+}
+
