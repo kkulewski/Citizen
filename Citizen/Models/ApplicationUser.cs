@@ -184,6 +184,27 @@ namespace Citizen.Models
             return new ActionStatus(true, "Items bought successfully.");
         }
 
+        public ActionStatus JobApply(JobOffer jobOffer)
+        {
+            if(Employment != null)
+                return new ActionStatus(false, "You do have a job already.");
+
+            var employment = new Employment()
+            {
+                ApplicationUser = this,
+                ApplicationUserId = Id,
+                Company = jobOffer.Company,
+                CompanyId = jobOffer.CompanyId,
+                DaysWorker = 0,
+                Salary = jobOffer.Salary
+            };
+
+            jobOffer.Company.Employments.Add(employment);
+            jobOffer.Company.JobOffers.Remove(jobOffer);
+
+            return new ActionStatus(true, "You have been hired successfully.");
+        }
+
         public ActionStatus CreateCompany(string name, ItemType product)
         {
             if (Money <= GameSettings.CompanyCost)
