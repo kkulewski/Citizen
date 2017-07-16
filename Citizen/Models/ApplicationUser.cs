@@ -205,6 +205,24 @@ namespace Citizen.Models
             return new ActionStatus(true, "You have been hired successfully.");
         }
 
+        public ActionStatus JobResign(Employment employment)
+        {
+            if (employment == null)
+                return new ActionStatus(false, "Job does not exist.");
+
+            if (Employment == null)
+                return new ActionStatus(false, "You do not have a job.");
+
+            if (Employment.Id != employment.Id)
+                return new ActionStatus(false, "You do not work here.");
+
+            var company = employment.Company;
+            company.Employments.Remove(employment);
+            Employment = null;
+
+            return new ActionStatus(true, "You have successfully resigned from a job.");
+        }
+
         public ActionStatus CreateCompany(string name, ItemType product)
         {
             if (Money <= GameSettings.CompanyCost)
