@@ -48,6 +48,21 @@ namespace Citizen.Controllers.Work
             return View(employment);
         }
 
+        // POST: Work/Work
+        public async Task<IActionResult> Work(string message)
+        {
+            var user = await GetCurrentUserWithCompanyAndOwnerAsync();
+
+            var result = user.Work();
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index), new { message = result.Message });
+
+        }
+
         // GET: Work/Companies
         public async Task<IActionResult> Companies(string message)
         {
