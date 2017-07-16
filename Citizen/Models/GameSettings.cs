@@ -11,11 +11,17 @@ namespace Citizen.Models
 
         public static int EnergyRestoreEventTickAmount = 1;
 
+        public static int WorkEnergyCost = 10;
+
         public static decimal CountryChangeCost = 5.00M;
 
         public static decimal CompanyCost = 1000.00M;
 
         public static int CompanyMaxWorkers = 10;
+
+        public static int CompanyWorkProduct = 10;
+
+        public static int CompanyWorkSource = 10;
 
         public static int DefaultExperience = 0;
 
