@@ -50,6 +50,21 @@ namespace Citizen.Controllers.Work
             return View(jobOffers.OrderByDescending(c => c.Salary));
         }
 
+        // POST: Work/JobOffers/Apply
+        public async Task<IActionResult> JobApply(int id)
+        {
+            var user = await GetCurrentUserAsync();
+            var jobOffer = await GetJobOfferByIdAsync(id);
+
+            var result = user.JobApply(jobOffer);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(JobOffers), new { message = result.Message });
+        }
+
         // GET: Work/CreateCompany
         public IActionResult CreateCompany(string message)
         {
@@ -274,6 +289,10 @@ namespace Citizen.Controllers.Work
         public async Task<JobOffer> GetJobOfferByIdAsync(int id)
         {
             return await _dbContext.JobOffers
+                .Include(e => e.Company)
+                    .ThenInclude(c => c.JobOffers)
+                .Include(e => e.Company)
+                    .ThenInclude(d => d.Employments)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
