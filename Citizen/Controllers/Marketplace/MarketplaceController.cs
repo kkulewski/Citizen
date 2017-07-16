@@ -172,6 +172,7 @@ namespace Citizen.Controllers.Marketplace
             var result = user.DeleteMarketplaceOffer(model.Id);
             if(result.Success)
             {
+                await DeleteOfferByIdAsync(model.Id);
                 await SaveChangesAsync();
             }
 
@@ -236,6 +237,12 @@ namespace Citizen.Controllers.Marketplace
             {
                 _dbContext.MarketplaceOffers.Remove(offer);
             }
+        }
+
+        public async Task DeleteOfferByIdAsync(int id)
+        {
+            var offer = await GetOfferByIdAsync(id);
+            _dbContext.MarketplaceOffers.Remove(offer);
         }
 
         private async Task<ActionStatus> SaveChangesAsync()
