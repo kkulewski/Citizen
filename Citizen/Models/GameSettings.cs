@@ -14,6 +14,8 @@ namespace Citizen.Models
 
         public static int WorkEnergyCost = 10;
 
+        public static TimeSpan WorkInterval = TimeSpan.FromHours(24);
+
         public static decimal CountryChangeCost = 5.00M;
 
         public static decimal CompanyCost = 1000.00M;
