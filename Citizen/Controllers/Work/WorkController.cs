@@ -25,6 +25,20 @@ namespace Citizen.Controllers.Work
         }
 
         // GET: Work
+        public async Task<IActionResult> Index(string message)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            var user = await GetCurrentUserAsync();
+            var employment = await GetEmploymentByIdAsync(user.Employment.Id);
+            return View(employment);
+        }
+
+
+        // GET: Work/Companies
         public async Task<IActionResult> Companies(string message)
         {
             if (message != null)
@@ -266,6 +280,7 @@ namespace Citizen.Controllers.Work
                 .Include(p => p.Companies)
                 .Include(p => p.Country)
                 .Include(p => p.UserStorage)
+                .Include(p => p.Employment)
                 .FirstOrDefaultAsync(u => u.Id == identityUser.Id);
         }
 
