@@ -79,6 +79,21 @@ namespace Citizen.Controllers.Work
             return RedirectToAction(nameof(JobOffers), new { message = result.Message });
         }
 
+        // POST: Work/JobResign
+        public async Task<IActionResult> JobResign(int id)
+        {
+            var user = await GetCurrentUserAsync();
+            var employment = await GetEmploymentByIdAsync(id);
+
+            var result = user.JobResign(employment);
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index), new { message = result.Message });
+        }
+
         // GET: Work/CreateCompany
         public IActionResult CreateCompany(string message)
         {
