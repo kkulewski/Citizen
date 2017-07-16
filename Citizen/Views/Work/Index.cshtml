@@ -9,13 +9,12 @@
 @{
     if (Model == null)
     {
-        <div>You do not have a job.</div>
+        <div>You do not have a job. <a asp-action="JobOffers">Get one now.</a></div>
     }
     else
     {
     <div>
         <hr />
-        <input type="hidden" asp-for="Id" />
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.Company.Name)
@@ -42,12 +41,7 @@
                 @Html.DisplayFor(model => model.Salary)
             </dd>
         </dl>
-
-        <form asp-action="JobResign">
-            <div>
-                <input type="submit" value="Resign" class="btn btn-danger" />
-            </div>
-        </form>
+        <a asp-action="JobResign" asp-route-id="@Model.Id" class="btn btn-danger">Resign</a>
     </div>
     }
 }
