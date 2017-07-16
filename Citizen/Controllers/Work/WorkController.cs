@@ -33,7 +33,19 @@ namespace Citizen.Controllers.Work
             }
 
             var user = await GetCurrentUserAsync();
+            if(user.Employment == null)
+            {
+                return View(null);
+            }
+
             var employment = await GetEmploymentByIdAsync(user.Employment.Id);
+            if(employment == null)
+            {
+
+                return View(null);
+            }
+
+
             return View(employment);
         }
 
