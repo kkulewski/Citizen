@@ -25,7 +25,7 @@ namespace Citizen.Controllers.Work
         }
 
         // GET: Work
-        public async Task<IActionResult> Index(string message)
+        public async Task<IActionResult> Companies(string message)
         {
             if (message != null)
             {
@@ -98,7 +98,7 @@ namespace Citizen.Controllers.Work
             if (result.Success)
             {
                 await SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { result.Message });
+                return RedirectToAction(nameof(Companies), new { result.Message });
             }
 
             return RedirectToAction(nameof(CreateCompany), new { result.Message });
@@ -142,7 +142,7 @@ namespace Citizen.Controllers.Work
                 await SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index), new { result.Message });
+            return RedirectToAction(nameof(Companies), new { result.Message });
         }
 
         // GET: Work/Company/5
