@@ -12,6 +12,8 @@ namespace Citizen.Models
 
         public static int EnergyRestoreEventTickAmount = 1;
 
+        public static decimal StorageExtensionCostDivisor = 5.00M;
+
         public static int WorkEnergyCost = 10;
 
         public static TimeSpan WorkInterval = TimeSpan.FromHours(24);
