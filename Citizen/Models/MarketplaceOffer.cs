@@ -22,5 +22,8 @@ namespace Citizen.Models
         public int Amount { get; set; }
 
         public decimal Price { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
