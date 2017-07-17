@@ -43,6 +43,9 @@ namespace Citizen.Models
 
         public virtual ICollection<Company> Companies { get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         public void EnergyRestoreEvent(int ticks)
         {
             var amount = GameSettings.EnergyRestoreEventTickAmount * ticks;
