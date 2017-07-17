@@ -80,7 +80,12 @@ namespace Citizen.Controllers.Marketplace
             var result = user.AddMarketplaceOffer(model.ItemType, model.Amount, model.Price);
             if(result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Add), new { save.Message });
+                }
+
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
             
@@ -131,11 +136,16 @@ namespace Citizen.Controllers.Marketplace
             var result = user.EditMarketplaceOffer(model.Id, model.Price);
             if(result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Edit), new { id = model.Id, message = save.Message });
+                }
+
                 return RedirectToAction(nameof(Index), new { result.Message });
             }
 
-            return RedirectToAction(nameof(Edit), new { result.Message });
+            return RedirectToAction(nameof(Edit), new { id = model.Id, message = result.Message });
         }
 
         // GET: Marketplace/Delete/5
@@ -173,7 +183,11 @@ namespace Citizen.Controllers.Marketplace
             if(result.Success)
             {
                 await DeleteOfferByIdAsync(model.Id);
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Index), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -189,7 +203,11 @@ namespace Citizen.Controllers.Marketplace
             if(result.Success)
             {
                 DeleteOfferIfAmountIsZero(offer);
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Offers), new { itemType = offer.ItemType, message = save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Offers), new { itemType = offer.ItemType, message = result.Message });
