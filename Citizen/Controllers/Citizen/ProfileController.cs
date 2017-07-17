@@ -141,6 +141,7 @@ namespace Citizen.Controllers.Citizen
                 Capacity = user.UserStorage.Capacity,
                 CapacityUsed =  user.GetItemsAmount(),
                 ExtensionCost = user.GetStorageExtensionCost(),
+                ExtensionCapacity = GameSettings.StorageExtensionCapacity,
                 MarketPlaceholder = user.Items.First(c => c.ItemType == ItemType.MarketPlaceholder).Amount,
                 Food = user.Items.First(c => c.ItemType == ItemType.Food).Amount,
                 Grain = user.Items.First(c => c.ItemType == ItemType.Grain).Amount
