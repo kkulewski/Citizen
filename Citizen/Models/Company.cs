@@ -28,5 +28,8 @@ namespace Citizen.Models
         public virtual ICollection<Employment> Employments { get; set; }
 
         public virtual ICollection<JobOffer> JobOffers { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
