@@ -94,6 +94,19 @@ namespace Citizen.Models
             return UserStorage.Capacity / GameSettings.StorageExtensionCostDivisor;
         }
 
+        public ActionStatus ExtendStorage()
+        {
+            var extensionCost = GetStorageExtensionCost();
+            if (Money < extensionCost)
+                return new ActionStatus(false, "No enough money to extend storage.");
+
+            Money -= extensionCost;
+            UserStorage.Capacity += GameSettings.StorageExtensionCapacity;
+
+            return new ActionStatus(true, "Storage extended successfully.");
+
+        }
+
         public ActionStatus AddMarketplaceOffer(ItemType itemType, int amount, decimal price)
         {
             var soldItem = Items.First(i => i.ItemType == itemType);
