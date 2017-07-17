@@ -14,6 +14,8 @@ namespace Citizen.Models
 
         public static decimal StorageExtensionCostDivisor = 5.00M;
 
+        public static int StorageExtensionCapacity = 1000;
+
         public static int WorkEnergyCost = 10;
 
         public static TimeSpan WorkInterval = TimeSpan.FromHours(24);
