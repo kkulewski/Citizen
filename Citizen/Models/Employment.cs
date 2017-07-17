@@ -25,5 +25,8 @@ namespace Citizen.Models
         public decimal Salary { get; set; }
 
         public int DaysWorked { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
