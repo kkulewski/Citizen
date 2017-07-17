@@ -124,8 +124,13 @@ namespace Citizen.Controllers.Citizen
         //
         // GET: /Profile/Storage
         [HttpGet]
-        public async Task<IActionResult> Storage()
+        public async Task<IActionResult> Storage(string message)
         {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
             var user = await GetCurrentUserAsync();
             if (user == null)
             {
