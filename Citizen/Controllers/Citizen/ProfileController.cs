@@ -65,7 +65,9 @@ namespace Citizen.Controllers.Citizen
             var result = user.Eat();
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if(!save.Success)
+                    return RedirectToAction(nameof(Index), new { save.Message });
             }
 
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -115,7 +117,9 @@ namespace Citizen.Controllers.Citizen
             var result = user.ChangeCountry(newCountry);
             if(result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                    return RedirectToAction(nameof(Index), new { save.Message });
             }
             
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -167,7 +171,9 @@ namespace Citizen.Controllers.Citizen
             var result = user.ExtendStorage();
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                    return RedirectToAction(nameof(Storage), new { save.Message });
             }
 
             return RedirectToAction(nameof(Storage), new { message = result.Message });
