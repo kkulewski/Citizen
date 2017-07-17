@@ -67,7 +67,9 @@ namespace Citizen.Controllers.Citizen
             {
                 var save = await SaveChangesAsync();
                 if(!save.Success)
+                {
                     return RedirectToAction(nameof(Index), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -119,7 +121,9 @@ namespace Citizen.Controllers.Citizen
             {
                 var save = await SaveChangesAsync();
                 if (!save.Success)
+                {
                     return RedirectToAction(nameof(Index), new { save.Message });
+                }
             }
             
             return RedirectToAction(nameof(Index), new { result.Message });
@@ -173,7 +177,9 @@ namespace Citizen.Controllers.Citizen
             {
                 var save = await SaveChangesAsync();
                 if (!save.Success)
+                {
                     return RedirectToAction(nameof(Storage), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Storage), new { message = result.Message });
