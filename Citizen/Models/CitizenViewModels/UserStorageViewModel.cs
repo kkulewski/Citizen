@@ -27,6 +27,10 @@ namespace Citizen.Models.CitizenViewModels
         [Display(Name = "Capacity used")]
         public int CapacityUsed { get; set; }
 
+        [Display(Name = "Extension cost")]
+        [DataType(DataType.Currency)]
+        public decimal ExtensionCost { get; set; }
+
         [Display(Name = "Market placeholder")]
         public int MarketPlaceholder { get; set; }
 
