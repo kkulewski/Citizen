@@ -18,7 +18,7 @@
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
-    <a asp-controller="Profile" asp-action="Extend" class="btn btn-primary">Extend (+1000 storage, -@Model.ExtensionCost money)</a>
+    <a asp-controller="Profile" asp-action="ExtendStorage" class="btn btn-primary">Extend (+@Model.ExtensionCapacity storage, -@Model.ExtensionCost money)</a>
     <hr />
     <div style="width: 100%; margin: auto">
         <div class="progress">
