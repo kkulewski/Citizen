@@ -154,6 +154,25 @@ namespace Citizen.Controllers.Citizen
             return View(model);
         }
 
+        // GET /Profile/ExtendStorage
+        [HttpGet]
+        public async Task<IActionResult> ExtendStorage()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = user.ExtendStorage();
+            if (result.Success)
+            {
+                await SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Storage), new { message = result.Message });
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
