@@ -41,7 +41,6 @@ namespace Citizen.Controllers.Work
             var employment = await GetEmploymentByIdAsync(user.Employment.Id);
             if(employment == null)
             {
-
                 return View(null);
             }
             
@@ -56,7 +55,11 @@ namespace Citizen.Controllers.Work
             var result = user.Work();
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Index), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Index), new { message = result.Message });
@@ -98,7 +101,12 @@ namespace Citizen.Controllers.Work
             var result = user.JobApply(jobOffer);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(JobOffers), new { save.Message });
+                }
+
                 return RedirectToAction(nameof(Index), new { message = result.Message });
             }
 
@@ -114,7 +122,11 @@ namespace Citizen.Controllers.Work
             var result = user.JobResign(employment);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Index), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Index), new { message = result.Message });
@@ -152,7 +164,12 @@ namespace Citizen.Controllers.Work
             var result = user.CreateCompany(model.Name, model.Product);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(CreateCompany), new { save.Message });
+                }
+
                 return RedirectToAction(nameof(Companies), new { result.Message });
             }
 
@@ -194,7 +211,11 @@ namespace Citizen.Controllers.Work
             var result = user.DeleteCompany(company);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Companies), new { save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Companies), new { result.Message });
@@ -243,7 +264,11 @@ namespace Citizen.Controllers.Work
             var result = user.FireWorker(company, employment);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Company), new { id = companyId, message = save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
@@ -288,7 +313,12 @@ namespace Citizen.Controllers.Work
             var result = user.AddJobOffer(company, model.Salary);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(AddJobOffer), new { companyId = model.CompanyId, message = save.Message });
+                }
+
                 return RedirectToAction(nameof(Company), new { id = model.CompanyId, message = result.Message });
             }
 
@@ -305,7 +335,11 @@ namespace Citizen.Controllers.Work
             var result = user.DeleteJobOffer(company, jobOffer);
             if (result.Success)
             {
-                await SaveChangesAsync();
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Company), new { id = companyId, message = save.Message });
+                }
             }
 
             return RedirectToAction(nameof(Company), new { id = companyId, message = result.Message });
