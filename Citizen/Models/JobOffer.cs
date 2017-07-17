@@ -18,5 +18,8 @@ namespace Citizen.Models
         public int CompanyId { get; set; }
 
         public decimal Salary { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
