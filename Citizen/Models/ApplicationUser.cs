@@ -89,6 +89,11 @@ namespace Citizen.Models
             return Items.Select(c => c.Amount).Sum();
         }
 
+        public decimal GetStorageExtensionCost()
+        {
+            return UserStorage.Capacity / GameSettings.StorageExtensionCostDivisor;
+        }
+
         public ActionStatus AddMarketplaceOffer(ItemType itemType, int amount, decimal price)
         {
             var soldItem = Items.First(i => i.ItemType == itemType);
