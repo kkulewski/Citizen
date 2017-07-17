@@ -210,7 +210,10 @@ namespace Citizen.Models
 
         public ActionStatus JobApply(JobOffer jobOffer)
         {
-            if(Employment != null)
+            if (jobOffer == null)
+                return new ActionStatus(false, "Job offer not available.");
+
+            if (Employment != null)
                 return new ActionStatus(false, "You do have a job already.");
 
             var employment = new Employment()
