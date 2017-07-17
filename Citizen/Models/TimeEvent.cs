@@ -19,5 +19,8 @@ namespace Citizen.Models
 
         [DataType(DataType.DateTime)]
         public DateTime LastTrigger { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
