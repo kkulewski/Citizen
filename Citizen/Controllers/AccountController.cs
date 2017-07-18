@@ -168,7 +168,7 @@ namespace Citizen.Controllers
                     var userList = await GetUserListAsync();
                     if (userList.Any(c => c.Name == model.Name))
                     {
-                        var errorMessage = "This name is taken already.";
+                        model.ErrorMessage = "This name is taken already.";
                         return View(model);
                     }
 
