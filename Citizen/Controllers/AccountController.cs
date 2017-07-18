@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Citizen.Models;
 using Citizen.Models.AccountViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Citizen.Controllers
@@ -110,51 +111,69 @@ namespace Citizen.Controllers
                     EnergyRestore = GameSettings.EnergyMax,
                     LastWorked = GameSettings.DefaultLastWorked
                 };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                
+                var result = new IdentityResult();
+                try
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    var userItems = new Collection<Item>
+                    result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
                     {
-                        new Item
-                        {
-                            ApplicationUser = user,
-                            ApplicationUserId = user.Id,
-                            ItemType = ItemType.MarketPlaceholder,
-                            Amount = GameSettings.DefaultMarketPlaceholderAmount
-                        },
-                        new Item
-                        {
-                            ApplicationUser = user,
-                            ApplicationUserId = user.Id,
-                            ItemType = ItemType.Food,
-                            Amount = GameSettings.DefaultFoodAmount
-                        },
-                        new Item
-                        {
-                            ApplicationUser = user,
-                            ApplicationUserId = user.Id,
-                            ItemType = ItemType.Grain,
-                            Amount = GameSettings.DefaultGrainAmount
-                        }
-                    };
-                    
-                    var userStorage = new UserStorage
-                    {
-                        ApplicationUserId = user.Id,
-                        Capacity = GameSettings.DefaultStorageCapacity
-                    };
-                    
-                    user.Items = userItems;
-                    user.UserStorage = userStorage;
+                        await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    await SaveChangesAsync();
-                    return RedirectToLocal(returnUrl);
+                        var userItems = new Collection<Item>
+                        {
+                            new Item
+                            {
+                                ApplicationUser = user,
+                                ApplicationUserId = user.Id,
+                                ItemType = ItemType.MarketPlaceholder,
+                                Amount = GameSettings.DefaultMarketPlaceholderAmount
+                            },
+                            new Item
+                            {
+                                ApplicationUser = user,
+                                ApplicationUserId = user.Id,
+                                ItemType = ItemType.Food,
+                                Amount = GameSettings.DefaultFoodAmount
+                            },
+                            new Item
+                            {
+                                ApplicationUser = user,
+                                ApplicationUserId = user.Id,
+                                ItemType = ItemType.Grain,
+                                Amount = GameSettings.DefaultGrainAmount
+                            }
+                        };
+
+                        var userStorage = new UserStorage
+                        {
+                            ApplicationUserId = user.Id,
+                            Capacity = GameSettings.DefaultStorageCapacity
+                        };
+
+                        user.Items = userItems;
+                        user.UserStorage = userStorage;
+
+                        await SaveChangesAsync();
+                        return RedirectToLocal(returnUrl);
+                    }
+
+                    AddErrors(result);
                 }
+                catch
+                {
+                    model.CountryList = await GetCountryListAsync();
+                    AddErrors(result);
 
-                AddErrors(result);
+                    var userList = await GetUserListAsync();
+                    if (userList.Any(c => c.Name == model.Name))
+                    {
+                        var errorMessage = "This name is taken already.";
+                        return View(model);
+                    }
+
+                    return View(model);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -205,6 +224,11 @@ namespace Citizen.Controllers
         private async Task<List<Country>> GetCountryListAsync()
         {
             return await _dbContext.Country.ToListAsync();
+        }
+
+        private async Task<List<ApplicationUser>> GetUserListAsync()
+        {
+            return await _dbContext.ApplicationUsers.ToListAsync();
         }
 
         private async Task<ActionStatus> SaveChangesAsync()
