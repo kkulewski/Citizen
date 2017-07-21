@@ -10,6 +10,7 @@ namespace Citizen.Models.MarketplaceViewModels
     public class AddMarketplaceOfferViewModel
     {
         [Required]
+        [Display(Name = "Item")]
         public ItemType ItemType { get; set; }
 
         public IEnumerable<ItemType> ItemTypes { get; set; }
