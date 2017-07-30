@@ -108,7 +108,13 @@ namespace Citizen.Models
             UserStorage.Capacity += GameSettings.StorageExtensionCapacity;
             Experience += GameSettings.StorageExtensionExperienceGain;
 
-            return new ActionStatus(true, "Storage extended successfully.");
+            var storageExtensionSummary = string.Format(
+                "Storage extended successfully. (+{0} storage, -{1} money, +{2} experience)",
+                GameSettings.StorageExtensionCapacity,
+                extensionCost,
+                GameSettings.StorageExtensionExperienceGain);
+
+            return new ActionStatus(true, storageExtensionSummary);
 
         }
 
