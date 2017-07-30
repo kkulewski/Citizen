@@ -95,7 +95,12 @@ namespace Citizen.Models
 
         public decimal GetStorageExtensionCost()
         {
-            return UserStorage.Capacity / GameSettings.StorageExtensionCostDivisor;
+            // the algorithm resembles compound interests
+            var multipier = 1 + (UserStorage.Capacity / 10000M);
+            var cost = (multipier * multipier) * UserStorage.Capacity / GameSettings.StorageExtensionCostDivisor;
+
+            // round cost to the hundreds
+            return cost - cost % 100;
         }
 
         public ActionStatus ExtendStorage()
