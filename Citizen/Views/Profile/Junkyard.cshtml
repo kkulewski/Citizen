@@ -1,0 +1,43 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "Junkyard";
+
+    var energyPercent = (int) ((double) Model.Energy / Model.EnergyMax * 100);
+    var restorePercent = Math.Min(Model.EnergyMax - Model.Energy, Model.EnergyRestore);
+}
+
+<h2>@ViewData["Title"]</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt><img src="@Url.Content("~/images/Experience.png")" height="32" width="32" alt="experience" /></dt>
+        <dd>
+            @Model.Experience XP
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt><img src="@Url.Content("~/images/Energy.png")" height="32" width="32" alt="energy" /></dt>
+        <dd>
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" style="margin-left: -2%">
+                <div class="progress" style="margin: auto">
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width: @energyPercent%">@energyPercent</div>
+                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width: @restorePercent%">@restorePercent</div>
+                </div>
+            </div>
+            <a asp-controller="Profile" asp-action="Eat" class="label label-primary">Eat food</a>
+        </dd>
+        <dd>
+
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt><img src="@Url.Content("~/images/Money.png")" height="32" width="32" alt="money" /></dt>
+        <dd>
+            @Model.Money @Model.Country.CurrencyCode
+        </dd>
+    </dl>
+    <hr />
+    <a asp-action="SearchJunkyard" class="btn btn-success">Search</a>
+</div>
