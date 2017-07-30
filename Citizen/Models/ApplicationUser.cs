@@ -300,10 +300,13 @@ namespace Citizen.Models
 
             Employment.DaysWorked += 1;
 
+            Experience += GameSettings.WorkExperienceGain;
+
             string workSummary = string.Format(
-                "Worked succesfully. (-{0} energy, +{1} money, {2} days worked so far)", 
+                "Worked succesfully. (-{0} energy, +{1} money, +{2} experience, {3} days worked so far)", 
                 GameSettings.WorkEnergyCost, 
                 Employment.Salary, 
+                GameSettings.WorkExperienceGain,
                 Employment.DaysWorked);
 
             return new ActionStatus(true, workSummary);
