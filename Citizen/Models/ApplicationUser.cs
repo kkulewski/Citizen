@@ -97,10 +97,10 @@ namespace Citizen.Models
         {
             // the algorithm resembles compound interests
             var multipier = 1 + (UserStorage.Capacity / 10000M);
-            var cost = (multipier * multipier) * UserStorage.Capacity * GameSettings.StorageExtensionCostMultipier;
+            var cost = (multipier * multipier) * UserStorage.Capacity * GameSettings.StorageExtensionCostMultiplier;
 
             // round cost to the hundreds
-            return cost - cost % 100;
+            return cost - (cost % 100);
         }
 
         public ActionStatus ExtendStorage()
