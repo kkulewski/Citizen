@@ -330,8 +330,15 @@ namespace Citizen.Models
             };
 
             Companies.Add(company);
+            
+            var companyCreateSummary = string.Format(
+                "Company: {0} created. (+{1} experience, -{2} money)",
+                name,
+                GameSettings.CompanyExperienceGain,
+                GameSettings.CompanyCost
+                );
 
-            return new ActionStatus(true, "Company created succesfully.");
+            return new ActionStatus(true, companyCreateSummary);
         }
 
         public ActionStatus DeleteCompany(Company company)
