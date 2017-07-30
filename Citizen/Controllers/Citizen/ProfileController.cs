@@ -44,6 +44,7 @@ namespace Citizen.Controllers.Citizen
             var model = new ProfileViewModel
             {
                 Name = user.Name,
+                Experience = user.Experience,
                 Energy = user.Energy,
                 EnergyMax = GameSettings.EnergyMax,
                 EnergyRestore = user.EnergyRestore,
