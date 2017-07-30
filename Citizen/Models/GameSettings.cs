@@ -12,7 +12,7 @@ namespace Citizen.Models
 
         public static int EnergyRestoreEventTickAmount = 1;
 
-        public static decimal StorageExtensionCostDivisor = 5.00M;
+        public static decimal StorageExtensionCostMultipier = 0.2M;
 
         public static int StorageExtensionCapacity = 1000;
 
