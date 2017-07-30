@@ -26,6 +26,8 @@ namespace Citizen.Models
 
         public static decimal CompanyCost = 1000.00M;
 
+        public static int CompanyExperienceGain = 200;
+
         public static int CompanyMaxWorkers = 10;
 
         public static int CompanyWorkProduct = 10;
