@@ -318,6 +318,7 @@ namespace Citizen.Models
                 return new ActionStatus(false, "No enough money.");
 
             Money -= GameSettings.CompanyCost;
+            Experience += GameSettings.CompanyExperienceGain;
 
             var company = new Company
             {
