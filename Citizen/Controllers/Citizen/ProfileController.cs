@@ -186,6 +186,34 @@ namespace Citizen.Controllers.Citizen
             return RedirectToAction(nameof(Storage), new { message = result.Message });
         }
 
+        // GET: /Profile/Junkyard
+        [HttpGet]
+        public async Task<IActionResult> Junkyard(string message)
+        {
+            if (message != null)
+            {
+                ViewData["StatusMessage"] = message;
+            }
+
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var model = new ProfileViewModel
+            {
+                Name = user.Name,
+                Experience = user.Experience,
+                Energy = user.Energy,
+                EnergyMax = GameSettings.EnergyMax,
+                EnergyRestore = user.EnergyRestore,
+                Money = user.Money,
+                Country = user.Country
+            };
+            return View(model);
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
