@@ -18,6 +18,8 @@ namespace Citizen.Models
 
         public static int StorageExtensionExperienceGain = 20;
 
+        public static int SearchJunkyardEnergyCost = 5;
+
         public static int WorkEnergyCost = 10;
 
         public static int WorkExperienceGain = 10;
