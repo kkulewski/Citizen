@@ -80,88 +80,99 @@ namespace Citizen.Models
         {
             if (Energy < GameSettings.SearchJunkyardEnergyCost)
                 return new ActionStatus(false, "You do not have enough energy to search junkyard.");
-
-            string junkardSearchSummary;
+            
+            Energy -= GameSettings.SearchJunkyardEnergyCost;
 
             Random random = new Random();
             int roll = random.Next(0, 101);
 
-            Energy -= GameSettings.SearchJunkyardEnergyCost;
+            string summary;
 
-            // nothing found
             if (roll < 50)
-            {
-                junkardSearchSummary = string.Format("Found nothing. (-{0} energy)", GameSettings.SearchJunkyardEnergyCost);
-            }
-            // money found
+                summary = JunkyardNothingFound();
             else if (roll < 90)
-            {
-                int moneyRoll = random.Next(0, 101);
-                decimal moneyFound;
-
-                // small amount
-                if (moneyRoll < 85)
-                {
-                    moneyFound = random.Next(1, 100) / 100M;
-                }
-                // medium amount
-                else if (moneyRoll < 96)
-                {
-                    moneyFound = random.Next(10, 100) / 10M;
-                }
-                // high amount
-                else if (moneyRoll < 99)
-                {
-                    moneyFound = random.Next(1, 50);
-                }
-                // very high amount
-                else
-                {
-                    moneyFound = random.Next(50, 500);
-                }
-
-                Money += moneyFound;
-
-                junkardSearchSummary = string.Format(
-                    "You have found some money! (-{0} energy, +{1} money)", 
-                    GameSettings.SearchJunkyardEnergyCost,
-                    moneyFound);
-            }
-            // food found
+                summary = JunkyardMoneyFound();
             else if (roll < 93)
-            {
-                int foodFound = random.Next(1, 3);
-                
-                var food = Items.FirstOrDefault(i => i.ItemType == ItemType.Food);
-                food.Amount += foodFound;
-
-                junkardSearchSummary = string.Format(
-                    "You have found some food! (-{0} energy, +{1} food)",
-                    GameSettings.SearchJunkyardEnergyCost,
-                    foodFound);
-            }
-            // experience found
+                summary = JunkyardFoodFound();
             else if (roll < 99)
+                summary = JunkyardExperienceFound();
+            else
+                summary = JunkyardEnergyRestoreFound();
+
+            return new ActionStatus(true, summary);
+        }
+
+        private string JunkyardNothingFound()
+        {
+            return string.Format("Found nothing. (-{0} energy)", GameSettings.SearchJunkyardEnergyCost);
+        }
+
+        private string JunkyardMoneyFound()
+        {
+            var random = new Random();
+            int moneyRoll = random.Next(0, 101);
+            decimal moneyFound;
+
+            // small amount
+            if (moneyRoll < 85)
             {
-                int experienceFound = random.Next(1, 5);
-
-                Experience += experienceFound;
-
-                junkardSearchSummary = string.Format(
-                    "You have gained experience! (-{0} energy, +{1} experience)",
-                    GameSettings.SearchJunkyardEnergyCost,
-                    experienceFound);
+                moneyFound = random.Next(1, 100) / 100M;
             }
-            // energy restore bonus found
+            // medium amount
+            else if (moneyRoll < 96)
+            {
+                moneyFound = random.Next(10, 100) / 10M;
+            }
+            // high amount
+            else if (moneyRoll < 99)
+            {
+                moneyFound = random.Next(1, 50);
+            }
+            // very high amount
             else
             {
-                Energy = GameSettings.EnergyMax;
-
-                junkardSearchSummary = "Your energy has been restored.";
+                moneyFound = random.Next(50, 500);
             }
 
-            return new ActionStatus(true, junkardSearchSummary);
-            
+            Money += moneyFound;
+
+            return string.Format(
+                "You have found some money! (-{0} energy, +{1} money)",
+                GameSettings.SearchJunkyardEnergyCost,
+                moneyFound);
+        }
+
+        private string JunkyardFoodFound()
+        {
+            var random = new Random();
+            int foodFound = random.Next(1, 3);
+
+            var food = Items.FirstOrDefault(i => i.ItemType == ItemType.Food);
+            food.Amount += foodFound;
+
+            return string.Format(
+                "You have found some food! (-{0} energy, +{1} food)",
+                GameSettings.SearchJunkyardEnergyCost,
+                foodFound);
+        }
+
+        private string JunkyardExperienceFound()
+        {
+            var random = new Random();
+            int experienceFound = random.Next(1, 5);
+            Experience += experienceFound;
+
+            return string.Format(
+                "You have gained experience! (-{0} energy, +{1} experience)",
+                GameSettings.SearchJunkyardEnergyCost,
+                experienceFound);
+        }
+
+        private string JunkyardEnergyRestoreFound()
+        {
+            Energy = GameSettings.EnergyMax;
+
+            return "Your energy has been restored.";
         }
 
         public ActionStatus ChangeCountry(Country newCountry)
