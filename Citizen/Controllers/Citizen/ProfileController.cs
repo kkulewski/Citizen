@@ -213,6 +213,27 @@ namespace Citizen.Controllers.Citizen
             };
             return View(model);
         }
+        
+        public async Task<IActionResult> SearchJunkyard()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = user.SearchJunkyard();
+            if (result.Success)
+            {
+                var save = await SaveChangesAsync();
+                if (!save.Success)
+                {
+                    return RedirectToAction(nameof(Junkyard), new { save.Message });
+                }
+            }
+
+            return RedirectToAction(nameof(Junkyard), new { result.Message });
+        }
 
         #region Helpers
 
